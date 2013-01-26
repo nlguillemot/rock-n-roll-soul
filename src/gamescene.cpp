@@ -21,35 +21,40 @@ bool element_of(const T& elm, const std::vector<T>& v)
 
 void GameScene::handle_event(const sf::Event& e)
 {
+    if (e.Type == sf::Event::KeyPressed)
+    {
+        player_handle_keydown(e.Key.Code);
+    }
+}
+
+void GameScene::player_handle_keydown(sf::Key::Code code)
+{
     const std::vector<sf::Key::Code> movement_keys = {
         sf::Key::Left,
         sf::Key::Right
     };
 
-    if (e.Type == sf::Event::KeyPressed)
+    if (element_of(code,movement_keys))
     {
-        if (element_of(e.Key.Code,movement_keys))
+        if (player_.state() == Player::Idle)
         {
-            if (player_.state() == Player::Idle)
+            if (code == sf::Key::Left)
             {
-                if (e.Key.Code == sf::Key::Left)
-                {
-                    player_.switch_to_state(Player::Moving);
-                }
-                else if (e.Key.Code == sf::Key::Right)
-                {
-                    player_.switch_to_state(Player::Moving);
-                }
+                player_.switch_to_state(Player::Moving);
             }
+            else if (code == sf::Key::Right)
+            {
+                player_.switch_to_state(Player::Moving);
+            }
+        }
 
-            if (e.Key.Code == sf::Key::Left)
-            {
-                player_.switch_direction(Player::FacingLeft);
-            }
-            else if (e.Key.Code == sf::Key::Right)
-            {
-                player_.switch_direction(Player::FacingRight);
-            }
+        if (code == sf::Key::Left)
+        {
+            player_.switch_direction(Player::FacingLeft);
+        }
+        else if (code == sf::Key::Right)
+        {
+            player_.switch_direction(Player::FacingRight);
         }
     }
 }

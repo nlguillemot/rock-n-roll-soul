@@ -169,6 +169,10 @@ void GameScene::player_handle_keyup(sf::Key::Code code)
         {
             player_.stop_aim_movement();
         }
+        else if (code == player_keys_.action.key)
+        {
+            // DO STUFF
+        }
     }
 
     if (code == player_keys_.left.key)

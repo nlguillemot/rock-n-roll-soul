@@ -22,7 +22,10 @@ void AnimData::load_texture(const std::string& file_name)
     if (!found)
     {
         std::cout << "Failed to load " << file_name << ".png" << std::endl;
+        return;
     }
+
+    texture_.SetSmooth(false);
 }
 
 void AnimData::load_properties(const std::string& file_name)

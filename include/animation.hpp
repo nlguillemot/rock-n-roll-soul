@@ -36,9 +36,13 @@ namespace heart
 
         const std::string& string(const std::string& name) const;
         
-        float width() const;
-        float height() const;
-        sf::Vector2f size() const;
+        float original_width() const;
+        float original_height() const;
+        sf::Vector2f original_size() const;
+
+        float transformed_width() const;
+        float transformed_height() const;
+        sf::Vector2f transformed_size() const;
 
         sf::Uint32 fps() const;
         void set_fps(sf::Uint32 fps);
@@ -67,7 +71,8 @@ namespace heart
         // where (0,0) is top left, (1,1) is bottom right
         void set_origin(const sf::Vector2f& origin);
         const sf::Vector2f& origin() const;
-        sf::Vector2f pixel_origin() const;
+        sf::Vector2f original_pixel_origin() const;
+        sf::Vector2f transformed_pixel_origin() const;
 
         void fliph(bool flipped);
         void flipv(bool flipped);

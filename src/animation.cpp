@@ -113,24 +113,24 @@ sf::FloatRect Animation::anim_rect_relative() const
     return sf::FloatRect(
         position().x,
         position().y,
-        position().x + width(),
-        position().y + height()
+        position().x + transformed_width(),
+        position().y + transformed_height()
         );
 }
 
 sf::FloatRect Animation::anim_rect() const
 {
-    return sf::FloatRect(0, 0, width(), height());
+    return sf::FloatRect(0, 0, transformed_width(), transformed_height());
 }
 
 sf::Vector2f Animation::center_relative() const
 {
-    return sf::Vector2f(position() - pixel_origin() + center());
+    return sf::Vector2f(position() - transformed_pixel_origin() + center());
 }
 
 sf::Vector2f Animation::center() const
 {
-    return sf::Vector2f(width()/2.0f,height()/2.0f);
+    return sf::Vector2f(transformed_width()/2.0f,transformed_height()/2.0f);
 }
 
 float Animation::constant(const std::string& constant_name) const
@@ -143,19 +143,34 @@ const std::string& Animation::string(const std::string& name) const
     return anim_data_.string(name);
 }
 
-float Animation::width() const
+float Animation::original_width() const
+{
+    return static_cast<float>(sprite_.GetSubRect().GetWidth());
+}
+
+float Animation::original_height() const
+{
+    return static_cast<float>(sprite_.GetSubRect().GetHeight());
+}
+
+float Animation::transformed_width() const
 {
     return static_cast<float>(sprite_.GetSubRect().GetWidth() * scale().x);
 }
 
-float Animation::height() const
+float Animation::transformed_height() const
 {
     return static_cast<float>(sprite_.GetSubRect().GetHeight() * scale().y);
 }
 
-sf::Vector2f Animation::size() const
+sf::Vector2f Animation::original_size() const
 {
-    return sf::Vector2f(width(),height());
+    return sf::Vector2f(original_width(), original_height());
+}
+
+sf::Vector2f Animation::transformed_size() const
+{
+    return sf::Vector2f(transformed_width(),transformed_height());
 }
 
 sf::Uint32 Animation::fps() const
@@ -234,6 +249,7 @@ void Animation::set_scale(float w, float h)
 {
     assert( w >= 0 && h >= 0 );
     sprite_.SetScale(w,h);
+    update_origin();
 }
 
 void Animation::set_origin(const sf::Vector2f& origin)
@@ -247,9 +263,17 @@ const sf::Vector2f& Animation::origin() const
     return origin_;
 }
 
-sf::Vector2f Animation::pixel_origin() const
+sf::Vector2f Animation::original_pixel_origin() const
 {
-    sf::Vector2f mysize = size();
+    sf::Vector2f mysize = original_size();
+    return sf::Vector2f(
+            origin().x * mysize.x,
+            origin().y * mysize.y);
+}
+
+sf::Vector2f Animation::transformed_pixel_origin() const
+{
+    sf::Vector2f mysize = transformed_size();
     return sf::Vector2f(
             origin().x * mysize.x,
             origin().y * mysize.y);
@@ -257,7 +281,8 @@ sf::Vector2f Animation::pixel_origin() const
 
 void Animation::update_origin()
 {
-    sprite_.SetCenter(pixel_origin());
+    sf::Vector2f newcenter = original_pixel_origin();
+    sprite_.SetCenter(newcenter);
 }
 
 void Animation::fliph(bool flipped)

@@ -13,9 +13,20 @@ Player::Player()
 
     animation_->set_origin(sf::Vector2f(0.5f,1.0f));
 
+    const sf::Vector2f* rocker_scale = animation_->maybe_point("scale");
+    if (rocker_scale)
+    {
+        std::cout << "Read scale: "
+            << rocker_scale->x
+            << "," << rocker_scale->y << std::endl;
+        animation_->set_scale(*rocker_scale);
+    }
+
     aimer_data_ = new AnimData("assets/aimer");
     aimer_ = new Animation(*aimer_data_);
+
     aimer_->set_alpha(128);
+
     sf::Vector2f aimer_origin = aimer_->point("origin");
     aimer_->set_origin(aimer_origin);
 

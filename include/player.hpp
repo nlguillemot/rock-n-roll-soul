@@ -1,4 +1,5 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
 #include "animation.hpp"
 #include "animdata.hpp"

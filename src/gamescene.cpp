@@ -1,5 +1,4 @@
 #include "gamescene.hpp"
-
 #include <iostream>
 
 namespace heart
@@ -11,6 +10,32 @@ GameScene::GameScene()
 
 GameScene::~GameScene()
 {
+}
+
+void GameScene::init()
+{
+    if (!map_.load_from_file("assets/level1.map"))
+    {
+        std::cout << "Failed to load map." << std::endl;
+    }
+
+    for (std::list<GameMap::Platform>::iterator it = map_.platform_list.begin();
+            it != map_.platform_list.end(); ++it)
+    {
+        std::cout << "Got platform:"
+            << " asset_name: " << it->asset_name
+            << " position: { " << it->position.x << ", "
+            << it->position.y << " }" << std::endl;
+    }
+
+    for (std::list<GameMap::Collectible>::iterator it = map_.collectible_list.begin();
+            it != map_.collectible_list.end(); ++it)
+    {
+        std::cout << "Got collectible:"
+            << " type: " << it->type
+            << " position: { " << it->position.x << ", "
+            << it->position.y << " }" << std::endl;
+    }
 }
 
 template<class T>

@@ -7,9 +7,10 @@ namespace heart
 {
     MainApp::MainApp(const sf::VideoMode& mode, const std::string& gametitle, Scene* firstscene):
     window_(mode,gametitle),
-    current_scene_(firstscene)
+    current_scene_(nullptr)
     {
         view_ = window_.GetDefaultView();
+        switch_to_scene(firstscene);
     }
     MainApp::~MainApp()
     {
@@ -27,8 +28,14 @@ namespace heart
     }
     void MainApp::switch_to_scene(Scene* next_scene)
     {
-        delete current_scene_;
+        if (current_scene_)
+        {
+            current_scene_->exit();
+            delete current_scene_;
+        }
+
         current_scene_ = next_scene;
+        current_scene_->init();
     }
     void MainApp::poll_events()
     {

@@ -12,7 +12,11 @@ public:
     virtual ~Scene(){}
 
     virtual void handle_event(const sf::Event& e){}
+
+    virtual void init(){}
     virtual void update(sf::Uint32 dt){}
+    virtual void exit(){}
+
     virtual void draw(sf::RenderTarget& target){}
 };
 

@@ -140,12 +140,24 @@ int AnimData::total_frames() const
 
 const AnimSequence& AnimData::sequence(const std::string& name) const
 {
+    return *maybe_sequence(name);
+}
+
+const AnimSequence* AnimData::maybe_sequence(const std::string& name) const
+{
     std::vector<AnimSequence>::const_iterator it = 
         std::find_if(sequences_.begin(),sequences_.end(),
         [name](const AnimSequence& curr){ return curr.name() == name; }
     );
-    assert(it != sequences_.end());
-    return *it;
+    
+    if (it == sequences_.end())
+    {
+        return nullptr;
+    }
+    else
+    {
+        return &(*it);
+    }
 }
 
 const sf::Vector2f& AnimData::point(const std::string& name) const

@@ -1,5 +1,6 @@
 #include "animation.hpp"
 #include <cassert>
+#include <iostream>
 
 namespace heart
 {
@@ -10,7 +11,8 @@ Animation::Animation(AnimData& anim_data)
     fps_(anim_data.fps()),
     current_frame_(0),
     total_frames_(anim_data_.total_frames()),
-    playing_(false)
+    playing_(false),
+    hidden_(false)
 {
     sprite_.SetImage(anim_data.texture());
     update_sprite_to_frame();
@@ -23,9 +25,15 @@ bool Animation::playing() const
 
 void Animation::play(const std::string& sequence_name)
 {
-    const AnimSequence& seq(anim_data_.sequence(sequence_name));
-    loop_start_ = seq.start();
-    loop_end_ = seq.end();
+    const AnimSequence* seq(anim_data_.maybe_sequence(sequence_name));
+    if (!seq)
+    {
+        std::cout << "Couldn't find sequence: " << sequence_name << std::endl;
+        return;
+    }
+
+    loop_start_ = seq->start();
+    loop_end_ = seq->end();
     play(loop_start_);
 }
 
@@ -39,9 +47,15 @@ void Animation::play(int frame)
 
 void Animation::hold(const std::string& sequence_name)
 {
-    const AnimSequence& seq(anim_data_.sequence(sequence_name));
-    loop_start_ = seq.start();
-    loop_end_ = seq.end();
+    const AnimSequence* seq(anim_data_.maybe_sequence(sequence_name));
+    if (!seq)
+    {
+        std::cout << "Couldn't find sequence: " << sequence_name << std::endl;
+        return;
+    }
+
+    loop_start_ = seq->start();
+    loop_end_ = seq->end();
     hold(loop_start_);
 }
 
@@ -298,7 +312,8 @@ void Animation::draw(sf::RenderTarget& target)
 
 sf::Uint32 Animation::frame_to_time(int frame) const
 {
-    assert(fps() != 0);
+    if (fps() == 0) return 0;
+
     return static_cast<sf::Uint32>((1000*(static_cast<float>(frame)/fps())));
 }
 

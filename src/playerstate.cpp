@@ -33,8 +33,10 @@ std::string to_string(PlayerState state)
     {
         case PlayerState::Idle: return "Idle";
         case PlayerState::Moving: return "Moving";
+        case PlayerState::Launching: return "Launching";
         case PlayerState::Flying: return "Flying";
         case PlayerState::Falling: return "Falling";
+        case PlayerState::Landing: return "Landing";
         default: return "Unknown";
     }
 }
@@ -47,6 +49,7 @@ std::string animation_from_state(PlayerState state)
         case PlayerState::Moving: return "move";
         case PlayerState::Launching: return "launching";
         case PlayerState::Flying: return "fly";
+        case PlayerState::Falling: return "fall";
         case PlayerState::Landing: return "land";
         default: return "";
     }

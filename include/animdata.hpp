@@ -27,7 +27,9 @@ namespace heart
         sf::Image& texture();
         int fps() const;
         int total_frames() const;
+
         const AnimSequence& sequence(const std::string& name) const;
+        const AnimSequence* maybe_sequence(const std::string& name) const;
 
         const sf::Vector2f& point(const std::string& name) const;
         const sf::Vector2f* maybe_point(const std::string& name) const;

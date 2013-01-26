@@ -10,6 +10,8 @@
 namespace heart
 {
 
+sf::Vector2f unit_vector_from_angle(float degrees);
+
 template<class T>
 T clamp(T val, T low, T high)
 {

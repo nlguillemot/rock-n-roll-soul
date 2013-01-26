@@ -32,6 +32,8 @@ public:
     void begin_aim_movement();
     void stop_aim_movement();
 
+    void launch();
+
     void switch_to_state(PlayerState next_state);
     void switch_direction(Direction next_direction);
 
@@ -59,6 +61,11 @@ private:
     // degrees per second
     float aim_rotation_speed_; // constant ish
     float current_aim_speed_; // actually used
+
+    // percent per second (0 to 1)
+    float launch_charge_speed_;
+    float launch_impulse_speed_;
+    float launch_charge_;
 
     // pixels per second
     float movement_speed_;

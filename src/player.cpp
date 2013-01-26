@@ -32,6 +32,10 @@ Player::Player()
     aim_rotation_speed_ = 90.0f;
     current_aim_speed_ = 0.0f;
 
+    launch_charge_speed_ = 1.0f;
+    launch_impulse_speed_ = 200.0f;
+    launch_charge_ = 0.0f;
+
     // allow mechanism to properly switch state
     switch_to_state(PlayerState::Idle);
     switch_direction(Right);
@@ -95,6 +99,22 @@ void Player::stop_aim_movement()
     current_aim_speed_ = 0.0f;
 }
 
+void Player::launch()
+{
+    if (state_ != PlayerState::Launching)
+    {
+        return;
+    }
+
+    sf::Vector2f launch_vector = unit_vector_from_angle(aim_angle_);
+    launch_vector *= launch_charge_ * launch_impulse_speed_;
+    launch_vector.y *= -1;
+
+    velocity_ += launch_vector;
+
+    switch_to_state(PlayerState::Flying);
+}
+
 void Player::switch_to_state(PlayerState next_state)
 {
     log_message("Player switching to state: " + to_string(next_state));
@@ -119,6 +139,11 @@ void Player::switch_to_state(PlayerState next_state)
         aimer_->set_hidden(true);
     }
 
+    if (next_state == PlayerState::Launching)
+    {
+        launch_charge_ = 0.0f;
+    }
+
     state_ = next_state;
 }
 
@@ -137,6 +162,13 @@ void Player::switch_direction(Direction next_direction)
 void Player::update(sf::Uint32 dt)
 {
     float dtf = dt/1000.0f;
+
+    if (state_ == PlayerState::Launching)
+    {
+        launch_charge_ += launch_charge_speed_ * dtf;
+        clamp(launch_charge_,0.0f,1.0f);
+    }
+
     velocity_ += dtf * acceleration_;
     position_ += dtf * (velocity_ + movement_velocity_);
     rotate_aim(dtf * current_aim_speed_);

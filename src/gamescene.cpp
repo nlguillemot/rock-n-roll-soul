@@ -105,6 +105,10 @@ void GameScene::player_handle_keydown(sf::Key::Code code)
             player_.set_aim_movement(Player::Down);
             player_.begin_aim_movement();
         }
+        else if (code == player_keys_.action.key)
+        {
+            player_.switch_to_state(PlayerState::Launching);
+        }
     }
 
     if (code == player_keys_.left.key)
@@ -169,9 +173,13 @@ void GameScene::player_handle_keyup(sf::Key::Code code)
         {
             player_.stop_aim_movement();
         }
-        else if (code == player_keys_.action.key)
+    }
+
+    if (player_.state() == PlayerState::Launching)
+    {
+        if (code == player_keys_.action.key)
         {
-            // DO STUFF
+            player_.launch();
         }
     }
 

@@ -19,6 +19,8 @@ public:
     void update(sf::Uint32 dt);
     void draw(sf::RenderTarget& target);
 private:
+    void player_handle_keydown(sf::Key::Code code);
+
     Player player_;
     GameMap map_;
 };

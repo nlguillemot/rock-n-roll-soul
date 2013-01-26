@@ -5,14 +5,10 @@ namespace heart
 
 GameScene::GameScene()
 {
-    bird_data_ = new AnimData("assets/bird");
-    bird_ = new Animation(*bird_data_);
 }
 
 GameScene::~GameScene()
 {
-    delete bird_data_;
-    delete bird_;
 }
 
 void GameScene::handle_event(const sf::Event& e)
@@ -29,7 +25,7 @@ void GameScene::draw(sf::RenderTarget& target)
 {
     target.Clear(sf::Color::White);
 
-    bird_->draw(target);
+    player_.draw(target);
 }
 
 }

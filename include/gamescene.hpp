@@ -1,8 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "scene.hpp"
-#include "animdata.hpp"
-#include "animation.hpp"
+#include "player.hpp"
 
 namespace heart
 {
@@ -16,8 +15,7 @@ public:
     void update(sf::Uint32 dt);
     void draw(sf::RenderTarget& target);
 private:
-    AnimData* bird_data_;
-    Animation* bird_;
+    Player player_;
 };
 
 }

@@ -8,7 +8,7 @@ namespace heart
 
 Player::Player()
 {
-    anim_data_ = new AnimData("assets/bird");
+    anim_data_ = new AnimData("assets/rocker");
     animation_ = new Animation(*anim_data_);
 
     animation_->set_origin(sf::Vector2f(0.5f,1.0f));

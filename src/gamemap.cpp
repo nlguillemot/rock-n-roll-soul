@@ -15,8 +15,9 @@ bool GameMap::load_from_file(const std::string& filename)
         return false;
     }
 
-    std::list<Platform> platforms;
-    std::list<Collectible> collectibles;
+    std::vector<Platform> platforms;
+    std::vector<Collectible> collectibles;
+    std::vector<SpawnPoint> spawnpoints;
 
     std::string line;
 
@@ -48,16 +49,45 @@ bool GameMap::load_from_file(const std::string& filename)
 
             collectibles.push_back(coll);
         }
+        else if (type == "spawnpoint")
+        {
+            SpawnPoint spawn;
+
+            ss >> spawn.name;
+            ss >> spawn.position.x;
+            ss >> spawn.position.y;
+
+            spawnpoints.push_back(spawn);
+        }
         else
         {
             std::cout << "Unknown type: " << type << std::endl;
         }
     }
 
-    platform_list.swap(platforms);
-    collectible_list.swap(collectibles);
+    platform_list_.swap(platforms);
+    collectible_list_.swap(collectibles);
+    spawnpoint_list_.swap(spawnpoints);
 
     return true;
+}
+
+const GameMap::SpawnPoint* GameMap::spawnpoint(const std::string& name)
+{
+    for (const SpawnPoint& sp : spawnpoint_list_)
+    {
+        if (sp.name == name)
+        {
+            return &sp;
+        }
+    }
+
+    return nullptr;
+}
+
+const std::vector<GameMap::Platform>& GameMap::platforms() const
+{
+    return platform_list_;
 }
 
 }

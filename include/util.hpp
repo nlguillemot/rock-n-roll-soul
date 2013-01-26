@@ -10,6 +10,21 @@
 namespace heart
 {
 
+template<class T>
+T clamp(T val, T low, T high)
+{
+    return val < low ? low :
+           val > high ? high :
+           val;
+}
+
+template<class Container, class T>
+static bool element_of(const T& elm, const Container& c)
+{
+    return std::find(c.cbegin(),c.cend(),elm) != c.cend();
+}
+
+
 void log_message(const std::string& msg);
 
 template<class T>

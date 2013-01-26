@@ -1,3 +1,4 @@
-platform house 0 0
-platform house 150 0
+spawnpoint start 100 150
+platform grass_step 100 150
+platform grass_step 300 150
 collectible heart 0 0

@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "animation.hpp"
+#include "playerstate.hpp"
 #include "animdata.hpp"
 
 namespace heart
@@ -10,14 +11,6 @@ namespace heart
 class Player
 {
 public:
-    enum State
-    {
-        Idle,
-        Moving,
-        Jumping,
-        Falling
-    };
-
     enum Direction
     {
         Left,
@@ -27,10 +20,16 @@ public:
     Player();
     ~Player();
 
-    State state() const;
+    PlayerState state() const;
     Direction direction() const;
 
-    void switch_to_state(State next_state);
+    void snap_to_position(const sf::Vector2f& pos);
+
+    float aim_angle() const;
+    void set_aim_angle(float angle);
+    void rotate_aim(float rotation);
+
+    void switch_to_state(PlayerState next_state);
     void switch_direction(Direction next_direction);
 
     void update(sf::Uint32 dt);
@@ -39,13 +38,22 @@ public:
 private:
     void update_movement_velocity(float speed);
 
-    Animation* animation_;
     AnimData* anim_data_;
+    Animation* animation_;
 
-    State state_;
+    AnimData* aimer_data_;
+    Animation* aimer_;
+
+    PlayerState state_;
 
     Direction direction_;
     
+    // angle in degrees from horizontal
+    float aim_angle_;
+
+    // degrees per second
+    float aim_rotation_speed_;
+
     // pixels per second
     float movement_speed_;
     // component of velocity from player input

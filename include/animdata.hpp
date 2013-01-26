@@ -28,13 +28,19 @@ namespace heart
         int fps() const;
         int total_frames() const;
         const AnimSequence& sequence(const std::string& name) const;
+
         const sf::Vector2f& point(const std::string& name) const;
+        const sf::Vector2f* maybe_point(const std::string& name) const;
+
         const sf::FloatRect& rect(const std::string& name) const;
         const sf::FloatRect* maybe_rect(const std::string& name) const;
+
         const float& constant(const std::string& name) const;
         const float* maybe_constant(const std::string& name) const;
+
         const std::string& string(const std::string& name) const;
         const std::string* maybe_string(const std::string& name) const;
+
     private:
         void load_texture(const std::string& file_name);
         void load_properties(const std::string& file_name);

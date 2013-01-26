@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
-#include <list>
+#include <vector>
 
 namespace heart
 {
@@ -22,10 +22,22 @@ public:
         sf::Vector2f position;
     };
 
+    struct SpawnPoint
+    {
+        std::string name;
+        sf::Vector2f position;
+    };
+
     bool load_from_file(const std::string& filename);
 
-    std::list<Platform> platform_list;
-    std::list<Collectible> collectible_list;
+    const SpawnPoint* spawnpoint(const std::string& name);
+
+    const std::vector<Platform>& platforms() const;
+
+private:
+    std::vector<Platform> platform_list_;
+    std::vector<Collectible> collectible_list_;
+    std::vector<SpawnPoint> spawnpoint_list_;
 };
 
 }

@@ -18,10 +18,13 @@ namespace heart
         void hold(int frame);
 
         sf::Vector2f point_relative(const std::string& point_name) const;
+        sf::Vector2f* maybe_point_relative(sf::Vector2f& dst, const std::string& point_name) const;
         sf::Vector2f point(const std::string& point_name) const;
+        const sf::Vector2f* maybe_point(const std::string& point_name) const;
         
         sf::FloatRect rect_relative(const std::string& rect_name) const;
         sf::FloatRect rect(const std::string& rect_name) const;
+
 
         sf::FloatRect anim_rect_relative() const;
         sf::FloatRect anim_rect() const;
@@ -40,8 +43,13 @@ namespace heart
         void set_fps(sf::Uint32 fps);
 
         void set_position(const sf::Vector2f& p);
+        void move(const sf::Vector2f& v);
         sf::Vector2f position() const;
         
+        void set_rotation(float degrees);
+        void rotate(float degrees);
+        float rotation() const;
+
         void set_alpha(sf::Uint8 a);
         sf::Uint8 alpha() const;
 
@@ -54,8 +62,16 @@ namespace heart
         void set_scale(const sf::Vector2f& scale);
         void set_scale(float w, float h);
 
+        // vector from (0,0) to (1,1)
+        // where (0,0) is top left, (1,1) is bottom right
+        void set_origin(const sf::Vector2f& origin);
+        const sf::Vector2f& origin() const;
+
         void fliph(bool flipped);
         void flipv(bool flipped);
+
+        void set_hidden(bool hidden);
+        bool hidden() const;
 
         void update(sf::Uint32 dt);
         void draw(sf::RenderTarget& target);
@@ -74,5 +90,10 @@ namespace heart
         int loop_end_;
 
         bool playing_;
+
+        void update_origin();
+        sf::Vector2f origin_;
+
+        bool hidden_;
     };
 }

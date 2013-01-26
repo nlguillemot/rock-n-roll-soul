@@ -4,6 +4,7 @@
 #include "scene.hpp"
 #include "player.hpp"
 #include "gamemap.hpp"
+#include "platform.hpp"
 
 namespace heart
 {
@@ -44,12 +45,17 @@ public:
     void update(sf::Uint32 dt);
     void draw(sf::RenderTarget& target);
 private:
+    void init_world();
+    void cleanup_world();
     void player_handle_keydown(sf::Key::Code code);
     void player_handle_keyup(sf::Key::Code code);
 
+    GameMap map_;
+
     PlayerKeys player_keys_;
     Player player_;
-    GameMap map_;
+
+    std::vector<Platform*> platforms_;
 };
 
 }

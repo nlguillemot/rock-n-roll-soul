@@ -1,4 +1,6 @@
 #include "gamescene.hpp"
+#include "util.hpp"
+
 #include <iostream>
 
 namespace heart
@@ -15,33 +17,47 @@ GameScene::GameScene()
 
 GameScene::~GameScene()
 {
+    cleanup_world();
 }
 
 void GameScene::init()
 {
+    init_world();
+}
+
+void GameScene::init_world()
+{
+    cleanup_world();
+
     if (!map_.load_from_file("assets/level1.map"))
     {
         std::cout << "Failed to load map." << std::endl;
     }
 
-    for (std::list<GameMap::Platform>::iterator it = map_.platform_list.begin();
-            it != map_.platform_list.end(); ++it)
+    const GameMap::SpawnPoint* start_spawn = map_.spawnpoint("start");
+
+    if (start_spawn)
     {
-        std::cout << "Got platform:"
-            << " asset_name: " << it->asset_name
-            << " position: { " << it->position.x << ", "
-            << it->position.y << " }" << std::endl;
+        player_.snap_to_position(start_spawn->position);
     }
 
-    for (std::list<GameMap::Collectible>::iterator it = map_.collectible_list.begin();
-            it != map_.collectible_list.end(); ++it)
+    for (std::vector<GameMap::Platform>::const_iterator it = map_.platforms().cbegin(); it != map_.platforms().cend(); ++it)
     {
-        std::cout << "Got collectible:"
-            << " type: " << it->type
-            << " position: { " << it->position.x << ", "
-            << it->position.y << " }" << std::endl;
+        Platform* plat = new Platform(it->asset_name);
+        plat->snap_to_position(it->position);
+        platforms_.push_back(plat);
     }
 }
+
+void GameScene::cleanup_world()
+{
+    for (Platform* p : platforms_)
+    {
+        delete p;
+    }
+    platforms_.clear();
+}
+
 void GameScene::handle_event(const sf::Event& e)
 {
     if (e.Type == sf::Event::KeyPressed)
@@ -56,28 +72,34 @@ void GameScene::handle_event(const sf::Event& e)
 
 void GameScene::player_handle_keydown(sf::Key::Code code)
 {
-    if (player_.state() == Player::Idle)
+    if (player_.state() == PlayerState::Idle)
+    {
+        if (code == player_keys_.left.key ||
+            code == player_keys_.right.key)
+        {
+            player_.switch_to_state(PlayerState::Moving);
+        }
+    }
+
+    if (element_of(player_.state(), states_with_direction_switching))
     {
         if (code == player_keys_.left.key)
         {
-            player_.switch_to_state(Player::Moving);
             player_.switch_direction(Player::Left);
         }
         else if (code == player_keys_.right.key)
         {
-            player_.switch_to_state(Player::Moving);
             player_.switch_direction(Player::Right);
         }
     }
-    else if (player_.state() == Player::Moving)
+
+    if (element_of(player_.state(), states_with_aimer))
     {
-        if (code == player_keys_.left.key)
+        if (code == player_keys_.up.key)
         {
-            player_.switch_direction(Player::Left);
         }
-        else if (code == player_keys_.right.key)
+        else if (code == player_keys_.down.key)
         {
-            player_.switch_direction(Player::Right);
         }
     }
 
@@ -105,7 +127,7 @@ void GameScene::player_handle_keydown(sf::Key::Code code)
 
 void GameScene::player_handle_keyup(sf::Key::Code code)
 {
-    if (player_.state() == Player::Moving)
+    if (player_.state() == PlayerState::Moving)
     {
         if (code == player_keys_.left.key &&
             player_.direction() == Player::Left)
@@ -116,7 +138,7 @@ void GameScene::player_handle_keyup(sf::Key::Code code)
             }
             else
             {
-                player_.switch_to_state(Player::Idle);
+                player_.switch_to_state(PlayerState::Idle);
             }
         }
         else if (code == player_keys_.right.key &&
@@ -128,7 +150,7 @@ void GameScene::player_handle_keyup(sf::Key::Code code)
             }
             else
             {
-                player_.switch_to_state(Player::Idle);
+                player_.switch_to_state(PlayerState::Idle);
             }
         }
     }
@@ -163,6 +185,11 @@ void GameScene::update(sf::Uint32 dt)
 void GameScene::draw(sf::RenderTarget& target)
 {
     target.Clear(sf::Color::White);
+
+    for (Platform* p : platforms_)
+    {
+        p->draw(target);
+    }
 
     player_.draw(target);
 }

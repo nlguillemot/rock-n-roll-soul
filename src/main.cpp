@@ -5,6 +5,7 @@
 #include <cassert>
 #include <sstream>
 #include <iostream>
+#include "gamescene.hpp"
 
 int main()
 {
@@ -54,6 +55,6 @@ int main()
 
     ifs.close();
 
-    heart::MainApp app(sf::VideoMode(screensize.x,screensize.y), gametitle);
+    heart::MainApp app(sf::VideoMode(screensize.x,screensize.y), gametitle, new heart::GameScene());
     app.exec();
 }

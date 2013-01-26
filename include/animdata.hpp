@@ -9,15 +9,15 @@ namespace heart
     class AnimSequence
     {
     public:
-        AnimSequence(const std::string& sequence_name, int start_frame, int end_frame)
-            : name_(sequence_name), start_(start_frame), end_(end_frame) { }
+        AnimSequence(const std::string& sequence_name, int start_frame, int duration)
+            : name_(sequence_name), start_(start_frame), duration_(duration) { }
         std::string name() const { return name_; }
         int start() const { return start_; }
-        int end() const { return end_; }
+        int duration() const { return duration_; }
     private:
         std::string name_;
         int start_;
-        int end_;
+        int duration_;
     };
 
     class AnimData

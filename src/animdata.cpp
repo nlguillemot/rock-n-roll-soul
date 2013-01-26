@@ -73,12 +73,12 @@ void AnimData::handle_property(std::string prop, std::istream& property_stream)
     else if (prop == "sequence")
     {
         std::string sequence_name;
-        int start_index = 0, end_index = 0;
+        int start_index = 0, duration = 0;
         property_stream >> sequence_name;
         assert(!sequence_name.empty());
         property_stream >> start_index;
-        property_stream >> end_index;
-        sequences_.push_back(AnimSequence(sequence_name,start_index,end_index));
+        property_stream >> duration;
+        sequences_.push_back(AnimSequence(sequence_name,start_index,duration));
     }
     else if (prop == "point")
     {

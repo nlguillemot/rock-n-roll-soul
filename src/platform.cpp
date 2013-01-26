@@ -30,6 +30,11 @@ void Platform::snap_to_position(const sf::Vector2f& position)
     position_ = position;
 }
 
+void Platform::update(sf::Uint32 dt)
+{
+    animation_->update(dt);
+}
+
 void Platform::draw(sf::RenderTarget& target)
 {
     animation_->set_position(position_);

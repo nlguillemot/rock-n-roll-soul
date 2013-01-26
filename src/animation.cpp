@@ -33,7 +33,7 @@ void Animation::play(const std::string& sequence_name)
     }
 
     loop_start_ = seq->start();
-    loop_end_ = seq->end();
+    loop_duration_ = seq->duration();
     play(loop_start_);
 }
 
@@ -55,7 +55,7 @@ void Animation::hold(const std::string& sequence_name)
     }
 
     loop_start_ = seq->start();
-    loop_end_ = seq->end();
+    loop_duration_ = seq->duration();
     hold(loop_start_);
 }
 
@@ -290,7 +290,7 @@ void Animation::update(sf::Uint32 dt)
         {
             ++current_frame_;
         }
-        if (current_frame_ > loop_end_)
+        if (current_frame_ >= loop_start_ + loop_duration_)
         {
             current_frame_ = loop_start_;
             timeline_ = frame_to_time(loop_start_);

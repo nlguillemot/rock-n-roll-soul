@@ -89,7 +89,7 @@ namespace heart
         // These are used to loop a certain sequence in the animation
         int current_frame_;
         int loop_start_;
-        int loop_end_;
+        int loop_duration_;
 
         bool playing_;
 

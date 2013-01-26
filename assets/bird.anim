@@ -1,5 +1,4 @@
 frames 1
-fps 1
 sequence idle 0 1
 sequence move 0 1
 sequence fall 0 1

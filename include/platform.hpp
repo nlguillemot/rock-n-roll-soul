@@ -12,6 +12,8 @@ public:
     ~Platform();
 
     void snap_to_position(const sf::Vector2f& position);
+
+    void update(sf::Uint32 dt);
     void draw(sf::RenderTarget& target);
 private:
     Animation* animation_;

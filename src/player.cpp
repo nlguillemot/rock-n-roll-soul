@@ -172,6 +172,9 @@ void Player::update(sf::Uint32 dt)
     velocity_ += dtf * acceleration_;
     position_ += dtf * (velocity_ + movement_velocity_);
     rotate_aim(dtf * current_aim_speed_);
+
+    animation_->update(dt);
+    aimer_->update(dt);
 }
 
 void Player::update_movement_velocity(float speed)

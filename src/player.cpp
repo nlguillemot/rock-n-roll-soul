@@ -130,7 +130,7 @@ void Player::switch_to_state(PlayerState next_state)
 
     animation_->play(animation_from_state(next_state));
 
-    if (element_of(next_state, states_with_aimer))
+    if (element_of(next_state, states_with_aimer_visible))
     {
         aimer_->set_hidden(false);
     }

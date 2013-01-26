@@ -3,7 +3,14 @@
 namespace heart
 {
 
-const std::vector<PlayerState> states_with_aimer =
+const std::vector<PlayerState> states_with_aimer_visible =
+{
+    PlayerState::Idle,
+    PlayerState::Moving,
+    PlayerState::Launching
+};
+
+const std::vector<PlayerState> states_allowing_launching =
 {
     PlayerState::Idle,
     PlayerState::Moving

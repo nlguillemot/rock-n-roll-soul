@@ -93,7 +93,7 @@ void GameScene::player_handle_keydown(sf::Key::Code code)
         }
     }
 
-    if (element_of(player_.state(), states_with_aimer))
+    if (element_of(player_.state(), states_allowing_launching))
     {
         if (code == player_keys_.up.key)
         {
@@ -163,7 +163,7 @@ void GameScene::player_handle_keyup(sf::Key::Code code)
         }
     }
 
-    if (element_of(player_.state(), states_with_aimer))
+    if (element_of(player_.state(), states_allowing_launching))
     {
         if (code == player_keys_.up.key)
         {

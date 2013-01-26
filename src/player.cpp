@@ -1,4 +1,5 @@
 #include "player.hpp"
+#include "util.hpp"
 #include <iostream>
 #include <cmath>
 
@@ -12,12 +13,12 @@ Player::Player()
 
     // set default values
     state_ = Idle;
-    direction_ = FacingRight;
-    movement_speed_ = 50.0f;
+    direction_ = Right;
+    movement_speed_ = 100.0f;
 
     // allow mechanism to properly switch state
     switch_to_state(Idle);
-    switch_direction(FacingRight);
+    switch_direction(Right);
 }
 
 Player::~Player()
@@ -43,9 +44,14 @@ Player::State Player::state() const
     return state_;
 }
 
+Player::Direction Player::direction() const
+{
+    return direction_;
+}
+
 void Player::switch_to_state(State next_state)
 {
-    std::cout << "Switching to state: " << to_string(next_state) << std::endl;
+    log_message("Player switching to state: " + to_string(next_state));
 
     if (next_state == Idle)
     {
@@ -76,13 +82,12 @@ void Player::switch_direction(Direction next_direction)
 {
     bool switched_direction = direction_ != next_direction;
 
-    animation_->fliph(next_direction == FacingLeft);
+    animation_->fliph(next_direction == Left);
 
     direction_ = next_direction;
 
     if (switched_direction && state_ == Moving)
     {
-        std::cout << "Switched direction" << std::endl;
         update_movement_velocity(movement_speed_);
     }
 }
@@ -111,9 +116,8 @@ void Player::update(sf::Uint32 dt)
 
 void Player::update_movement_velocity(float speed)
 {
-    std::cout << "Updating movement velocity to " << speed << std::endl;
     movement_velocity_ = sf::Vector2f(speed,0.0f);
-    if (direction_ == FacingLeft)
+    if (direction_ == Left)
     {
         movement_velocity_.x *= -1;
     }

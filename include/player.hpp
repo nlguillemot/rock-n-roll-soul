@@ -19,14 +19,16 @@ public:
 
     enum Direction
     {
-        FacingLeft,
-        FacingRight
+        Left,
+        Right
     };
 
     Player();
     ~Player();
 
     State state() const;
+    Direction direction() const;
+
     void switch_to_state(State next_state);
     void switch_direction(Direction next_direction);
 

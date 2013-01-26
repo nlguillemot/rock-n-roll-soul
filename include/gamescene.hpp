@@ -7,6 +7,31 @@
 namespace heart
 {
 
+struct KeyState
+{
+    KeyState()
+    {
+    }
+
+    KeyState(sf::Key::Code key):
+    key(key),
+    held(false)
+    {
+    }
+
+    sf::Key::Code key;
+    bool held;
+};
+
+struct PlayerKeys
+{
+    KeyState left;
+    KeyState right;
+    KeyState up;
+    KeyState down;
+    KeyState action;
+};
+
 class GameScene : public Scene
 {
 public:
@@ -17,7 +42,9 @@ public:
     void draw(sf::RenderTarget& target);
 private:
     void player_handle_keydown(sf::Key::Code code);
+    void player_handle_keyup(sf::Key::Code code);
 
+    PlayerKeys player_keys_;
     Player player_;
 };
 

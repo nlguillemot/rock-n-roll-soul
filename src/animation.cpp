@@ -111,7 +111,7 @@ sf::FloatRect Animation::anim_rect() const
 
 sf::Vector2f Animation::center_relative() const
 {
-    return sf::Vector2f(position().x + width()/2.0f, position().y + height()/2.0f);
+    return sf::Vector2f(position() - pixel_origin() + center());
 }
 
 sf::Vector2f Animation::center() const
@@ -139,6 +139,11 @@ float Animation::height() const
     return static_cast<float>(sprite_.GetSubRect().GetHeight() * scale().y);
 }
 
+sf::Vector2f Animation::size() const
+{
+    return sf::Vector2f(width(),height());
+}
+
 sf::Uint32 Animation::fps() const
 {
     return fps_;
@@ -161,7 +166,7 @@ void Animation::move(const sf::Vector2f& v)
 
 sf::Vector2f Animation::position() const
 {
-    return sprite_.GetPosition() - sf::Vector2f();
+    return sprite_.GetPosition();
 }
 
 void Animation::set_rotation(float degrees)
@@ -228,13 +233,17 @@ const sf::Vector2f& Animation::origin() const
     return origin_;
 }
 
+sf::Vector2f Animation::pixel_origin() const
+{
+    sf::Vector2f mysize = size();
+    return sf::Vector2f(
+            origin().x * mysize.x,
+            origin().y * mysize.y);
+}
+
 void Animation::update_origin()
 {
-    sf::Vector2f new_origin(
-            origin_.x * sprite_.GetSize().x,
-            origin_.y * sprite_.GetSize().y);
-
-    sprite_.SetCenter(new_origin);
+    sprite_.SetCenter(pixel_origin());
 }
 
 void Animation::fliph(bool flipped)

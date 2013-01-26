@@ -13,6 +13,8 @@ class Player
 public:
     enum Direction
     {
+        Up,
+        Down,
         Left,
         Right
     };
@@ -26,8 +28,9 @@ public:
     void snap_to_position(const sf::Vector2f& pos);
 
     float aim_angle() const;
-    void set_aim_angle(float angle);
-    void rotate_aim(float rotation);
+    void set_aim_movement(Direction up_or_down);
+    void begin_aim_movement();
+    void stop_aim_movement();
 
     void switch_to_state(PlayerState next_state);
     void switch_direction(Direction next_direction);
@@ -36,6 +39,8 @@ public:
 
     void draw(sf::RenderTarget& target);
 private:
+    void set_aim_angle(float angle);
+    void rotate_aim(float rotation);
     void update_movement_velocity(float speed);
 
     AnimData* anim_data_;
@@ -47,12 +52,13 @@ private:
     PlayerState state_;
 
     Direction direction_;
-    
+
     // angle in degrees from horizontal
     float aim_angle_;
-
+    Direction aim_movement_;
     // degrees per second
-    float aim_rotation_speed_;
+    float aim_rotation_speed_; // constant ish
+    float current_aim_speed_; // actually used
 
     // pixels per second
     float movement_speed_;

@@ -97,9 +97,13 @@ void GameScene::player_handle_keydown(sf::Key::Code code)
     {
         if (code == player_keys_.up.key)
         {
+            player_.set_aim_movement(Player::Up);
+            player_.begin_aim_movement();
         }
         else if (code == player_keys_.down.key)
         {
+            player_.set_aim_movement(Player::Down);
+            player_.begin_aim_movement();
         }
     }
 
@@ -152,6 +156,18 @@ void GameScene::player_handle_keyup(sf::Key::Code code)
             {
                 player_.switch_to_state(PlayerState::Idle);
             }
+        }
+    }
+
+    if (element_of(player_.state(), states_with_aimer))
+    {
+        if (code == player_keys_.up.key)
+        {
+            player_.stop_aim_movement();
+        }
+        else if (code == player_keys_.down.key)
+        {
+            player_.stop_aim_movement();
         }
     }
 

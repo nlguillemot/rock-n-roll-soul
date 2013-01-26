@@ -24,9 +24,13 @@ Player::Player()
     // set default values
     state_ = PlayerState::Idle;
     direction_ = Right;
-    aim_angle_ = 45.0f;
+
     movement_speed_ = 100.0f;
+
+    aim_angle_ = 45.0f;
+    aim_movement_ = Up;
     aim_rotation_speed_ = 90.0f;
+    current_aim_speed_ = 0.0f;
 
     // allow mechanism to properly switch state
     switch_to_state(PlayerState::Idle);
@@ -72,6 +76,25 @@ void Player::rotate_aim(float rotation)
     set_aim_angle(aim_angle() + rotation);
 }
 
+void Player::set_aim_movement(Direction dir)
+{
+    aim_movement_ = dir;
+}
+
+void Player::begin_aim_movement()
+{
+    current_aim_speed_ = aim_rotation_speed_;
+    if (aim_movement_ == Down)
+    {
+        current_aim_speed_ *= -1;
+    }
+}
+
+void Player::stop_aim_movement()
+{
+    current_aim_speed_ = 0.0f;
+}
+
 void Player::switch_to_state(PlayerState next_state)
 {
     log_message("Player switching to state: " + to_string(next_state));
@@ -113,8 +136,10 @@ void Player::switch_direction(Direction next_direction)
 
 void Player::update(sf::Uint32 dt)
 {
-    velocity_ += (dt/1000.0f) * acceleration_;
-    position_ += (dt/1000.0f) * (velocity_ + movement_velocity_);
+    float dtf = dt/1000.0f;
+    velocity_ += dtf * acceleration_;
+    position_ += dtf * (velocity_ + movement_velocity_);
+    rotate_aim(dtf * current_aim_speed_);
 }
 
 void Player::update_movement_velocity(float speed)
@@ -129,7 +154,7 @@ void Player::update_movement_velocity(float speed)
 void Player::draw(sf::RenderTarget& target)
 {
     animation_->set_position(position_);
-    aimer_->set_position(animation_->position());
+    aimer_->set_position(animation_->center_relative());
 
     bool facing_left = direction_ == Left;
     animation_->fliph(facing_left);
@@ -143,8 +168,8 @@ void Player::draw(sf::RenderTarget& target)
     aimer_->fliph(facing_left);
     aimer_->set_rotation(actual_rotation);
 
-    aimer_->draw(target);
     animation_->draw(target);
+    aimer_->draw(target);
 }
 
 }

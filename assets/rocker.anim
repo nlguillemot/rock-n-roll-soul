@@ -1,10 +1,10 @@
-frames 2
+frames 16
 fps 2
 point scale 3 3
 sequence idle 0 2
 sequence move 2 6
-sequence flying 9 1
-sequence falling 10 1
+sequence fly 9 1
+sequence fall 10 1
 sequence launching 8 1
-sequence landing 11 5
+sequence land 11 5
 

@@ -83,9 +83,15 @@ Player::Direction Player::direction() const
     return direction_;
 }
 
+sf::Vector2f Player::position() const
+{
+    return position_;
+}
+
 void Player::snap_to_position(const sf::Vector2f& pos)
 {
     position_ = pos;
+    animation_->set_position(position_);
 }
 
 sf::Vector2f Player::feet_relative() const
@@ -153,6 +159,11 @@ bool Player::falling() const
     return state_ == PlayerState::Falling;
 }
 
+bool Player::in_air() const
+{
+    return element_of(state_,states_in_the_air);
+}
+
 void Player::launch()
 {
     if (state_ != PlayerState::Launching)
@@ -189,15 +200,6 @@ void Player::land_at_y(float y)
 void Player::switch_to_state(PlayerState next_state)
 {
     log_message("Player switching to state: " + to_string(next_state));
-
-    if (element_of(next_state, states_with_movement))
-    {
-        update_movement_velocity(movement_speed_);
-    }
-    else
-    {
-        update_movement_velocity(0);
-    }
 
     animation_->play(animation_from_state(next_state));
 
@@ -237,7 +239,17 @@ void Player::switch_to_state(PlayerState next_state)
         if (element_of(next_state,states_in_the_air))
         {
             current_gravity_ = gravity_;
+            velocity_ += movement_velocity_;
         }
+    }
+
+    if (element_of(next_state, states_with_movement))
+    {
+        update_movement_velocity(movement_speed_);
+    }
+    else
+    {
+        update_movement_velocity(0);
     }
 
     state_ = next_state;

@@ -25,6 +25,7 @@ public:
     PlayerState state() const;
     Direction direction() const;
 
+    sf::Vector2f position() const;
     void snap_to_position(const sf::Vector2f& pos);
 
     sf::Vector2f feet_relative() const;
@@ -40,6 +41,7 @@ public:
     void stop_aim_movement();
 
     bool falling() const;
+    bool in_air() const;
 
     void launch();
     void land_at_y(float y);

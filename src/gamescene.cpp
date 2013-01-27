@@ -228,33 +228,62 @@ void GameScene::update(sf::Uint32 dt)
 
     sf::Vector2f feetdelta = newfeet - oldfeet;
 
-    // collide when falling
-    if (player_.falling())
+    bool standing_on_platform = false;
+
+    for (Platform* p : platforms_)
     {
-        for (Platform* p : platforms_)
+        sf::FloatRect platcoll = p->collision_area();
+        sf::Vector2f plattopleft(platcoll.Left,platcoll.Top);
+        sf::Vector2f plattopright(platcoll.Right,platcoll.Top);
+
+        float dist = plattopleft.y - newfeet.y;
+
+        float height_ratio;
+        if (std::fabs(feetdelta.y) < 0.001f)
         {
-            sf::FloatRect platcoll = p->collision_area();
-            sf::Vector2f plattopleft(platcoll.Left,platcoll.Top);
-            sf::Vector2f plattopright(platcoll.Right,platcoll.Top);
+            height_ratio = 0;
+        }
+        else
+        {
+            height_ratio = (plattopleft.y - oldfeet.y) / feetdelta.y;
+        }
 
-            if (newfeet.y >= plattopleft.y &&
-                oldfeet.y <= plattopleft.y)
+        float interpolated_feet = oldfeet.x + feetdelta.x * height_ratio;
+
+        float feetmin = interpolated_feet - playerbounds.GetWidth()/2.0f;
+        float feetmax = interpolated_feet + playerbounds.GetWidth()/2.0f;
+
+        float platmin = plattopleft.x;
+        float platmax = plattopright.x;
+
+        if ((player_.falling() && newfeet.y >= plattopleft.y &&
+            oldfeet.y <= plattopleft.y)) 
+        {
+            if (intersecting_range(feetmin,feetmax,platmin,platmax))
             {
-                float height_ratio = (plattopleft.y - oldfeet.y) / feetdelta.y;
-                float interpolated_feet = oldfeet.x + feetdelta.x * height_ratio;
-
-                float feetmin = interpolated_feet - playerbounds.GetWidth()/2.0f;
-                float feetmax = interpolated_feet + playerbounds.GetWidth()/2.0f;
-
-                float platmin = plattopleft.x;
-                float platmax = plattopright.x;
+                player_.land_at_y(plattopleft.y);
+                standing_on_platform = true;
+                break;
+            }
+        }
+        else if (!standing_on_platform && !player_.in_air())
+        {
+            if (std::fabs(dist) < 0.01f)
+            {
 
                 if (intersecting_range(feetmin,feetmax,platmin,platmax))
                 {
-                    player_.land_at_y(plattopleft.y);
+                    standing_on_platform = true;
+                    break;
                 }
             }
         }
+    }
+
+    if (!standing_on_platform && !player_.in_air())
+    {
+        std::cout << "Fell again!" << std::endl;
+        player_.switch_to_state(PlayerState::Falling);
     }
 }
 

@@ -221,6 +221,14 @@ void Player::update(sf::Uint32 dt)
     position_ += dtf * (velocity_ + movement_velocity_);
     rotate_aim(dtf * current_aim_speed_);
 
+    if (state_ == PlayerState::Flying)
+    {
+        if (velocity_.y >= 0.0f)
+        {
+            switch_to_state(PlayerState::Falling);
+        }
+    }
+
     animation_->update(dt);
     aimer_->update(dt);
 }

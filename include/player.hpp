@@ -27,6 +27,9 @@ public:
 
     void snap_to_position(const sf::Vector2f& pos);
 
+    const sf::Vector2f& gravity_effect() const;
+    void set_gravity_effect(const sf::Vector2f& gravity);
+
     float aim_angle() const;
     void set_aim_movement(Direction up_or_down);
     void begin_aim_movement();

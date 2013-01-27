@@ -22,6 +22,16 @@ Player::Player()
         animation_->set_scale(*rocker_scale);
     }
 
+    const float* launch_speed = animation_->maybe_constant("launch_speed");
+    if (launch_speed)
+    {
+        launch_impulse_speed_ = *launch_speed;
+    }
+    else
+    {
+        launch_impulse_speed_ = 150.0f;
+    }
+
     aimer_data_ = new AnimData("assets/aimer");
     aimer_ = new Animation(*aimer_data_);
 
@@ -44,7 +54,6 @@ Player::Player()
     current_aim_speed_ = 0.0f;
 
     launch_charge_speed_ = 1.0f;
-    launch_impulse_speed_ = 150.0f;
     launch_charge_ = 0.0f;
 
     gravity_ = sf::Vector2f(0.0f,200.0f);
@@ -77,6 +86,16 @@ Player::Direction Player::direction() const
 void Player::snap_to_position(const sf::Vector2f& pos)
 {
     position_ = pos;
+}
+
+const sf::Vector2f& Player::gravity_effect() const
+{
+    return gravity_;
+}
+
+void Player::set_gravity_effect(const sf::Vector2f& gravity)
+{
+    gravity_ = gravity;
 }
 
 float Player::aim_angle() const

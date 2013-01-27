@@ -138,6 +138,11 @@ float Animation::constant(const std::string& constant_name) const
     return anim_data_.constant(constant_name);
 }
 
+const float* Animation::maybe_constant(const std::string& constant_name) const
+{
+    return anim_data_.maybe_constant(constant_name);
+}
+
 const std::string& Animation::string(const std::string& name) const
 {
     return anim_data_.string(name);

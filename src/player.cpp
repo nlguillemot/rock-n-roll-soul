@@ -40,6 +40,12 @@ Player::Player()
     sf::Vector2f aimer_origin = aimer_->point("origin");
     aimer_->set_origin(aimer_origin);
 
+    const sf::Vector2f* aimer_scale = aimer_->maybe_point("scale");
+    if (aimer_scale)
+    {
+        aimer_->set_scale(*aimer_scale);
+    }
+
     aimer_->set_hidden(true);
 
     // set default values
@@ -53,11 +59,13 @@ Player::Player()
     aim_rotation_speed_ = 90.0f;
     current_aim_speed_ = 0.0f;
 
-    launch_charge_speed_ = 2.0f;
+    launch_charge_speed_ = 1.3f;
     launch_charge_ = 0.0f;
 
     gravity_ = sf::Vector2f(0.0f,200.0f);
     current_gravity_ = sf::Vector2f(0.0f,0.0f);
+
+    friction_constant_ = 200.0f;
 
     // allow mechanism to properly switch state
     switch_to_state(PlayerState::Idle);
@@ -261,9 +269,9 @@ void Player::switch_direction(Direction next_direction)
 
     direction_ = next_direction;
 
-    if (switched_direction && element_of(state_, states_with_movement))
+    if (switched_direction && element_of(state_, states_with_direction_switching))
     {
-        update_movement_velocity(movement_speed_);
+        update_movement_velocity(std::fabs(movement_velocity_.x));
     }
 }
 
@@ -274,15 +282,14 @@ void Player::update(sf::Uint32 dt)
     if (state_ == PlayerState::Launching)
     {
         launch_charge_ += launch_charge_speed_ * dtf;
-        clamp(launch_charge_,0.0f,1.0f);
+        launch_charge_ = clamp(launch_charge_,0.0f,1.0f);
     }
 
-    sf::Vector2f friction;
-    float friction_constant = 50.0f;
+    sf::Vector2f friction(0.0f,0.0f);
     if (!element_of(state_,states_in_the_air))
     {
         friction.x = -signum(velocity_.x);
-        friction *= friction_constant;
+        friction *= friction_constant_;
     }
 
     velocity_ += dtf * (acceleration_ + current_gravity_);
@@ -352,8 +359,8 @@ void Player::draw(sf::RenderTarget& target)
     aimer_->fliph(facing_left);
     aimer_->set_rotation(actual_rotation);
 
-    animation_->draw(target);
     aimer_->draw(target);
+    animation_->draw(target);
 }
 
 }

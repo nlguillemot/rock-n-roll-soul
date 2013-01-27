@@ -17,21 +17,18 @@ const std::vector<PlayerState> states_allowing_launching =
     PlayerState::Landing
 };
 
-const std::vector<PlayerState> states_where_you_can_start_moving = 
-{
-    PlayerState::Idle,
-    PlayerState::Landing
-};
-
 const std::vector<PlayerState> states_with_movement =
 {
-    PlayerState::Moving
+    PlayerState::Moving,
 };
 
 const std::vector<PlayerState> states_with_direction_switching =
 {
     PlayerState::Idle,
     PlayerState::Moving,
+    PlayerState::Launching,
+    PlayerState::Flying,
+    PlayerState::Falling,
     PlayerState::Landing
 };
 

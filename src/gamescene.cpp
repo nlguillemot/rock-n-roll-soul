@@ -8,7 +8,7 @@ namespace heart
 
 GameScene::GameScene()
 {
-    background_data_ = new AnimData("assets/grid");
+    background_data_ = new AnimData("assets/background");
     background_ = new Animation(*background_data_);
 
     player_keys_.left = KeyState(sf::Key::Left);
@@ -78,14 +78,6 @@ void GameScene::handle_event(const sf::Event& e)
 
 void GameScene::player_handle_keydown(sf::Key::Code code)
 {
-    if (player_.state() == PlayerState::Idle)
-    {
-        if (code == player_keys_.left.key ||
-            code == player_keys_.right.key)
-        {
-            player_.switch_to_state(PlayerState::Moving);
-        }
-    }
 
     if (element_of(player_.state(), states_with_direction_switching))
     {
@@ -96,6 +88,15 @@ void GameScene::player_handle_keydown(sf::Key::Code code)
         else if (code == player_keys_.right.key)
         {
             player_.switch_direction(Player::Right);
+        }
+    }
+
+    if (player_.state() == PlayerState::Idle)
+    {
+        if (code == player_keys_.left.key ||
+            code == player_keys_.right.key)
+        {
+            player_.switch_to_state(PlayerState::Moving);
         }
     }
 
@@ -150,7 +151,7 @@ void GameScene::player_handle_keyup(sf::Key::Code code)
             {
                 player_.switch_direction(Player::Right);
             }
-            else
+            else if (player_.state() == PlayerState::Moving)
             {
                 player_.switch_to_state(PlayerState::Idle);
             }
@@ -162,7 +163,7 @@ void GameScene::player_handle_keyup(sf::Key::Code code)
             {
                 player_.switch_direction(Player::Left);
             }
-            else
+            else if (player_.state() == PlayerState::Moving)
             {
                 player_.switch_to_state(PlayerState::Idle);
             }
@@ -220,7 +221,20 @@ void GameScene::update(sf::Uint32 dt)
 
     sf::Vector2f oldfeet(player_.feet_relative());
 
+    PlayerState prev_state = player_.state();
+
     player_.update(dt);
+
+    PlayerState curr_state = player_.state();
+
+    if (prev_state == PlayerState::Landing &&
+        curr_state != prev_state)
+    {
+        if (player_keys_.left.held || player_keys_.right.held)
+        {
+            player_.switch_to_state(PlayerState::Moving);
+        }
+    }
 
     sf::Vector2f newfeet(player_.feet_relative());
 

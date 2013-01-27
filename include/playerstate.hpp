@@ -18,7 +18,6 @@ enum class PlayerState
 
 extern const std::vector<PlayerState> states_with_aimer_visible;
 extern const std::vector<PlayerState> states_allowing_launching;
-extern const std::vector<PlayerState> states_where_you_can_start_moving;
 extern const std::vector<PlayerState> states_with_movement;
 extern const std::vector<PlayerState> states_with_direction_switching;
 extern const std::vector<PlayerState> states_in_the_air;

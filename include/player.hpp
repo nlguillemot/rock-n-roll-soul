@@ -88,6 +88,9 @@ private:
     sf::Vector2f gravity_; // constant-ish
     sf::Vector2f current_gravity_; // actually used
 
+    // pixels per second^2
+    float friction_constant_;
+
     // components of physics from outside effects
     sf::Vector2f position_;
     sf::Vector2f velocity_;

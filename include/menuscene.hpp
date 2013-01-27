@@ -33,7 +33,7 @@ private:
 class MenuScene : public Scene
 {
 public:
-    MenuScene();
+    MenuScene(const std::string& menu_name);
     ~MenuScene();
     void handle_event(const sf::Event& e);
 

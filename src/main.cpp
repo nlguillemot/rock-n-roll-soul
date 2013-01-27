@@ -55,6 +55,6 @@ int main()
 
     ifs.close();
 
-    heart::MainApp app(sf::VideoMode(screensize.x,screensize.y), gametitle, new heart::MenuScene());
+    heart::MainApp app(sf::VideoMode(screensize.x,screensize.y), gametitle, new heart::MenuScene("mainmenu"));
     app.exec();
 }

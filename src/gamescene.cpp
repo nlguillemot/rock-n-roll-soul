@@ -1,5 +1,6 @@
 #include "gamescene.hpp"
 #include "util.hpp"
+#include "menuscene.hpp"
 
 #include <iostream>
 
@@ -112,7 +113,14 @@ void GameScene::handle_event(const sf::Event& e)
 {
     if (e.Type == sf::Event::KeyPressed)
     {
-        player_handle_keydown(e.Key.Code);
+        if (e.Key.Code == sf::Key::M || e.Key.Code == sf::Key::Escape)
+        {
+            switch_to_next_scene(new MenuScene("mainmenu"));
+        }
+        else
+        {
+            player_handle_keydown(e.Key.Code);
+        }
     }
     else if (e.Type == sf::Event::KeyReleased)
     {

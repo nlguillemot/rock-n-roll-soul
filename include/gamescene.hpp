@@ -37,7 +37,7 @@ struct PlayerKeys
 class GameScene : public Scene
 {
 public:
-    GameScene();
+    GameScene(const std::string& level);
     ~GameScene();
 
     void handle_event(const sf::Event& e);
@@ -51,6 +51,7 @@ private:
     void player_handle_keyup(sf::Key::Code code);
 
     void update_player(sf::Uint32 dt);
+    void update_camera();
 
     GameMap map_;
 
@@ -62,6 +63,8 @@ private:
 
     std::vector<Entity*> platforms_;
     std::vector<Entity*> goalflags_;
+
+    std::string level_name_;
 };
 
 }

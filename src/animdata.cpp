@@ -42,10 +42,10 @@ void AnimData::load_properties(const std::string& file_name)
         std::string current_line;
         std::getline(file,current_line);
 
-        int hashtagpos = current_line.find('#');
+        size_t hashtagpos = current_line.find('#');
         if (hashtagpos != std::string::npos)
         {
-            current_line = current_line.substr(hashtagpos+1);
+            current_line = current_line.substr(0,hashtagpos);
         }
 
         if (!current_line.empty())

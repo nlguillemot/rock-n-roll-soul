@@ -6,7 +6,7 @@
 namespace heart
 {
 
-GameScene::GameScene()
+GameScene::GameScene(const std::string& level)
 {
     background_data_ = new AnimData("assets/background");
     background_ = new Animation(*background_data_);
@@ -16,6 +16,8 @@ GameScene::GameScene()
     player_keys_.up = KeyState(sf::Key::Up);
     player_keys_.down = KeyState(sf::Key::Down);
     player_keys_.action = KeyState(sf::Key::Space);
+
+    level_name_ = level;
 }
 
 GameScene::~GameScene()
@@ -29,6 +31,7 @@ GameScene::~GameScene()
 void GameScene::init()
 {
     init_world();
+    update_camera();
 }
 
 void GameScene::init_world()
@@ -36,7 +39,7 @@ void GameScene::init_world()
     cleanup_world();
     player_.reset_state();
 
-    if (!map_.load_from_file("assets/level1.map"))
+    if (!map_.load_from_file("assets/" + level_name_))
     {
         std::cout << "Failed to load map." << std::endl;
     }
@@ -271,6 +274,11 @@ void GameScene::update(sf::Uint32 dt)
         init_world();
     }
 
+    update_camera();
+}
+
+void GameScene::update_camera()
+{
     const sf::View& dft_view = default_view();
     float viewwidth = dft_view.GetRect().GetWidth()*2;
     float viewheight = dft_view.GetRect().GetHeight()*2;

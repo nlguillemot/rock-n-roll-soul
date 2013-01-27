@@ -3,6 +3,11 @@
 namespace heart
 {
 
+Scene::Scene()
+{
+    next_scene_ = nullptr;
+}
+
 const sf::View& Scene::default_view() const
 {
     return default_view_;
@@ -26,6 +31,16 @@ const sf::View& Scene::view() const
 sf::View& Scene::view()
 {
     return view_;
+}
+
+void Scene::switch_to_next_scene(Scene* next)
+{
+    next_scene_ = next;
+}
+
+Scene* Scene::next_scene() const
+{
+    return next_scene_;
 }
 
 }

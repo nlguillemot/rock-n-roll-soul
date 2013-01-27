@@ -45,6 +45,7 @@ public:
     const float* maybe_constant(const std::string& constant_name) const;
 
     const std::string& string(const std::string& name) const;
+    const std::string* maybe_string(const std::string& name) const;
     
     float original_width() const;
     float original_height() const;

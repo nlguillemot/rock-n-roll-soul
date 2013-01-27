@@ -9,7 +9,8 @@ namespace heart
 
 bool GameMap::load_from_file(const std::string& filename)
 {
-    std::ifstream ifs(filename);
+    std::cout << "Loading map: " << (filename + ".map")<< std::endl;
+    std::ifstream ifs(filename + ".map");
     if (!ifs)
     {
         return false;
@@ -27,6 +28,15 @@ bool GameMap::load_from_file(const std::string& filename)
     {
         std::stringstream ss;
         ss << line;
+
+        size_t hashindx = line.find('#');
+        if (hashindx != std::string::npos)
+        {
+            line = line.substr(0,hashindx);
+        }
+
+        if (line.empty())
+            continue;
 
         std::string type;
         ss >> type;

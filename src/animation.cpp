@@ -186,6 +186,10 @@ const std::string& Animation::string(const std::string& name) const
 {
     return anim_data_.string(name);
 }
+const std::string* Animation::maybe_string(const std::string& name) const
+{
+    return anim_data_.maybe_string(name);
+}
 
 float Animation::original_width() const
 {

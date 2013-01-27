@@ -41,7 +41,6 @@ void MainApp::switch_to_scene(Scene* next_scene)
     current_scene_->init();
 
     current_scene_->set_default_view(window_.GetDefaultView());
-    current_scene_->set_view(current_scene_->default_view());
 }
 
 void MainApp::poll_events()
@@ -56,6 +55,10 @@ void MainApp::poll_events()
 void MainApp::handle_event(const sf::Event& e)
 {
     current_scene_->handle_event(e);
+    if (Scene* next = current_scene_->next_scene())
+    {
+        switch_to_scene(next);
+    }
 
     switch(e.Type)
     {
@@ -70,6 +73,10 @@ void MainApp::handle_event(const sf::Event& e)
 void MainApp::update(sf::Uint32 dt)
 {
     current_scene_->update(dt);
+    if (Scene* next = current_scene_->next_scene())
+    {
+        switch_to_scene(next);
+    }
 }
 
 void MainApp::draw()

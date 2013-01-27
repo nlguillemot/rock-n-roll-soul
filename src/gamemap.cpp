@@ -73,6 +73,7 @@ bool GameMap::load_from_file(const std::string& filename)
             ss >> flag.asset_name;
             ss >> flag.position.x;
             ss >> flag.position.y;
+            goalflags.push_back(flag);
         }
         else
         {
@@ -83,6 +84,7 @@ bool GameMap::load_from_file(const std::string& filename)
     platform_list_.swap(platforms);
     collectible_list_.swap(collectibles);
     spawnpoint_list_.swap(spawnpoints);
+    goalflag_list_.swap(goalflags);
     physics_ = physics;
 
     return true;

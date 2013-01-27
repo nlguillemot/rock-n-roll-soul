@@ -241,6 +241,11 @@ void GameScene::update(sf::Uint32 dt)
         p->update(dt);
     }
 
+    for (Entity* g : goalflags_)
+    {
+        g->update(dt);
+    }
+
     sf::Vector2f oldfeet(player_.feet_relative());
 
     PlayerState prev_state = player_.state();
@@ -379,6 +384,11 @@ void GameScene::draw(sf::RenderTarget& target)
     for (Entity* p : platforms_)
     {
         p->draw(target);
+    }
+
+    for (Entity* g : goalflags_)
+    {
+        g->draw(target);
     }
 
     player_.draw(target);

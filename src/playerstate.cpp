@@ -13,12 +13,14 @@ const std::vector<PlayerState> states_with_aimer_visible =
 const std::vector<PlayerState> states_allowing_launching =
 {
     PlayerState::Idle,
-    PlayerState::Moving
+    PlayerState::Moving,
+    PlayerState::Landing
 };
 
 const std::vector<PlayerState> states_where_you_can_start_moving = 
 {
-    PlayerState::Idle
+    PlayerState::Idle,
+    PlayerState::Landing
 };
 
 const std::vector<PlayerState> states_with_movement =
@@ -29,7 +31,8 @@ const std::vector<PlayerState> states_with_movement =
 const std::vector<PlayerState> states_with_direction_switching =
 {
     PlayerState::Idle,
-    PlayerState::Moving
+    PlayerState::Moving,
+    PlayerState::Landing
 };
 
 const std::vector<PlayerState> states_in_the_air =

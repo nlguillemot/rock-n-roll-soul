@@ -8,7 +8,7 @@ namespace heart
 
 GameScene::GameScene()
 {
-    background_data_ = new AnimData("assets/background");
+    background_data_ = new AnimData("assets/grid");
     background_ = new Animation(*background_data_);
 
     player_keys_.left = KeyState(sf::Key::Left);
@@ -141,7 +141,7 @@ void GameScene::player_handle_keydown(sf::Key::Code code)
 
 void GameScene::player_handle_keyup(sf::Key::Code code)
 {
-    if (player_.state() == PlayerState::Moving)
+    if (element_of(player_.state(), states_with_direction_switching))
     {
         if (code == player_keys_.left.key &&
             player_.direction() == Player::Left)
@@ -282,7 +282,6 @@ void GameScene::update(sf::Uint32 dt)
 
     if (!standing_on_platform && !player_.in_air())
     {
-        std::cout << "Fell again!" << std::endl;
         player_.switch_to_state(PlayerState::Falling);
     }
 }

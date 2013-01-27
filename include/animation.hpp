@@ -33,6 +33,7 @@ namespace heart
         sf::Vector2f center() const;
 
         float constant(const std::string& constant_name) const;
+        const float* maybe_constant(const std::string& constant_name) const;
 
         const std::string& string(const std::string& name) const;
         

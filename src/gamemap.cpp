@@ -18,6 +18,7 @@ bool GameMap::load_from_file(const std::string& filename)
     std::vector<Platform> platforms;
     std::vector<Collectible> collectibles;
     std::vector<SpawnPoint> spawnpoints;
+    PhysicsConfiguration physics;
 
     std::string line;
 
@@ -59,6 +60,11 @@ bool GameMap::load_from_file(const std::string& filename)
 
             spawnpoints.push_back(spawn);
         }
+        else if (type == "gravity")
+        {
+            ss >> physics.gravity.x;
+            ss >> physics.gravity.y;
+        }
         else
         {
             std::cout << "Unknown type: " << type << std::endl;
@@ -68,6 +74,7 @@ bool GameMap::load_from_file(const std::string& filename)
     platform_list_.swap(platforms);
     collectible_list_.swap(collectibles);
     spawnpoint_list_.swap(spawnpoints);
+    physics_ = physics;
 
     return true;
 }
@@ -88,6 +95,11 @@ const GameMap::SpawnPoint* GameMap::spawnpoint(const std::string& name)
 const std::vector<GameMap::Platform>& GameMap::platforms() const
 {
     return platform_list_;
+}
+
+const GameMap::PhysicsConfiguration& GameMap::physics() const
+{
+    return physics_;
 }
 
 }

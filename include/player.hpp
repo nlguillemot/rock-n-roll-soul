@@ -27,6 +27,9 @@ public:
 
     void snap_to_position(const sf::Vector2f& pos);
 
+    const sf::Vector2f& gravity_effect() const;
+    void set_gravity_effect(const sf::Vector2f& gravity);
+
     float aim_angle() const;
     void set_aim_movement(Direction up_or_down);
     void begin_aim_movement();
@@ -71,6 +74,10 @@ private:
     float movement_speed_;
     // component of velocity from player input
     sf::Vector2f movement_velocity_;
+
+    // pixels per second^2
+    sf::Vector2f gravity_; // constant-ish
+    sf::Vector2f current_gravity_; // actually used
 
     // components of physics from outside effects
     sf::Vector2f position_;

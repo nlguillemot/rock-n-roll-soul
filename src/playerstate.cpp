@@ -34,6 +34,12 @@ const std::vector<PlayerState> states_with_direction_switching =
     PlayerState::Moving
 };
 
+const std::vector<PlayerState> states_in_the_air =
+{
+    PlayerState::Flying,
+    PlayerState::Falling
+};
+
 std::string to_string(PlayerState state)
 {
     switch (state)

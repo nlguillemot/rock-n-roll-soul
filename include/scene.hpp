@@ -18,6 +18,16 @@ public:
     virtual void exit(){}
 
     virtual void draw(sf::RenderTarget& target){}
+
+    const sf::View& default_view() const;
+    void set_default_view(const sf::View& view);
+
+    void set_view(const sf::View& view);
+    const sf::View& view() const;
+    sf::View& view();
+private:
+    sf::View default_view_;
+    sf::View view_;
 };
 
 }

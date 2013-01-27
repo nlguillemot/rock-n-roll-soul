@@ -21,6 +21,5 @@ namespace heart
         Scene* current_scene_;
 
         sf::RenderWindow window_;
-        sf::View view_;
     };
 } // end namespace heart

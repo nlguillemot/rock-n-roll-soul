@@ -298,6 +298,18 @@ void GameScene::update(sf::Uint32 dt)
     {
         player_.switch_to_state(PlayerState::Falling);
     }
+
+
+    const sf::View& dft_view = default_view();
+    sf::View new_view(
+            sf::FloatRect(
+                0,0,
+                dft_view.GetRect().GetWidth(),
+                dft_view.GetRect().GetHeight()));
+
+    new_view.SetCenter(player_.position());
+
+    set_view(new_view);
 }
 
 void GameScene::draw(sf::RenderTarget& target)

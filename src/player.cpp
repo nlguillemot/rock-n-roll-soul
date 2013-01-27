@@ -93,14 +93,15 @@ sf::Vector2f Player::feet_relative() const
     return position_;
 }
 
-sf::FloatRect Player::transformed_bounds() const
+sf::FloatRect Player::feet_rect() const
 {
-    return animation_->anim_rect_relative();
-}
-
-sf::FloatRect Player::bounds() const
-{
-    return animation_->anim_rect();
+    float animwidth = animation_->anim_rect().GetWidth();
+    float animheight = animation_->anim_rect().GetHeight();
+    return sf::FloatRect(
+        position_.x - animwidth*0.15,
+        position_.y - animheight*0.25,
+        position_.x + animwidth*0.15,
+        position_.y);
 }
 
 const sf::Vector2f& Player::gravity_effect() const
@@ -249,7 +250,32 @@ void Player::update(sf::Uint32 dt)
         clamp(launch_charge_,0.0f,1.0f);
     }
 
+    sf::Vector2f friction;
+    float friction_constant = 20.0f;
+    if (!element_of(state_,states_in_the_air))
+    {
+        friction.x = -signum(velocity_.x);
+        friction *= friction_constant;
+    }
+
     velocity_ += dtf * (acceleration_ + current_gravity_);
+    
+    float velocity_after_friction = velocity_.x + dtf * friction.x;
+    // apply friction
+    if (signum(velocity_.x) !=
+        signum(velocity_after_friction))
+    {
+        float dv = velocity_after_friction - velocity_.x;
+        float ratio = (0 - velocity_.x) / dv;
+
+        position_.x += dtf * (velocity_.x + ratio * dv);
+        velocity_.x = 0.0f;
+    }
+    else
+    {
+        velocity_.x = velocity_after_friction;
+    }
+
     position_ += dtf * (velocity_ + movement_velocity_);
     rotate_aim(dtf * current_aim_speed_);
 

@@ -13,6 +13,12 @@ namespace heart
 sf::Vector2f unit_vector_from_angle(float degrees);
 
 template<class T>
+T signum(T x)
+{
+    return x >= 0 ? 1 : -1;
+}
+
+template<class T>
 T clamp(T val, T low, T high)
 {
     return val < low ? low :
@@ -118,5 +124,14 @@ public:
 private:
     const std::function<bool ()> cond_;
 };
+
+
+template<class T>
+std::ostream& operator<<(std::ostream& os, const sf::Rect<T>& r)
+{
+    os << "{ L:" << r.Left << " T:" << r.Top
+        << " R:" << r.Right << " B:" << r.Bottom << " }";
+    return os;
+}
 
 }

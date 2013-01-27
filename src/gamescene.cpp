@@ -8,6 +8,9 @@ namespace heart
 
 GameScene::GameScene()
 {
+    grid_data_ = new AnimData("assets/grid");
+    grid_ = new Animation(*grid_data_);
+
     player_keys_.left = KeyState(sf::Key::Left);
     player_keys_.right = KeyState(sf::Key::Right);
     player_keys_.up = KeyState(sf::Key::Up);
@@ -18,6 +21,9 @@ GameScene::GameScene()
 GameScene::~GameScene()
 {
     cleanup_world();
+
+    delete grid_;
+    delete grid_data_;
 }
 
 void GameScene::init()
@@ -218,7 +224,7 @@ void GameScene::update(sf::Uint32 dt)
 
     sf::Vector2f newfeet(player_.feet_relative());
 
-    sf::FloatRect playerbounds(player_.transformed_bounds());
+    sf::FloatRect playerbounds(player_.feet_rect());
 
     sf::Vector2f feetdelta = newfeet - oldfeet;
 
@@ -255,6 +261,8 @@ void GameScene::update(sf::Uint32 dt)
 void GameScene::draw(sf::RenderTarget& target)
 {
     target.Clear(sf::Color::White);
+
+    grid_->draw(target);
 
     for (Platform* p : platforms_)
     {

@@ -52,6 +52,9 @@ private:
 
     GameMap map_;
 
+    AnimData* grid_data_;
+    Animation* grid_;
+
     PlayerKeys player_keys_;
     Player player_;
 

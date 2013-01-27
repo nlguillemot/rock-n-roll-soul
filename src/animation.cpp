@@ -108,13 +108,19 @@ sf::FloatRect Animation::rect(const std::string& rect_name) const
     return anim_data_.rect(rect_name);
 }
 
+const sf::FloatRect* Animation::maybe_rect(const std::string& rect_name) const
+{
+    return anim_data_.maybe_rect(rect_name);
+}
+
 sf::FloatRect Animation::anim_rect_relative() const
 {
+    sf::FloatRect ar(anim_rect());
     return sf::FloatRect(
-        position().x,
-        position().y,
-        position().x + transformed_width(),
-        position().y + transformed_height()
+        position().x - origin().x * ar.GetWidth() ,
+        position().y - origin().y * ar.GetHeight(),
+        position().x - origin().x * ar.GetWidth() + ar.GetWidth(),
+        position().y - origin().y * ar.GetHeight() + ar.GetHeight()
         );
 }
 

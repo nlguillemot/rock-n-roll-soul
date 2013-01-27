@@ -29,8 +29,7 @@ public:
 
     sf::Vector2f feet_relative() const;
 
-    sf::FloatRect transformed_bounds() const;
-    sf::FloatRect bounds() const;
+    sf::FloatRect feet_rect() const;
 
     const sf::Vector2f& gravity_effect() const;
     void set_gravity_effect(const sf::Vector2f& gravity);

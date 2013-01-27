@@ -17,6 +17,12 @@ Platform::Platform(const std::string& style)
     {
         animation_->set_origin(*origin);
     }
+
+    const sf::Vector2f* scaling = animation_->maybe_point("scale");
+    if (scaling)
+    {
+        animation_->set_scale(*scaling);
+    }
 }
 
 Platform::~Platform()

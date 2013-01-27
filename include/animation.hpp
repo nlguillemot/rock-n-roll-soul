@@ -24,6 +24,7 @@ namespace heart
         
         sf::FloatRect rect_relative(const std::string& rect_name) const;
         sf::FloatRect rect(const std::string& rect_name) const;
+        const sf::FloatRect* maybe_rect(const std::string& rect_name) const;
 
         sf::FloatRect anim_rect_relative() const;
         sf::FloatRect anim_rect() const;

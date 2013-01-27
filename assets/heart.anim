@@ -1,0 +1,6 @@
+frames 6
+fps 5
+point scale 3 3
+point origin .5 .5
+
+sequence idle 0 6

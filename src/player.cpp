@@ -44,8 +44,11 @@ Player::Player()
     current_aim_speed_ = 0.0f;
 
     launch_charge_speed_ = 1.0f;
-    launch_impulse_speed_ = 200.0f;
+    launch_impulse_speed_ = 150.0f;
     launch_charge_ = 0.0f;
+
+    gravity_ = sf::Vector2f(0.0f,200.0f);
+    current_gravity_ = sf::Vector2f(0.0f,0.0f);
 
     // allow mechanism to properly switch state
     switch_to_state(PlayerState::Idle);
@@ -155,6 +158,21 @@ void Player::switch_to_state(PlayerState next_state)
         launch_charge_ = 0.0f;
     }
 
+    if (element_of(state_,states_in_the_air))
+    {
+        if (!element_of(next_state,states_in_the_air))
+        {
+            current_gravity_ = sf::Vector2f(0.0f,0.0f);
+        }
+    }
+    else
+    {
+        if (element_of(next_state,states_in_the_air))
+        {
+            current_gravity_ = gravity_;
+        }
+    }
+
     state_ = next_state;
 }
 
@@ -180,7 +198,7 @@ void Player::update(sf::Uint32 dt)
         clamp(launch_charge_,0.0f,1.0f);
     }
 
-    velocity_ += dtf * acceleration_;
+    velocity_ += dtf * (acceleration_ + current_gravity_);
     position_ += dtf * (velocity_ + movement_velocity_);
     rotate_aim(dtf * current_aim_speed_);
 

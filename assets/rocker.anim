@@ -15,4 +15,4 @@ sequence skid 17 1
 constant launch_speed 350
 
 # in seconds
-constant charge_time 1.5
+constant charge_time 0.75

@@ -1,0 +1,13 @@
+spawnpoint start 0 250
+gravity 0 200
+platform grass_step 0 250
+platform grass_step 700 250
+platform grass_step 625 525
+platform grass_step 825 275
+platform grass_step 1125 275
+platform grass_step 1375 270
+platform grass_step 1250 525
+platform grass_step 1600 550
+
+goal goal 1600 550
+collectible heart 300 50

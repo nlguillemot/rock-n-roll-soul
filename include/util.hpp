@@ -20,12 +20,18 @@ T clamp(T val, T low, T high)
            val;
 }
 
+template<class T>
+bool intersecting_range(const T& min1, const T& max1, const T& min2, const T& max2)
+{
+    return (min1 <= min2 && max1 >= min2) ||
+        (min1 >= min2 && min1 <= max2);
+}
+
 template<class Container, class T>
 static bool element_of(const T& elm, const Container& c)
 {
     return std::find(c.cbegin(),c.cend(),elm) != c.cend();
 }
-
 
 void log_message(const std::string& msg);
 

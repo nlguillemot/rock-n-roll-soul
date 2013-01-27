@@ -27,6 +27,11 @@ public:
 
     void snap_to_position(const sf::Vector2f& pos);
 
+    sf::Vector2f feet_relative() const;
+
+    sf::FloatRect transformed_bounds() const;
+    sf::FloatRect bounds() const;
+
     const sf::Vector2f& gravity_effect() const;
     void set_gravity_effect(const sf::Vector2f& gravity);
 
@@ -35,7 +40,10 @@ public:
     void begin_aim_movement();
     void stop_aim_movement();
 
+    bool falling() const;
+
     void launch();
+    void land_at_y(float y);
 
     void switch_to_state(PlayerState next_state);
     void switch_direction(Direction next_direction);

@@ -207,7 +207,49 @@ void GameScene::player_handle_keyup(sf::Key::Code code)
 
 void GameScene::update(sf::Uint32 dt)
 {
+    for (Platform* p : platforms_)
+    {
+        p->update(dt);
+    }
+
+    sf::Vector2f oldfeet(player_.feet_relative());
+
     player_.update(dt);
+
+    sf::Vector2f newfeet(player_.feet_relative());
+
+    sf::FloatRect playerbounds(player_.transformed_bounds());
+
+    sf::Vector2f feetdelta = newfeet - oldfeet;
+
+    // collide when falling
+    if (player_.falling())
+    {
+        for (Platform* p : platforms_)
+        {
+            sf::FloatRect platcoll = p->collision_area();
+            sf::Vector2f plattopleft(platcoll.Left,platcoll.Top);
+            sf::Vector2f plattopright(platcoll.Right,platcoll.Top);
+
+            if (newfeet.y >= plattopleft.y &&
+                oldfeet.y <= plattopleft.y)
+            {
+                float height_ratio = (plattopleft.y - oldfeet.y) / feetdelta.y;
+                float interpolated_feet = oldfeet.x + feetdelta.x * height_ratio;
+
+                float feetmin = interpolated_feet - playerbounds.GetWidth()/2.0f;
+                float feetmax = interpolated_feet + playerbounds.GetWidth()/2.0f;
+
+                float platmin = plattopleft.x;
+                float platmax = plattopright.x;
+
+                if (intersecting_range(feetmin,feetmax,platmin,platmax))
+                {
+                    player_.land_at_y(plattopleft.y);
+                }
+            }
+        }
+    }
 }
 
 void GameScene::draw(sf::RenderTarget& target)

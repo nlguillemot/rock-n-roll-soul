@@ -13,6 +13,8 @@ public:
 
     void snap_to_position(const sf::Vector2f& position);
 
+    sf::FloatRect collision_area() const;
+
     void update(sf::Uint32 dt);
     void draw(sf::RenderTarget& target);
 private:

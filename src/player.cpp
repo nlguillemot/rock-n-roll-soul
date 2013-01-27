@@ -88,6 +88,21 @@ void Player::snap_to_position(const sf::Vector2f& pos)
     position_ = pos;
 }
 
+sf::Vector2f Player::feet_relative() const
+{
+    return position_;
+}
+
+sf::FloatRect Player::transformed_bounds() const
+{
+    return animation_->anim_rect_relative();
+}
+
+sf::FloatRect Player::bounds() const
+{
+    return animation_->anim_rect();
+}
+
 const sf::Vector2f& Player::gravity_effect() const
 {
     return gravity_;
@@ -132,6 +147,11 @@ void Player::stop_aim_movement()
     current_aim_speed_ = 0.0f;
 }
 
+bool Player::falling() const
+{
+    return state_ == PlayerState::Falling;
+}
+
 void Player::launch()
 {
     if (state_ != PlayerState::Launching)
@@ -146,6 +166,17 @@ void Player::launch()
     velocity_ += launch_vector;
 
     switch_to_state(PlayerState::Flying);
+}
+
+void Player::land_at_y(float y)
+{
+    if (state_ != PlayerState::Falling)
+    {
+        return;
+    }
+
+    position_.y = y;
+    switch_to_state(PlayerState::Landing);
 }
 
 void Player::switch_to_state(PlayerState next_state)
@@ -182,6 +213,7 @@ void Player::switch_to_state(PlayerState next_state)
         if (!element_of(next_state,states_in_the_air))
         {
             current_gravity_ = sf::Vector2f(0.0f,0.0f);
+            velocity_.y = 0.0f;
         }
     }
     else

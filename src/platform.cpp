@@ -30,6 +30,11 @@ void Platform::snap_to_position(const sf::Vector2f& position)
     position_ = position;
 }
 
+sf::FloatRect Platform::collision_area() const
+{
+    return animation_->anim_rect_relative();
+}
+
 void Platform::update(sf::Uint32 dt)
 {
     animation_->update(dt);

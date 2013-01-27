@@ -122,7 +122,7 @@ void GameScene::player_handle_keydown(sf::Key::Code code)
         }
     }
 
-    if (element_of(player_.state(), states_allowing_launching))
+    if (element_of(player_.state(), states_allowing_aiming))
     {
         if (code == player_keys_.up.key)
         {
@@ -134,7 +134,10 @@ void GameScene::player_handle_keydown(sf::Key::Code code)
             player_.set_aim_movement(Player::Down);
             player_.begin_aim_movement();
         }
-        else if (code == player_keys_.action.key)
+    }
+    if (element_of(player_.state(), states_allowing_launching))
+    {
+        if (code == player_keys_.action.key)
         {
             player_.switch_to_state(PlayerState::Launching);
         }
@@ -192,7 +195,7 @@ void GameScene::player_handle_keyup(sf::Key::Code code)
         }
     }
 
-    if (element_of(player_.state(), states_allowing_launching))
+    if (element_of(player_.state(), states_allowing_aiming))
     {
         if (code == player_keys_.up.key)
         {
@@ -202,6 +205,10 @@ void GameScene::player_handle_keyup(sf::Key::Code code)
         {
             player_.stop_aim_movement();
         }
+    }
+    else
+    {
+        player_.stop_aim_movement();
     }
 
     if (player_.state() == PlayerState::Launching)

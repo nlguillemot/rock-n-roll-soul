@@ -234,6 +234,11 @@ void Player::switch_to_state(PlayerState next_state)
         launch_charge_ = 0.0f;
     }
 
+    if (state_ == PlayerState::Launching)
+    {
+        launch_charge_ = 0.0f;
+    }
+
     if (element_of(state_,states_in_the_air))
     {
         if (!element_of(next_state,states_in_the_air))
@@ -284,6 +289,11 @@ void Player::update(sf::Uint32 dt)
         launch_charge_ += launch_charge_speed_ * dtf;
         launch_charge_ = clamp(launch_charge_,0.0f,1.0f);
     }
+
+    aimer_->hold(
+        clamp(aimer_->sequence_frame("charge") +
+         int(aimer_->sequence_duration("charge") * launch_charge_),
+         0, aimer_->sequence_duration("charge") - 1));
 
     sf::Vector2f friction(0.0f,0.0f);
     if (!element_of(state_,states_in_the_air))

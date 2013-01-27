@@ -69,6 +69,32 @@ void Animation::hold(int frame)
     update_sprite_to_frame();
 }
 
+int Animation::sequence_frame(const std::string& sequence_name) const
+{
+    const AnimSequence* seq = anim_data_.maybe_sequence(sequence_name);
+    if (!seq)
+    {
+        return -1;
+    }
+    else
+    {
+        return seq->start();
+    }
+}
+
+int Animation::sequence_duration(const std::string& sequence_name) const
+{
+    const AnimSequence* seq = anim_data_.maybe_sequence(sequence_name);
+    if (!seq)
+    {
+        return -1;
+    }
+    else
+    {
+        return seq->duration();
+    }
+}
+
 sf::Vector2f Animation::point_relative(const std::string& point_name) const
 {
     sf::Vector2f newpos = position();

@@ -8,8 +8,8 @@ namespace heart
 
 GameScene::GameScene()
 {
-    grid_data_ = new AnimData("assets/grid");
-    grid_ = new Animation(*grid_data_);
+    background_data_ = new AnimData("assets/background");
+    background_ = new Animation(*background_data_);
 
     player_keys_.left = KeyState(sf::Key::Left);
     player_keys_.right = KeyState(sf::Key::Right);
@@ -22,8 +22,8 @@ GameScene::~GameScene()
 {
     cleanup_world();
 
-    delete grid_;
-    delete grid_data_;
+    delete background_;
+    delete background_data_;
 }
 
 void GameScene::init()
@@ -291,7 +291,7 @@ void GameScene::draw(sf::RenderTarget& target)
 {
     target.Clear(sf::Color::White);
 
-    grid_->draw(target);
+    background_->draw(target);
 
     for (Platform* p : platforms_)
     {

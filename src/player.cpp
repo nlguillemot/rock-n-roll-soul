@@ -6,7 +6,8 @@
 namespace heart
 {
 
-Player::Player()
+Player::Player():
+Entity("rocker")
 {
     init();
 }
@@ -18,19 +19,7 @@ Player::~Player()
 
 void Player::init()
 {
-    anim_data_ = new AnimData("assets/rocker");
-    animation_ = new Animation(*anim_data_);
-
-    animation_->set_origin(sf::Vector2f(0.5f,1.0f));
-
-    const sf::Vector2f* rocker_scale = animation_->maybe_point("scale");
-    if (rocker_scale)
-    {
-        std::cout << "Read scale: "
-            << rocker_scale->x
-            << "," << rocker_scale->y << std::endl;
-        animation_->set_scale(*rocker_scale);
-    }
+    reload_entity_data();
 
     const float* launch_speed = animation_->maybe_constant("launch_speed");
     if (launch_speed)
@@ -106,9 +95,6 @@ void Player::cleanup()
 {
     delete aimer_;
     delete aimer_data_;
-
-    delete animation_;
-    delete anim_data_;
 }
 
 void Player::reset_state()

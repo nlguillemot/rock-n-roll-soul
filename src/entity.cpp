@@ -1,15 +1,23 @@
-#include "platform.hpp"
-
-#include <iostream>
+#include "entity.hpp"
 
 namespace heart
 {
 
-Platform::Platform(const std::string& style)
+Entity::Entity(const std::string& style)
 {
     anim_data_ = new AnimData("assets/" + style);
     animation_ = new Animation(*anim_data_);
+    reload_entity_data();
+}
 
+Entity::~Entity()
+{
+    delete animation_;
+    delete anim_data_;
+}
+
+void Entity::reload_entity_data()
+{
     const sf::Vector2f* origin = animation_->maybe_point("origin");
 
     if (origin)
@@ -24,35 +32,29 @@ Platform::Platform(const std::string& style)
     }
 }
 
-Platform::~Platform()
-{
-    delete animation_;
-    delete anim_data_;
-}
-
-sf::Vector2f Platform::position() const
+sf::Vector2f Entity::position() const
 {
     return position_;
 }
 
-void Platform::snap_to_position(const sf::Vector2f& position)
+void Entity::snap_to_position(const sf::Vector2f& position)
 {
     position_ = position;
     animation_->set_position(position_);
 }
 
-sf::FloatRect Platform::collision_area() const
+sf::FloatRect Entity::collision_area() const
 {
     sf::FloatRect rect(animation_->anim_rect_relative());
     return rect;
 }
 
-void Platform::update(sf::Uint32 dt)
+void Entity::update(sf::Uint32 dt)
 {
     animation_->update(dt);
 }
 
-void Platform::draw(sf::RenderTarget& target)
+void Entity::draw(sf::RenderTarget& target)
 {
     animation_->set_position(position_);
     animation_->draw(target);

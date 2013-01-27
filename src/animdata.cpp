@@ -220,8 +220,7 @@ const float& AnimData::constant(const std::string& name) const
 
 const float* AnimData::maybe_constant(const std::string& name) const
 {
-    std::map<std::string,float>::const_iterator it =
-        constants_.find(name);
+    std::map<std::string,float>::const_iterator it = constants_.find(name);
     if (it == constants_.end())
     {
         return 0;

@@ -106,6 +106,11 @@ const std::vector<GameMap::Platform>& GameMap::platforms() const
     return platform_list_;
 }
 
+const std::vector<GameMap::GoalFlag>& GameMap::goalflags() const
+{
+    return goalflag_list_;
+}
+
 const GameMap::PhysicsConfiguration& GameMap::physics() const
 {
     return physics_;

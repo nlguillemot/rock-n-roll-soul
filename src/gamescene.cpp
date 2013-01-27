@@ -50,9 +50,16 @@ void GameScene::init_world()
 
     for (std::vector<GameMap::Platform>::const_iterator it = map_.platforms().cbegin(); it != map_.platforms().cend(); ++it)
     {
-        Platform* plat = new Platform(it->asset_name);
+        Entity* plat = new Entity(it->asset_name);
         plat->snap_to_position(it->position);
         platforms_.push_back(plat);
+    }
+
+    for (std::vector<GameMap::GoalFlag>::const_iterator it = map_.goalflags().cbegin(); it != map_.goalflags().cend(); ++it)
+    {
+        Entity* goal = new Entity(it->asset_name);
+        goal->snap_to_position(it->position);
+        goalflags_.push_back(goal);
     }
 
     const GameMap::PhysicsConfiguration& physconf(map_.physics());
@@ -61,11 +68,17 @@ void GameScene::init_world()
 
 void GameScene::cleanup_world()
 {
-    for (Platform* p : platforms_)
+    for (Entity* p : platforms_)
     {
         delete p;
     }
     platforms_.clear();
+
+    for (Entity* g : goalflags_)
+    {
+        delete g;
+    }
+    goalflags_.clear();
 }
 
 void GameScene::handle_event(const sf::Event& e)
@@ -223,7 +236,7 @@ void GameScene::player_handle_keyup(sf::Key::Code code)
 
 void GameScene::update(sf::Uint32 dt)
 {
-    for (Platform* p : platforms_)
+    for (Entity* p : platforms_)
     {
         p->update(dt);
     }
@@ -253,7 +266,7 @@ void GameScene::update(sf::Uint32 dt)
 
     bool standing_on_platform = false;
 
-    for (Platform* p : platforms_)
+    for (Entity* p : platforms_)
     {
         sf::FloatRect platcoll = p->collision_area();
         sf::Vector2f plattopleft(platcoll.Left,platcoll.Top);
@@ -309,7 +322,7 @@ void GameScene::update(sf::Uint32 dt)
     }
 
     bool out_of_bounds = true;
-    for (Platform* p : platforms_)
+    for (Entity* p : platforms_)
     {
         if (vector_magnitude(
             p->position() - player_.position())
@@ -363,7 +376,7 @@ void GameScene::draw(sf::RenderTarget& target)
         }
     }
 
-    for (Platform* p : platforms_)
+    for (Entity* p : platforms_)
     {
         p->draw(target);
     }

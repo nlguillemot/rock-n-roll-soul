@@ -4,7 +4,7 @@
 #include "scene.hpp"
 #include "player.hpp"
 #include "gamemap.hpp"
-#include "platform.hpp"
+#include "entity.hpp"
 
 namespace heart
 {
@@ -58,7 +58,8 @@ private:
     PlayerKeys player_keys_;
     Player player_;
 
-    std::vector<Platform*> platforms_;
+    std::vector<Entity*> platforms_;
+    std::vector<Entity*> goalflags_;
 };
 
 }

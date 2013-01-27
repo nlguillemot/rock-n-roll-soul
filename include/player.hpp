@@ -1,14 +1,13 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "animation.hpp"
 #include "playerstate.hpp"
-#include "animdata.hpp"
+#include "entity.hpp"
 
 namespace heart
 {
 
-class Player
+class Player : public Entity
 {
 public:
     enum Direction
@@ -62,9 +61,6 @@ private:
     void rotate_aim(float rotation);
     void update_movement_velocity(float speed);
 
-    AnimData* anim_data_;
-    Animation* animation_;
-
     AnimData* aimer_data_;
     Animation* aimer_;
 
@@ -97,7 +93,6 @@ private:
     float friction_constant_;
 
     // components of physics from outside effects
-    sf::Vector2f position_;
     sf::Vector2f velocity_;
     sf::Vector2f acceleration_;
 };

@@ -44,6 +44,7 @@ public:
     const SpawnPoint* spawnpoint(const std::string& name);
 
     const std::vector<Platform>& platforms() const;
+    const std::vector<GoalFlag>& goalflags() const;
 
     const PhysicsConfiguration& physics() const;
 

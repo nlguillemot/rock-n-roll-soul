@@ -1,5 +1,5 @@
 frames 16
-fps 2
+fps 10
 point scale 4 4
 sequence idle 0 2
 sequence move 2 6

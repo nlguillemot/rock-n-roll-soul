@@ -1,5 +1,7 @@
-spawnpoint start 100 150
+spawnpoint start 100 350
 gravity 0 200
-platform grass_step 100 150
-platform grass_step 300 150
-collectible heart 0 0
+platform grass_step 100 350
+platform grass_step 275 300
+platform grass_step 401 250
+platform grass_step 500 300
+collectible heart 300 50

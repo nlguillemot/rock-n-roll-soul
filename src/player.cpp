@@ -53,7 +53,7 @@ Player::Player()
     aim_rotation_speed_ = 90.0f;
     current_aim_speed_ = 0.0f;
 
-    launch_charge_speed_ = 1.0f;
+    launch_charge_speed_ = 2.0f;
     launch_charge_ = 0.0f;
 
     gravity_ = sf::Vector2f(0.0f,200.0f);
@@ -160,7 +160,11 @@ void Player::launch()
         return;
     }
 
-    sf::Vector2f launch_vector = unit_vector_from_angle(aim_angle_);
+    float angle_with_direction =
+        direction_ == Left ?
+        180 - aim_angle_ : aim_angle_;
+
+    sf::Vector2f launch_vector = unit_vector_from_angle(angle_with_direction);
     std::cout << "Launch angle: " << aim_angle_ << std::endl;
     launch_vector *= launch_charge_ * launch_impulse_speed_;
     launch_vector.y *= -1;
@@ -196,6 +200,15 @@ void Player::switch_to_state(PlayerState next_state)
     }
 
     animation_->play(animation_from_state(next_state));
+
+    if (element_of(next_state,states_without_looping_animations))
+    {
+        animation_->set_looping(false);
+    }
+    else
+    {
+        animation_->set_looping(true);
+    }
 
     if (element_of(next_state, states_with_aimer_visible))
     {
@@ -253,7 +266,7 @@ void Player::update(sf::Uint32 dt)
     }
 
     sf::Vector2f friction;
-    float friction_constant = 20.0f;
+    float friction_constant = 50.0f;
     if (!element_of(state_,states_in_the_air))
     {
         friction.x = -signum(velocity_.x);
@@ -286,6 +299,14 @@ void Player::update(sf::Uint32 dt)
         if (velocity_.y >= 0.0f)
         {
             switch_to_state(PlayerState::Falling);
+        }
+    }
+
+    if (state_ == PlayerState::Landing)
+    {
+        if (!animation_->playing())
+        {
+            switch_to_state(PlayerState::Idle);
         }
     }
 

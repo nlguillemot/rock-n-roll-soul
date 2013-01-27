@@ -38,6 +38,11 @@ const std::vector<PlayerState> states_in_the_air =
     PlayerState::Falling
 };
 
+const std::vector<PlayerState> states_without_looping_animations =
+{
+    PlayerState::Landing
+};
+
 std::string to_string(PlayerState state)
 {
     switch (state)

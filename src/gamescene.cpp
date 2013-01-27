@@ -316,7 +316,27 @@ void GameScene::draw(sf::RenderTarget& target)
 {
     target.Clear(sf::Color::White);
 
-    background_->draw(target);
+    sf::Vector2f cam_topleft = view().GetCenter() - view().GetHalfSize();
+
+    sf::Vector2f bgtile(
+            background_->transformed_width(),
+            background_->transformed_height());
+    for (int j = -1; j <= target.GetHeight()/bgtile.y; j++)
+    {
+        for (int i = -1; i <= target.GetWidth()/bgtile.x; i++)
+        {
+            sf::Vector2f tilepos(cam_topleft);
+            tilepos.x /= bgtile.x;
+            tilepos.y /= bgtile.y;
+            tilepos.x = std::floor(tilepos.x) * bgtile.x;
+            tilepos.y = std::floor(tilepos.y) * bgtile.y;
+            tilepos.x += i * bgtile.x;
+            tilepos.y += j * bgtile.y;
+
+            background_->set_position(tilepos);
+            background_->draw(target);
+        }
+    }
 
     for (Platform* p : platforms_)
     {

@@ -1,4 +1,4 @@
-frames 17
+frames 18
 fps 10
 point scale 4 4
 sequence idle 0 2
@@ -8,3 +8,4 @@ sequence fall 10 1
 sequence launching 8 1
 sequence land 11 6
 constant launch_speed 250
+sequence skid 17 1

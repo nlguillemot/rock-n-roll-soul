@@ -8,6 +8,16 @@ namespace heart
 
 Player::Player()
 {
+    init();
+}
+
+Player::~Player()
+{
+    cleanup();
+}
+
+void Player::init()
+{
     anim_data_ = new AnimData("assets/rocker");
     animation_ = new Animation(*anim_data_);
 
@@ -53,6 +63,7 @@ Player::Player()
     direction_ = Right;
 
     movement_speed_ = 100.0f;
+    movement_velocity_ = sf::Vector2f(0.0f,0.0f);
 
     aim_angle_ = 45.0f;
     aim_movement_ = Up;
@@ -67,18 +78,28 @@ Player::Player()
 
     friction_constant_ = 200.0f;
 
+    position_ = sf::Vector2f(0.0f,0.0f);
+    velocity_ = sf::Vector2f(0.0f,0.0f);
+    acceleration_ = sf::Vector2f(0.0f,0.0f);
+
     // allow mechanism to properly switch state
     switch_to_state(PlayerState::Idle);
     switch_direction(Right);
 }
 
-Player::~Player()
+void Player::cleanup()
 {
     delete aimer_;
     delete aimer_data_;
 
     delete animation_;
     delete anim_data_;
+}
+
+void Player::reset_state()
+{
+    cleanup();
+    init();
 }
 
 PlayerState Player::state() const
@@ -369,8 +390,8 @@ void Player::draw(sf::RenderTarget& target)
     aimer_->fliph(facing_left);
     aimer_->set_rotation(actual_rotation);
 
-    aimer_->draw(target);
     animation_->draw(target);
+    aimer_->draw(target);
 }
 
 }

@@ -22,6 +22,8 @@ public:
     Player();
     ~Player();
 
+    void reset_state();
+
     PlayerState state() const;
     Direction direction() const;
 
@@ -53,6 +55,9 @@ public:
 
     void draw(sf::RenderTarget& target);
 private:
+    void init();
+    void cleanup();
+
     void set_aim_angle(float angle);
     void rotate_aim(float rotation);
     void update_movement_velocity(float speed);

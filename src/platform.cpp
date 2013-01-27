@@ -30,6 +30,11 @@ Platform::~Platform()
     delete anim_data_;
 }
 
+sf::Vector2f Platform::position() const
+{
+    return position_;
+}
+
 void Platform::snap_to_position(const sf::Vector2f& position)
 {
     position_ = position;

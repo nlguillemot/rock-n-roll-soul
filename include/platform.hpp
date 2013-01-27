@@ -11,6 +11,7 @@ public:
     Platform(const std::string& style);
     ~Platform();
 
+    sf::Vector2f position() const;
     void snap_to_position(const sf::Vector2f& position);
 
     sf::FloatRect collision_area() const;

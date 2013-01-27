@@ -34,6 +34,7 @@ void GameScene::init()
 void GameScene::init_world()
 {
     cleanup_world();
+    player_.reset_state();
 
     if (!map_.load_from_file("assets/level1.map"))
     {
@@ -53,6 +54,9 @@ void GameScene::init_world()
         plat->snap_to_position(it->position);
         platforms_.push_back(plat);
     }
+
+    const GameMap::PhysicsConfiguration& physconf(map_.physics());
+    player_.set_gravity_effect(physconf.gravity);
 }
 
 void GameScene::cleanup_world()
@@ -78,6 +82,11 @@ void GameScene::handle_event(const sf::Event& e)
 
 void GameScene::player_handle_keydown(sf::Key::Code code)
 {
+    if (code == sf::Key::R)
+    {
+        init_world();
+        return;
+    }
 
     if (element_of(player_.state(), states_with_direction_switching))
     {
@@ -299,13 +308,28 @@ void GameScene::update(sf::Uint32 dt)
         player_.switch_to_state(PlayerState::Falling);
     }
 
+    bool out_of_bounds = true;
+    for (Platform* p : platforms_)
+    {
+        if (vector_magnitude(
+            p->position() - player_.position())
+            < 1000)
+        {
+            out_of_bounds = false;
+        }
+    }
+
+    if (out_of_bounds)
+    {
+        init_world();
+    }
 
     const sf::View& dft_view = default_view();
     sf::View new_view(
             sf::FloatRect(
                 0,0,
-                dft_view.GetRect().GetWidth(),
-                dft_view.GetRect().GetHeight()));
+                dft_view.GetRect().GetWidth()*2,
+                dft_view.GetRect().GetHeight()*2));
 
     new_view.SetCenter(player_.position());
 
@@ -317,13 +341,14 @@ void GameScene::draw(sf::RenderTarget& target)
     target.Clear(sf::Color::White);
 
     sf::Vector2f cam_topleft = view().GetCenter() - view().GetHalfSize();
+    sf::Vector2f cam_bounds = view().GetHalfSize() * 2.0f;
 
     sf::Vector2f bgtile(
             background_->transformed_width(),
             background_->transformed_height());
-    for (int j = -1; j <= target.GetHeight()/bgtile.y; j++)
+    for (int j = -1; j <= cam_bounds.y/bgtile.y; j++)
     {
-        for (int i = -1; i <= target.GetWidth()/bgtile.x; i++)
+        for (int i = -1; i <= cam_bounds.x/bgtile.x; i++)
         {
             sf::Vector2f tilepos(cam_topleft);
             tilepos.x /= bgtile.x;

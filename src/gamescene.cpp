@@ -65,6 +65,13 @@ void GameScene::init_world()
         goalflags_.push_back(goal);
     }
 
+    for (std::vector<GameMap::Collectible>::const_iterator it = map_.collectibles().cbegin(); it != map_.collectibles().cend(); ++it)
+    {
+        Entity* coll = new Entity(it->asset_name);
+        coll->snap_to_position(it->position);
+        collectibles_.push_back(coll);
+    }
+
     const GameMap::PhysicsConfiguration& physconf(map_.physics());
     player_.set_gravity_effect(physconf.gravity);
 }
@@ -256,6 +263,11 @@ void GameScene::update(sf::Uint32 dt)
         g->update(dt);
     }
 
+    for (Entity* c : collectibles_)
+    {
+        c->update(dt);
+    }
+
     update_player(dt);
 
     bool out_of_bounds = true;
@@ -437,6 +449,11 @@ void GameScene::draw(sf::RenderTarget& target)
     for (Entity* g : goalflags_)
     {
         g->draw(target);
+    }
+
+    for (Entity* c : collectibles_)
+    {
+        c->draw(target);
     }
 
     player_.draw(target);

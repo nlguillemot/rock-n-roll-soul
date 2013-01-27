@@ -1,5 +1,6 @@
 #include "menuscene.hpp"
 #include "gamescene.hpp"
+#include "util.hpp"
 
 namespace heart
 {
@@ -109,9 +110,10 @@ void MenuScene::init()
 {
     cleanup_buttons();
 
-    sf::Vector2f border(15.0f,30.0f);
+    sf::Vector2f border(30.0f,30.0f);
 
     sf::Vector2f b_pos = border;
+    float furthest_down = 0;
 
     const std::string* levelname;
     for (size_t i = 0; ; i++)
@@ -126,16 +128,17 @@ void MenuScene::init()
                     switch_to_next_scene(new GameScene(*levelname));
                 });
 
-            if (b_pos.x + lev_btn->transformed_bounds().GetWidth() > view().GetRect().GetWidth() - border.x)
+            sf::FloatRect bds = lev_btn->transformed_bounds();
+            if (b_pos.x + bds.GetWidth() > view().GetRect().GetWidth() - border.x)
             {
                 b_pos.x = border.x;
-            }
-            if (b_pos.y + lev_btn->transformed_bounds().GetHeight() > view().GetRect().GetHeight() - border.y)
-            {
-                b_pos.y = border.y;
+                b_pos.y = furthest_down + border.y;
             }
 
             lev_btn->set_position(b_pos);
+            b_pos.x += border.x + bds.GetWidth();
+
+            furthest_down = b_pos.y + bds.GetHeight();
             buttons_.push_back(lev_btn);
         }
         else
@@ -153,6 +156,8 @@ void MenuScene::update(sf::Uint32 dt)
     {
         b->update(dt);
     }
+
+    set_view(default_view());
 }
 
 void MenuScene::draw(sf::RenderTarget& target)

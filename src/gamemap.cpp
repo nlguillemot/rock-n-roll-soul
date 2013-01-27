@@ -55,7 +55,7 @@ bool GameMap::load_from_file(const std::string& filename)
         {
             Collectible coll;
 
-            ss >> coll.type;
+            ss >> coll.asset_name;
             ss >> coll.position.x;
             ss >> coll.position.y;
 
@@ -121,6 +121,11 @@ const std::vector<GameMap::Platform>& GameMap::platforms() const
 const std::vector<GameMap::GoalFlag>& GameMap::goalflags() const
 {
     return goalflag_list_;
+}
+
+const std::vector<GameMap::Collectible>& GameMap::collectibles() const
+{
+    return collectible_list_;
 }
 
 const GameMap::PhysicsConfiguration& GameMap::physics() const

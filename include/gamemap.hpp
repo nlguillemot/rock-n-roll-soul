@@ -18,7 +18,7 @@ public:
 
     struct Collectible
     {
-        std::string type;
+        std::string asset_name;
         sf::Vector2f position;
     };
 
@@ -45,6 +45,7 @@ public:
 
     const std::vector<Platform>& platforms() const;
     const std::vector<GoalFlag>& goalflags() const;
+    const std::vector<Collectible>& collectibles() const;
 
     const PhysicsConfiguration& physics() const;
 

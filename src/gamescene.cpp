@@ -39,7 +39,7 @@ void GameScene::init_world()
     cleanup_world();
     player_.reset_state();
 
-    if (!map_.load_from_file("assets/" + level_name_))
+    if (!map_.load_from_file("level/" + level_name_))
     {
         std::cout << "Failed to load map." << std::endl;
     }

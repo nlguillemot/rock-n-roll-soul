@@ -8,6 +8,18 @@ MenuButton::MenuButton(const std::string& style)
 {
     anim_data_ = new AnimData("assets/" + style);
     anim_ = new Animation(*anim_data_);
+
+    const sf::Vector2f* orig = anim_->maybe_point("origin");
+    if (orig)
+    {
+        anim_->set_origin(*orig);
+    }
+
+    const sf::Vector2f* scale = anim_->maybe_point("scale");
+    if (scale)
+    {
+        anim_->set_scale(*scale);
+    }
 }
 
 MenuButton::~MenuButton()
@@ -97,6 +109,10 @@ void MenuScene::init()
 {
     cleanup_buttons();
 
+    sf::Vector2f border(15.0f,30.0f);
+
+    sf::Vector2f b_pos = border;
+
     const std::string* levelname;
     for (size_t i = 0; ; i++)
     {
@@ -110,6 +126,16 @@ void MenuScene::init()
                     switch_to_next_scene(new GameScene(*levelname));
                 });
 
+            if (b_pos.x + lev_btn->transformed_bounds().GetWidth() > view().GetRect().GetWidth() - border.x)
+            {
+                b_pos.x = border.x;
+            }
+            if (b_pos.y + lev_btn->transformed_bounds().GetHeight() > view().GetRect().GetHeight() - border.y)
+            {
+                b_pos.y = border.y;
+            }
+
+            lev_btn->set_position(b_pos);
             buttons_.push_back(lev_btn);
         }
         else

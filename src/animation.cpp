@@ -12,7 +12,8 @@ Animation::Animation(AnimData& anim_data)
     current_frame_(0),
     total_frames_(anim_data_.total_frames()),
     playing_(false),
-    hidden_(false)
+    hidden_(false),
+    looping_(true)
 {
     sprite_.SetImage(anim_data.texture());
     update_sprite_to_frame();
@@ -23,7 +24,7 @@ bool Animation::playing() const
     return playing_;
 }
 
-void Animation::play(const std::string& sequence_name)
+void Animation::play(const std::string& sequence_name, bool looping)
 {
     const AnimSequence* seq(anim_data_.maybe_sequence(sequence_name));
     if (!seq)
@@ -34,11 +35,12 @@ void Animation::play(const std::string& sequence_name)
 
     loop_start_ = seq->start();
     loop_duration_ = seq->duration();
-    play(loop_start_);
+    play(loop_start_,looping);
 }
 
-void Animation::play(int frame)
+void Animation::play(int frame, bool looping)
 {
+    set_looping(looping);
     playing_ = true;
     current_frame_ = frame;
     timeline_ = frame_to_time(frame);
@@ -316,6 +318,16 @@ bool Animation::hidden() const
     return hidden_;
 }
 
+void Animation::set_looping(bool looping)
+{
+    looping_ = looping;
+}
+
+bool Animation::looping() const
+{
+    return looping_;
+}
+
 void Animation::update(sf::Uint32 dt)
 {
     if (playing_)
@@ -334,6 +346,11 @@ void Animation::update(sf::Uint32 dt)
         if (previous_frame != current_frame_)
         {
             update_sprite_to_frame();
+        }
+
+        if (!looping_ && current_frame_ == loop_start_ + loop_duration_ - 1)
+        {
+            playing_ = false;
         }
     }
 }

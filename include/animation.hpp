@@ -4,104 +4,111 @@
 
 namespace heart
 {
-    class Animation
-    {
-    public:
-        Animation(AnimData& anim_data);
-        
-        bool playing() const;
 
-        void play(const std::string& sequence_name);
-        void play(int frame);
+class Animation
+{
+public:
+    Animation(AnimData& anim_data);
+    
+    bool playing() const;
 
-        void hold(const std::string& sequence_name);
-        void hold(int frame);
+    void play(const std::string& sequence_name, bool looping=true);
+    void play(int frame, bool looping);
 
-        sf::Vector2f point_relative(const std::string& point_name) const;
-        sf::Vector2f* maybe_point_relative(sf::Vector2f& dst, const std::string& point_name) const;
-        sf::Vector2f point(const std::string& point_name) const;
-        const sf::Vector2f* maybe_point(const std::string& point_name) const;
-        
-        sf::FloatRect rect_relative(const std::string& rect_name) const;
-        sf::FloatRect rect(const std::string& rect_name) const;
-        const sf::FloatRect* maybe_rect(const std::string& rect_name) const;
+    void hold(const std::string& sequence_name);
+    void hold(int frame);
 
-        sf::FloatRect anim_rect_relative() const;
-        sf::FloatRect anim_rect() const;
+    sf::Vector2f point_relative(const std::string& point_name) const;
+    sf::Vector2f* maybe_point_relative(sf::Vector2f& dst, const std::string& point_name) const;
+    sf::Vector2f point(const std::string& point_name) const;
+    const sf::Vector2f* maybe_point(const std::string& point_name) const;
+    
+    sf::FloatRect rect_relative(const std::string& rect_name) const;
+    sf::FloatRect rect(const std::string& rect_name) const;
+    const sf::FloatRect* maybe_rect(const std::string& rect_name) const;
 
-        sf::Vector2f center_relative() const;
-        sf::Vector2f center() const;
+    sf::FloatRect anim_rect_relative() const;
+    sf::FloatRect anim_rect() const;
 
-        float constant(const std::string& constant_name) const;
-        const float* maybe_constant(const std::string& constant_name) const;
+    sf::Vector2f center_relative() const;
+    sf::Vector2f center() const;
 
-        const std::string& string(const std::string& name) const;
-        
-        float original_width() const;
-        float original_height() const;
-        sf::Vector2f original_size() const;
+    float constant(const std::string& constant_name) const;
+    const float* maybe_constant(const std::string& constant_name) const;
 
-        float transformed_width() const;
-        float transformed_height() const;
-        sf::Vector2f transformed_size() const;
+    const std::string& string(const std::string& name) const;
+    
+    float original_width() const;
+    float original_height() const;
+    sf::Vector2f original_size() const;
 
-        sf::Uint32 fps() const;
-        void set_fps(sf::Uint32 fps);
+    float transformed_width() const;
+    float transformed_height() const;
+    sf::Vector2f transformed_size() const;
 
-        void set_position(const sf::Vector2f& p);
-        void move(const sf::Vector2f& v);
-        sf::Vector2f position() const;
-        
-        void set_rotation(float degrees);
-        void rotate(float degrees);
-        float rotation() const;
+    sf::Uint32 fps() const;
+    void set_fps(sf::Uint32 fps);
 
-        void set_alpha(sf::Uint8 a);
-        sf::Uint8 alpha() const;
+    void set_position(const sf::Vector2f& p);
+    void move(const sf::Vector2f& v);
+    sf::Vector2f position() const;
+    
+    void set_rotation(float degrees);
+    void rotate(float degrees);
+    float rotation() const;
 
-        void set_tint(const sf::Color& color);
-        const sf::Color& tint() const;
+    void set_alpha(sf::Uint8 a);
+    sf::Uint8 alpha() const;
 
-        // relative to original graphic
-        const sf::Vector2f& scale() const;
-        // w and h must be positive
-        void set_scale(const sf::Vector2f& scale);
-        void set_scale(float w, float h);
+    void set_tint(const sf::Color& color);
+    const sf::Color& tint() const;
 
-        // vector from (0,0) to (1,1)
-        // where (0,0) is top left, (1,1) is bottom right
-        void set_origin(const sf::Vector2f& origin);
-        const sf::Vector2f& origin() const;
-        sf::Vector2f original_pixel_origin() const;
-        sf::Vector2f transformed_pixel_origin() const;
+    // relative to original graphic
+    const sf::Vector2f& scale() const;
+    // w and h must be positive
+    void set_scale(const sf::Vector2f& scale);
+    void set_scale(float w, float h);
 
-        void fliph(bool flipped);
-        void flipv(bool flipped);
+    // vector from (0,0) to (1,1)
+    // where (0,0) is top left, (1,1) is bottom right
+    void set_origin(const sf::Vector2f& origin);
+    const sf::Vector2f& origin() const;
+    sf::Vector2f original_pixel_origin() const;
+    sf::Vector2f transformed_pixel_origin() const;
 
-        void set_hidden(bool hidden);
-        bool hidden() const;
+    void fliph(bool flipped);
+    void flipv(bool flipped);
 
-        void update(sf::Uint32 dt);
-        void draw(sf::RenderTarget& target);
-    private:
-        sf::Uint32 frame_to_time(int frame) const;
-        void update_sprite_to_frame();
-        AnimData& anim_data_;
-        sf::Sprite sprite_;
-        sf::Uint32 timeline_;
-        sf::Uint32 fps_;
-        int total_frames_;
-        
-        // These are used to loop a certain sequence in the animation
-        int current_frame_;
-        int loop_start_;
-        int loop_duration_;
+    void set_hidden(bool hidden);
+    bool hidden() const;
 
-        bool playing_;
+    void set_looping(bool looping);
+    bool looping() const;
 
-        void update_origin();
-        sf::Vector2f origin_;
+    void update(sf::Uint32 dt);
+    void draw(sf::RenderTarget& target);
+private:
+    sf::Uint32 frame_to_time(int frame) const;
+    void update_sprite_to_frame();
+    AnimData& anim_data_;
+    sf::Sprite sprite_;
+    sf::Uint32 timeline_;
+    sf::Uint32 fps_;
+    int total_frames_;
+    
+    // These are used to loop a certain sequence in the animation
+    int current_frame_;
+    int loop_start_;
+    int loop_duration_;
 
-        bool hidden_;
-    };
+    bool playing_;
+
+    void update_origin();
+    sf::Vector2f origin_;
+
+    bool hidden_;
+    
+    bool looping_;
+};
+
 }

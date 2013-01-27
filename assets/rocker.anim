@@ -10,6 +10,7 @@ sequence fly 9 1
 sequence fall 10 1
 sequence launching 8 1
 sequence land 11 6
+sequence winning 11 6
 
 # unused
 sequence skid 17 1

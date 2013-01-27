@@ -81,6 +81,7 @@ void Player::init()
     current_gravity_ = sf::Vector2f(0.0f,0.0f);
 
     friction_constant_ = 200.0f;
+    air_friction_constant_ = 30.0f;
 
     position_ = sf::Vector2f(0.0f,0.0f);
     velocity_ = sf::Vector2f(0.0f,0.0f);
@@ -205,11 +206,9 @@ void Player::launch()
         direction_ == Left ?
         180 - aim_angle_ : aim_angle_;
 
-    sf::Vector2f launch_vector = unit_vector_from_angle(angle_with_direction);
-    std::cout << "Launch angle: " << aim_angle_ << std::endl;
+    sf::Vector2f launch_vector = unit_vector_from_angle<float>(angle_with_direction);
     launch_vector *= launch_charge_ * launch_impulse_speed_;
     launch_vector.y *= -1;
-    std::cout << "Launch vector: " << launch_vector << std::endl;
 
     velocity_ += launch_vector;
 
@@ -323,6 +322,18 @@ void Player::update(sf::Uint32 dt)
         friction.x = -signum(velocity_.x);
         friction *= friction_constant_;
     }
+    else
+    {
+        friction.x = -signum(velocity_.x);
+        friction *= air_friction_constant_;
+    }
+
+
+    sf::Vector2f gravity_effect = current_gravity_;
+    if (state_ == PlayerState::Winning)
+    {
+        current_gravity_ = sf::Vector2f(0.0f,0.0f);
+    }
 
     velocity_ += dtf * (acceleration_ + current_gravity_);
     
@@ -340,6 +351,15 @@ void Player::update(sf::Uint32 dt)
     else
     {
         velocity_.x = velocity_after_friction;
+    }
+
+    if (state_ == PlayerState::Winning)
+    {
+        if (dt != 0)
+        {
+            sf::Vector2f dampening = (0.001f * velocity_) * float(dt);
+            velocity_ -= dampening;
+        }
     }
 
     position_ += dtf * (velocity_ + movement_velocity_);

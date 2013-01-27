@@ -35,7 +35,8 @@ const std::vector<PlayerState> states_with_direction_switching =
 const std::vector<PlayerState> states_in_the_air =
 {
     PlayerState::Flying,
-    PlayerState::Falling
+    PlayerState::Falling,
+    PlayerState::Winning
 };
 
 const std::vector<PlayerState> states_without_looping_animations =
@@ -53,6 +54,7 @@ std::string to_string(PlayerState state)
         case PlayerState::Flying: return "Flying";
         case PlayerState::Falling: return "Falling";
         case PlayerState::Landing: return "Landing";
+        case PlayerState::Winning: return "Winning";
         default: return "Unknown";
     }
 }
@@ -67,6 +69,7 @@ std::string animation_from_state(PlayerState state)
         case PlayerState::Flying: return "fly";
         case PlayerState::Falling: return "fall";
         case PlayerState::Landing: return "land";
+        case PlayerState::Winning: return "winning";
         default: return "";
     }
 }

@@ -92,6 +92,9 @@ private:
     // pixels per second^2
     float friction_constant_;
 
+    // pixels per second^2
+    float air_friction_constant_;
+
     // components of physics from outside effects
     sf::Vector2f velocity_;
     sf::Vector2f acceleration_;

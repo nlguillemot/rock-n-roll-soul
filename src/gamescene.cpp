@@ -246,6 +246,49 @@ void GameScene::update(sf::Uint32 dt)
         g->update(dt);
     }
 
+    update_player(dt);
+
+    bool out_of_bounds = true;
+    for (Entity* p : platforms_)
+    {
+        if (vector_magnitude(
+            p->position() - player_.position())
+            < 1000)
+        {
+            out_of_bounds = false;
+        }
+    }
+
+    if (out_of_bounds)
+    {
+        init_world();
+    }
+
+    const sf::View& dft_view = default_view();
+    float viewwidth = dft_view.GetRect().GetWidth()*2;
+    float viewheight = dft_view.GetRect().GetHeight()*2;
+
+    if (player_.state() == PlayerState::Winning)
+    {
+        viewwidth = player_.bounding_box().GetWidth()*2;
+        viewheight = player_.bounding_box().GetHeight()*2;
+    }
+
+    sf::View new_view(
+            sf::FloatRect(
+                0,0,
+                viewwidth,
+                viewheight));
+
+    sf::FloatRect player_bbox = player_.bounding_box();
+    sf::Vector2f pbbox_c = rect_center(player_bbox);
+    new_view.SetCenter(pbbox_c);
+
+    set_view(new_view);
+}
+
+void GameScene::update_player(sf::Uint32 dt)
+{
     sf::Vector2f oldfeet(player_.feet_relative());
 
     PlayerState prev_state = player_.state();
@@ -253,6 +296,11 @@ void GameScene::update(sf::Uint32 dt)
     player_.update(dt);
 
     PlayerState curr_state = player_.state();
+
+    if (curr_state == PlayerState::Winning)
+    {
+        return;
+    }
 
     if (prev_state == PlayerState::Landing &&
         curr_state != prev_state)
@@ -268,6 +316,17 @@ void GameScene::update(sf::Uint32 dt)
     sf::FloatRect playerbounds(player_.feet_rect());
 
     sf::Vector2f feetdelta = newfeet - oldfeet;
+
+    for (Entity* g : goalflags_)
+    {
+        sf::FloatRect goalcoll = g->collision_area();
+        if (segment_intersects_rectangle(goalcoll,
+            oldfeet, newfeet))
+        {
+            player_.switch_to_state(PlayerState::Winning);
+            return;
+        }
+    }
 
     bool standing_on_platform = false;
 
@@ -325,33 +384,6 @@ void GameScene::update(sf::Uint32 dt)
     {
         player_.switch_to_state(PlayerState::Falling);
     }
-
-    bool out_of_bounds = true;
-    for (Entity* p : platforms_)
-    {
-        if (vector_magnitude(
-            p->position() - player_.position())
-            < 1000)
-        {
-            out_of_bounds = false;
-        }
-    }
-
-    if (out_of_bounds)
-    {
-        init_world();
-    }
-
-    const sf::View& dft_view = default_view();
-    sf::View new_view(
-            sf::FloatRect(
-                0,0,
-                dft_view.GetRect().GetWidth()*2,
-                dft_view.GetRect().GetHeight()*2));
-
-    new_view.SetCenter(player_.position());
-
-    set_view(new_view);
 }
 
 void GameScene::draw(sf::RenderTarget& target)
@@ -364,9 +396,10 @@ void GameScene::draw(sf::RenderTarget& target)
     sf::Vector2f bgtile(
             background_->transformed_width(),
             background_->transformed_height());
-    for (int j = -1; j <= cam_bounds.y/bgtile.y; j++)
+
+    for (int j = -1; j <= cam_bounds.y/bgtile.y + 1; j++)
     {
-        for (int i = -1; i <= cam_bounds.x/bgtile.x; i++)
+        for (int i = -1; i <= cam_bounds.x/bgtile.x + 1; i++)
         {
             sf::Vector2f tilepos(cam_topleft);
             tilepos.x /= bgtile.x;

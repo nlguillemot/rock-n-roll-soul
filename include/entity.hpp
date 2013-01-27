@@ -16,6 +16,7 @@ public:
     virtual sf::Vector2f position() const;
     virtual void snap_to_position(const sf::Vector2f& position);
 
+    virtual sf::FloatRect bounding_box() const;
     virtual sf::FloatRect collision_area() const;
 
     virtual void update(sf::Uint32 dt);

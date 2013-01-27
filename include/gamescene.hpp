@@ -50,6 +50,8 @@ private:
     void player_handle_keydown(sf::Key::Code code);
     void player_handle_keyup(sf::Key::Code code);
 
+    void update_player(sf::Uint32 dt);
+
     GameMap map_;
 
     AnimData* background_data_;

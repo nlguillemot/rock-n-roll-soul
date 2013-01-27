@@ -13,7 +13,8 @@ enum class PlayerState
     Launching,
     Flying,
     Falling,
-    Landing
+    Landing,
+    Winning
 };
 
 extern const std::vector<PlayerState> states_with_aimer_visible;

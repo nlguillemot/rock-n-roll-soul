@@ -49,10 +49,14 @@ void Entity::snap_to_position(const sf::Vector2f& position)
     animation_->set_position(position_);
 }
 
+sf::FloatRect Entity::bounding_box() const
+{
+    return animation_->anim_rect_relative();
+}
+
 sf::FloatRect Entity::collision_area() const
 {
-    sf::FloatRect rect(animation_->anim_rect_relative());
-    return rect;
+    return animation_->anim_rect_relative();
 }
 
 void Entity::update(sf::Uint32 dt)

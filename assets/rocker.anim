@@ -1,6 +1,7 @@
 frames 16
 fps 2
 point scale 3 3
+sequence idle 0 2
 sequence move 2 6
 sequence fly 9 1
 sequence fall 10 1

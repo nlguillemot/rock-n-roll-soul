@@ -18,6 +18,7 @@ bool GameMap::load_from_file(const std::string& filename)
     std::vector<Platform> platforms;
     std::vector<Collectible> collectibles;
     std::vector<SpawnPoint> spawnpoints;
+    std::vector<GoalFlag> goalflags;
     PhysicsConfiguration physics;
 
     std::string line;
@@ -64,6 +65,14 @@ bool GameMap::load_from_file(const std::string& filename)
         {
             ss >> physics.gravity.x;
             ss >> physics.gravity.y;
+        }
+        else if (type == "goal")
+        {
+            GoalFlag flag;
+
+            ss >> flag.asset_name;
+            ss >> flag.position.x;
+            ss >> flag.position.y;
         }
         else
         {

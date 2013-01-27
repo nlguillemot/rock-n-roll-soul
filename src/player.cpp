@@ -70,7 +70,22 @@ void Player::init()
     aim_rotation_speed_ = 90.0f;
     current_aim_speed_ = 0.0f;
 
-    launch_charge_speed_ = 1.3f;
+    const float* charge_time = animation_->maybe_constant("charge_time");
+    if (charge_time)
+    {
+        if (std::fabs(*charge_time) < 0.001)
+        {
+            launch_charge_speed_ = 1000;
+        }
+        else
+        {
+            launch_charge_speed_ = 1/(*charge_time);
+        }
+    }
+    else
+    {
+        launch_charge_speed_ = 1.3f;
+    }
     launch_charge_ = 0.0f;
 
     gravity_ = sf::Vector2f(0.0f,200.0f);

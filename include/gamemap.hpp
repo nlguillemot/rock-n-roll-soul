@@ -28,6 +28,12 @@ public:
         sf::Vector2f position;
     };
 
+    struct GoalFlag
+    {
+        std::string asset_name;
+        sf::Vector2f position;
+    };
+
     struct PhysicsConfiguration
     {
         sf::Vector2f gravity;
@@ -45,6 +51,7 @@ private:
     std::vector<Platform> platform_list_;
     std::vector<Collectible> collectible_list_;
     std::vector<SpawnPoint> spawnpoint_list_;
+    std::vector<GoalFlag> goalflag_list_;
 
     PhysicsConfiguration physics_;
 };

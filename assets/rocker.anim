@@ -7,5 +7,12 @@ sequence fly 9 1
 sequence fall 10 1
 sequence launching 8 1
 sequence land 11 6
-constant launch_speed 350
+
+# unused
 sequence skid 17 1
+
+# pixels per second
+constant launch_speed 350
+
+# in seconds
+constant charge_time 1.5

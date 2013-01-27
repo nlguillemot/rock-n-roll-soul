@@ -6,3 +6,4 @@ platform grass_step 600 400
 platform grass_step 925 250
 goal goal 925 250
 collectible heart 300 50
+decoration bird 200 200

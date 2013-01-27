@@ -64,6 +64,7 @@ private:
     std::vector<Entity*> platforms_;
     std::vector<Entity*> goalflags_;
     std::vector<Entity*> collectibles_;
+    std::vector<Entity*> decorations_;
 
     std::string level_name_;
 };

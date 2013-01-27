@@ -72,6 +72,13 @@ void GameScene::init_world()
         collectibles_.push_back(coll);
     }
 
+    for (std::vector<GameMap::Decoration>::const_iterator it = map_.decorations().cbegin(); it != map_.decorations().cend(); ++it)
+    {
+        Entity* dec = new Entity(it->asset_name);
+        dec->snap_to_position(it->position);
+        decorations_.push_back(dec);
+    }
+
     const GameMap::PhysicsConfiguration& physconf(map_.physics());
     player_.set_gravity_effect(physconf.gravity);
 }
@@ -89,6 +96,16 @@ void GameScene::cleanup_world()
         delete g;
     }
     goalflags_.clear();
+    for (Entity* c : collectibles_)
+    {
+        delete c;
+    }
+    collectibles_.clear();
+    for (Entity* d : decorations_)
+    {
+        delete d;
+    }
+    decorations_.clear();
 }
 
 void GameScene::handle_event(const sf::Event& e)
@@ -253,6 +270,11 @@ void GameScene::player_handle_keyup(sf::Key::Code code)
 
 void GameScene::update(sf::Uint32 dt)
 {
+    for (Entity* d : decorations_)
+    {
+        d->update(dt);
+    }
+
     for (Entity* p : platforms_)
     {
         p->update(dt);
@@ -439,6 +461,11 @@ void GameScene::draw(sf::RenderTarget& target)
             background_->set_position(tilepos);
             background_->draw(target);
         }
+    }
+
+    for (Entity* d : decorations_)
+    {
+        d->draw(target);
     }
 
     for (Entity* p : platforms_)

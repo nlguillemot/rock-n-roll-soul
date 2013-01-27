@@ -7,8 +7,8 @@ namespace heart
 sf::Vector2f unit_vector_from_angle(float degrees)
 {
     return sf::Vector2f(
-            std::cos(degrees*3.14f/180.0f),
-            std::sin(degrees*3.14f/180.0f));
+            std::cos(degrees*3.14159265359f/180.0f),
+            std::sin(degrees*3.14159265359f/180.0f));
 }
 
 static time_t first_time = std::time(NULL);

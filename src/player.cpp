@@ -161,8 +161,10 @@ void Player::launch()
     }
 
     sf::Vector2f launch_vector = unit_vector_from_angle(aim_angle_);
+    std::cout << "Launch angle: " << aim_angle_ << std::endl;
     launch_vector *= launch_charge_ * launch_impulse_speed_;
     launch_vector.y *= -1;
+    std::cout << "Launch vector: " << launch_vector << std::endl;
 
     velocity_ += launch_vector;
 

@@ -7,7 +7,6 @@ namespace heart
 
 Platform::Platform(const std::string& style)
 {
-    std::cout << "Platform(assets/" << style << ")" << std::endl;
     anim_data_ = new AnimData("assets/" + style);
     animation_ = new Animation(*anim_data_);
 

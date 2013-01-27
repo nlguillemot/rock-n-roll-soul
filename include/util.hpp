@@ -134,4 +134,11 @@ std::ostream& operator<<(std::ostream& os, const sf::Rect<T>& r)
     return os;
 }
 
+template<class T>
+std::ostream& operator<<(std::ostream& os, const sf::Vector2<T>& v)
+{
+    os << "{ " << v.x << ", " << v.y << " }";
+    return os;
+}
+
 }

@@ -23,9 +23,7 @@ const std::vector<PlayerState> states_where_you_can_start_moving =
 
 const std::vector<PlayerState> states_with_movement =
 {
-    PlayerState::Moving,
-    PlayerState::Flying,
-    PlayerState::Falling
+    PlayerState::Moving
 };
 
 const std::vector<PlayerState> states_with_direction_switching =

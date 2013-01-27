@@ -7,7 +7,13 @@ Entity::Entity(const std::string& style)
 {
     anim_data_ = new AnimData("assets/" + style);
     animation_ = new Animation(*anim_data_);
+
     reload_entity_data();
+
+    if (animation_->has_sequence("idle"))
+    {
+        animation_->play("idle");
+    }
 }
 
 Entity::~Entity()

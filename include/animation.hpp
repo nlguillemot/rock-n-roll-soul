@@ -24,6 +24,8 @@ public:
     // returns -1 if not found
     int sequence_duration(const std::string& sequence_name) const;
 
+    bool has_sequence(const std::string& sequence_name) const;
+
     sf::Vector2f point_relative(const std::string& point_name) const;
     sf::Vector2f* maybe_point_relative(sf::Vector2f& dst, const std::string& point_name) const;
     sf::Vector2f point(const std::string& point_name) const;

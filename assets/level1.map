@@ -4,4 +4,5 @@ platform grass_step 0 350
 platform grass_step 300 300
 platform grass_step 500 200
 platform grass_step 500 500
+goal goal 500 500
 collectible heart 300 50

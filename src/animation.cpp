@@ -95,6 +95,11 @@ int Animation::sequence_duration(const std::string& sequence_name) const
     }
 }
 
+bool Animation::has_sequence(const std::string& sequence_name) const
+{
+    return sequence_frame(sequence_name) != -1;
+}
+
 sf::Vector2f Animation::point_relative(const std::string& point_name) const
 {
     sf::Vector2f newpos = position();

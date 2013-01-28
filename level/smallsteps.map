@@ -1,9 +1,17 @@
-spawnpoint start 0 450
+spawnpoint start -120 420
 gravity 0 200
+platform grass_step -95 420
 platform grass_step 0 450
-platform grass_step 300 425
-platform grass_step 600 400
-platform grass_step 925 250
-goal goal 925 250
-collectible heart 300 50
-decoration bird 200 200
+platform grass_step 190 450
+platform grass_step 95 470
+platform grass_step 380 450
+platform grass_step 525 525
+platform grass_step 800 300
+platform grass_step 1125 300
+
+decoration instructions1 225 150
+decoration instructions2 625 600
+
+goal goal 1125 300
+
+collectible heart 970 200

@@ -9,4 +9,5 @@ platform grass_step 1325 250
 
 
 goal goal 1325 250
-collectible heart 300 50
+collectible heart 400 400
+collectible heart 850 450

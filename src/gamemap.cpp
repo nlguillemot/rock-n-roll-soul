@@ -20,6 +20,7 @@ bool GameMap::load_from_file(const std::string& filename)
     std::vector<Collectible> collectibles;
     std::vector<SpawnPoint> spawnpoints;
     std::vector<GoalFlag> goalflags;
+    std::vector<Decoration> decorations;
     PhysicsConfiguration physics;
 
     std::string line;
@@ -85,6 +86,15 @@ bool GameMap::load_from_file(const std::string& filename)
             ss >> flag.position.y;
             goalflags.push_back(flag);
         }
+        else if (type == "decoration")
+        {
+            Decoration dec;
+
+            ss >> dec.asset_name;
+            ss >> dec.position.x;
+            ss >> dec.position.y;
+            decorations.push_back(dec);
+        }
         else
         {
             std::cout << "Unknown type: " << type << std::endl;
@@ -95,6 +105,7 @@ bool GameMap::load_from_file(const std::string& filename)
     collectible_list_.swap(collectibles);
     spawnpoint_list_.swap(spawnpoints);
     goalflag_list_.swap(goalflags);
+    decoration_list_.swap(decorations);
     physics_ = physics;
 
     return true;
@@ -126,6 +137,11 @@ const std::vector<GameMap::GoalFlag>& GameMap::goalflags() const
 const std::vector<GameMap::Collectible>& GameMap::collectibles() const
 {
     return collectible_list_;
+}
+
+const std::vector<GameMap::Decoration>& GameMap::decorations() const
+{
+    return decoration_list_;
 }
 
 const GameMap::PhysicsConfiguration& GameMap::physics() const

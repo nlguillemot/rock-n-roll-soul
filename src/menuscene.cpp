@@ -69,9 +69,9 @@ const std::function<void()>& MenuButton::action() const
     return action_;
 }
 
-MenuScene::MenuScene()
+MenuScene::MenuScene(const std::string& menu_name)
 {
-    background_data_ = new AnimData("assets/mainmenu");
+    background_data_ = new AnimData("assets/" + menu_name);
     background_ = new Animation(*background_data_);
 }
 

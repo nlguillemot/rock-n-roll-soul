@@ -39,6 +39,12 @@ public:
         sf::Vector2f gravity;
     };
 
+    struct Decoration
+    {
+        std::string asset_name;
+        sf::Vector2f position;
+    };
+
     bool load_from_file(const std::string& filename);
 
     const SpawnPoint* spawnpoint(const std::string& name);
@@ -46,6 +52,7 @@ public:
     const std::vector<Platform>& platforms() const;
     const std::vector<GoalFlag>& goalflags() const;
     const std::vector<Collectible>& collectibles() const;
+    const std::vector<Decoration>& decorations() const;
 
     const PhysicsConfiguration& physics() const;
 
@@ -54,6 +61,7 @@ private:
     std::vector<Collectible> collectible_list_;
     std::vector<SpawnPoint> spawnpoint_list_;
     std::vector<GoalFlag> goalflag_list_;
+    std::vector<Decoration> decoration_list_;
 
     PhysicsConfiguration physics_;
 };

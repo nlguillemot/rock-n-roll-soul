@@ -59,7 +59,7 @@ void GameScene::update_explosions(sf::Uint32 dt)
 
 void GameScene::explode(Entity* e)
 {
-    explosions_.push_back(Explosion(e->animation(), e->position(), 100.0f, 32.0f));
+    explosions_.push_back(Explosion(e->animation(), e->position(), 100.0f, 200.0f));
     e->animation()->set_hidden(true);
 }
 
@@ -325,10 +325,7 @@ void GameScene::update(sf::Uint32 dt)
         g->update(dt);
     }
 
-    for (Explosion& e : explosions_)
-    {
-        e.update(dt);
-    }
+    update_explosions(dt);
 
     for (Entity* c : collectibles_)
     {

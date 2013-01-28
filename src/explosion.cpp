@@ -27,7 +27,10 @@ void Explosion::draw(sf::RenderTarget& target)
     {
         sf::Vector2f v = unit_vector_from_angle(angles[i]);
         v *= dist_;
-        float alpha = 255 * (1.0f - (dist_/range_));
+
+        float ratio = dist_/range_;
+        ratio = clamp(ratio, 0.0f, 1.0f);
+        float alpha = 255 * (1.0f - ratio);
 
         sf::Vector2f oldpos = anim_->position();
         float oldalpha = anim_->alpha();

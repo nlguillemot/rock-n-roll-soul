@@ -19,6 +19,9 @@ Player::~Player()
 
 void Player::init()
 {
+    jumpsndbuf_.LoadFromFile("sound/jump.wav");
+    jumpsnd_.SetBuffer(jumpsndbuf_);
+
     reload_entity_data();
 
     const float* launch_speed = animation_->maybe_constant("launch_speed");
@@ -212,6 +215,8 @@ void Player::launch()
 
     velocity_ += launch_vector;
 
+    jumpsnd_.Play();
+
     switch_to_state(PlayerState::Flying);
 }
 
@@ -228,8 +233,8 @@ void Player::land_at_y(float y)
 
 void Player::switch_to_state(PlayerState next_state)
 {
-    log_message("Player switching to state: " + to_string(next_state));
-
+    // log_message("Player switching to state: " + to_string(next_state));
+    
     animation_->play(animation_from_state(next_state));
 
     if (element_of(next_state,states_without_looping_animations))

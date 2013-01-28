@@ -118,7 +118,6 @@ void MenuScene::init_menu()
 
     for (std::vector<MenuLayout::LevelButton>::const_iterator it = layout.levelbuttons().cbegin(); it != layout.levelbuttons().cend(); ++it)
     {
-        std::cout << "icon: " << it->level_icon << std::endl;
         MenuButton* b = new MenuButton(it->level_icon);
         std::string levelname = it->level_name;
         b->set_action(

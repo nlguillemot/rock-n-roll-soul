@@ -43,7 +43,6 @@ void GameScene::update_explosions(sf::Uint32 dt)
     {
         if (it->done())
         {
-            std::cout << "DONE!" << std::endl;
             auto next = it;
             ++next;
             explosions_.erase(it);

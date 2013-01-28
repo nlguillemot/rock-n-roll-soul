@@ -9,6 +9,9 @@ platform grass_step 525 525
 platform grass_step 800 300
 platform grass_step 1125 300
 
+decoration instructions1 225 150
+decoration instructions2 625 600
+
 goal goal 1125 300
 
 collectible heart 970 200

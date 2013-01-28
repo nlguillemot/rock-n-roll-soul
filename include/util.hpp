@@ -12,13 +12,7 @@ namespace heart
 
 bool segment_intersects_rectangle(const sf::FloatRect& rect, const sf::Vector2f& a, const sf::Vector2f& b);
 
-template<class T>
-sf::Vector2<T> unit_vector_from_angle(float degrees)
-{
-    return sf::Vector2<T>(
-            (T)std::cos(degrees*3.14159265359f/180.0f),
-            (T)std::sin(degrees*3.14159265359f/180.0f));
-}
+sf::Vector2f unit_vector_from_angle(float degrees);
 
 template<class T>
 T dot_product(const sf::Vector2<T>& a, const sf::Vector2<T>& b)

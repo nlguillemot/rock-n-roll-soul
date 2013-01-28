@@ -20,6 +20,8 @@ public:
     virtual sf::FloatRect bounding_box() const;
     virtual sf::FloatRect collision_area() const;
 
+    Animation* animation() const;
+
     virtual void update(sf::Uint32 dt);
     virtual void draw(sf::RenderTarget& target);
 

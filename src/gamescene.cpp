@@ -1,16 +1,11 @@
 #include "gamescene.hpp"
 #include "util.hpp"
 #include "menuscene.hpp"
-#include "sequencer.hpp"
 
 #include <iostream>
 
 namespace heart
 {
-
-class ExplodeAndVanishSeqItem : public SequencerItem
-{
-};
 
 GameScene::GameScene(const std::string& level)
 {
@@ -38,6 +33,34 @@ void GameScene::init()
 {
     init_world();
     update_camera();
+}
+
+void GameScene::update_explosions(sf::Uint32 dt)
+{
+    for (std::list<Explosion>::iterator it = explosions_.begin();
+        it != explosions_.end(); )
+
+    {
+        if (it->done())
+        {
+            std::cout << "DONE!" << std::endl;
+            auto next = it;
+            ++next;
+            explosions_.erase(it);
+            it = next;
+        }
+        else
+        {
+            it->update(dt);
+            ++it;
+        }
+    }
+}
+
+void GameScene::explode(Entity* e)
+{
+    explosions_.push_back(Explosion(e->animation(), e->position(), 100.0f, 32.0f));
+    e->animation()->set_hidden(true);
 }
 
 void GameScene::init_world()
@@ -102,16 +125,20 @@ void GameScene::cleanup_world()
         delete g;
     }
     goalflags_.clear();
+
     for (Entity* c : collectibles_)
     {
         delete c;
     }
     collectibles_.clear();
+
     for (Entity* d : decorations_)
     {
         delete d;
     }
     decorations_.clear();
+
+    explosions_.clear();
 }
 
 void GameScene::handle_event(const sf::Event& e)
@@ -298,14 +325,20 @@ void GameScene::update(sf::Uint32 dt)
         g->update(dt);
     }
 
+    for (Explosion& e : explosions_)
+    {
+        e.update(dt);
+    }
+
     for (Entity* c : collectibles_)
     {
         c->update(dt);
 
         sf::FloatRect bbox(c->collision_area());
-        if (bbox.Intersects(player_.collision_area()))
+        if (!c->animation()->hidden() &&
+            bbox.Intersects(player_.collision_area()))
         {
-
+            explode(c);
         }
     }
 
@@ -485,6 +518,11 @@ void GameScene::draw(sf::RenderTarget& target)
     for (Entity* d : decorations_)
     {
         d->draw(target);
+    }
+
+    for (Explosion& e : explosions_)
+    {
+        e.draw(target);
     }
 
     for (Entity* p : platforms_)

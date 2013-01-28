@@ -4,6 +4,13 @@
 namespace heart
 {
 
+sf::Vector2f unit_vector_from_angle(float degrees)
+{
+    return sf::Vector2f(
+            std::cos(degrees*3.14159265359f/180.0f),
+            std::sin(degrees*3.14159265359f/180.0f));
+}
+
 bool segment_intersects_rectangle(const sf::FloatRect& rect, const sf::Vector2f& a, const sf::Vector2f& b)
 {
     // Find min and max X for the segment

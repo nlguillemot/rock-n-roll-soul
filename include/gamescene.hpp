@@ -1,10 +1,13 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "explosion.hpp"
 #include "scene.hpp"
 #include "player.hpp"
 #include "gamemap.hpp"
 #include "entity.hpp"
+
+#include <list>
 
 namespace heart
 {
@@ -52,6 +55,9 @@ private:
 
     void update_player(sf::Uint32 dt);
     void update_camera();
+    void update_explosions(sf::Uint32 dt);
+
+    void explode(Entity* e);
 
     GameMap map_;
 
@@ -65,6 +71,8 @@ private:
     std::vector<Entity*> goalflags_;
     std::vector<Entity*> collectibles_;
     std::vector<Entity*> decorations_;
+
+    std::list<Explosion> explosions_;
 
     std::string level_name_;
 };

@@ -59,6 +59,11 @@ sf::FloatRect Entity::collision_area() const
     return animation_->anim_rect_relative();
 }
 
+Animation* Entity::animation() const
+{
+    return animation_;
+}
+
 void Entity::update(sf::Uint32 dt)
 {
     animation_->update(dt);

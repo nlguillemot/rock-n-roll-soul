@@ -432,11 +432,11 @@ void GameScene::update_player(sf::Uint32 dt)
     if (element_of(player_.state(),states_with_music_notes))
     {
         music_note_timer_ += dt/1000.0f;
-        float time_per_note = 0.2f;
+        float time_per_note = 0.3f;
         while (music_note_timer_ >= time_per_note)
         {
             music_note_timer_ -= time_per_note;
-            effects_.push_back(new Fader(tuplet_note_->animation(),true,rect_center(player_.bounding_box()),0.5f,tween_linear));
+            effects_.push_back(new Fader(tuplet_note_->animation(),true,rect_center(player_.bounding_box()),1.5f,tween_squared));
         }
     }
     else

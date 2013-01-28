@@ -54,7 +54,7 @@ void Player::init()
     state_ = PlayerState::Idle;
     direction_ = Right;
 
-    movement_speed_ = 100.0f;
+    movement_speed_ = 200.0f;
     movement_velocity_ = sf::Vector2f(0.0f,0.0f);
 
     aim_angle_ = 45.0f;

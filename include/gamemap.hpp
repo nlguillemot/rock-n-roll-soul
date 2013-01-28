@@ -36,6 +36,7 @@ public:
 
     struct PhysicsConfiguration
     {
+        PhysicsConfiguration();
         sf::Vector2f gravity;
     };
 

@@ -34,7 +34,7 @@ int main()
 
             if (property_name == "gametitle")
             {
-                line_stream >> gametitle;
+                gametitle = current_line.substr(10);
             }
             else if (property_name == "screensize")
             {

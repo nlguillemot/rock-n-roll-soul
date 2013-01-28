@@ -4,7 +4,7 @@ from glob import glob
 env = Environment()
 
 build_dir = '.'
-project_name = 'heartbeat'
+project_name = 'rocknroll'
 
 target = project_name
 

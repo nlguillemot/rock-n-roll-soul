@@ -1,5 +1,4 @@
 spawnpoint start 0 250
-gravity 0 200
 platform grass_step 0 250
 platform grass_step 700 250
 platform grass_step 625 525

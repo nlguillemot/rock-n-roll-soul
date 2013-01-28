@@ -7,6 +7,11 @@
 namespace heart
 {
 
+GameMap::PhysicsConfiguration::PhysicsConfiguration()
+{
+    gravity = sf::Vector2f(0,300);
+}
+
 bool GameMap::load_from_file(const std::string& filename)
 {
     std::ifstream ifs(filename + ".map");

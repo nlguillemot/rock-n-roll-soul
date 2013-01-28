@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "playerstate.hpp"
 #include "entity.hpp"
 
@@ -98,6 +99,9 @@ private:
     // components of physics from outside effects
     sf::Vector2f velocity_;
     sf::Vector2f acceleration_;
+
+    sf::SoundBuffer jumpsndbuf_;
+    sf::Sound jumpsnd_;
 };
 
 }

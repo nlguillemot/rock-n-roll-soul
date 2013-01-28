@@ -1,4 +1,5 @@
-level smallsteps smallstepsicon 180 300
-level hopskipjump hopskipjumpicon 280 300
-level divide divideicon 380 300
+level smallsteps icon1 180 300
+level hopskipjump icon2 280 300
+level divide icon3 380 300
+level ascent icon4 180 400
 decoration title 320 160

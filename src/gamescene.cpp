@@ -1,11 +1,16 @@
 #include "gamescene.hpp"
 #include "util.hpp"
 #include "menuscene.hpp"
+#include "sequencer.hpp"
 
 #include <iostream>
 
 namespace heart
 {
+
+class ExplodeAndVanishSeqItem : public SequencerItem
+{
+};
 
 GameScene::GameScene(const std::string& level)
 {
@@ -296,6 +301,12 @@ void GameScene::update(sf::Uint32 dt)
     for (Entity* c : collectibles_)
     {
         c->update(dt);
+
+        sf::FloatRect bbox(c->collision_area());
+        if (bbox.Intersects(player_.collision_area()))
+        {
+
+        }
     }
 
     update_player(dt);

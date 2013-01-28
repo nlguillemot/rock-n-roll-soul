@@ -32,7 +32,14 @@ GameScene::~GameScene()
 void GameScene::init()
 {
     init_world();
-    update_camera();
+
+    camera_position_ = rect_center(player_.bounding_box());
+    camera_target_ = camera_position_;
+    camera_zoom_ = sf::Vector2f(0.5f,0.5f);
+    camera_zoom_target_ = camera_zoom_;
+    camera_zoom_lerp_ratio_ = 0.7;
+    camera_pan_lerp_ratio_ = 0.9f;
+    update_camera(1);
 
     bgm_.OpenFromFile("sound/gamebgm.wav");
     collectsndbuf_.LoadFromFile("sound/collect.wav");
@@ -363,32 +370,40 @@ void GameScene::update(sf::Uint32 dt)
         init_world();
     }
 
-    update_camera();
+    update_camera(dt);
 }
 
-void GameScene::update_camera()
+void GameScene::update_camera(sf::Uint32 dt)
 {
-    const sf::View& dft_view = default_view();
-    float viewwidth = dft_view.GetRect().GetWidth()*2;
-    float viewheight = dft_view.GetRect().GetHeight()*2;
-
-    if (player_.state() == PlayerState::Winning)
+    if (dt == 0)
     {
-        viewwidth = player_.bounding_box().GetWidth()*2;
-        viewheight = player_.bounding_box().GetHeight()*2;
+        return;
     }
 
-    sf::View new_view(
-            sf::FloatRect(
-                0,0,
-                viewwidth,
-                viewheight));
+    float panlerpratio = camera_pan_lerp_ratio_ * (dt/1000.0f);
+    float zoomlerpratio = camera_zoom_lerp_ratio_ * (dt/1000.0f);
 
-    sf::FloatRect player_bbox = player_.bounding_box();
-    sf::Vector2f pbbox_c = rect_center(player_bbox);
-    new_view.SetCenter(pbbox_c);
+    camera_zoom_ = vector_LERP(camera_zoom_, camera_zoom_target_, zoomlerpratio);
 
+    const sf::View& dft_view = default_view();
+    float viewwidth = dft_view.GetRect().GetWidth() / camera_zoom_.x;
+    float viewheight = dft_view.GetRect().GetHeight() / camera_zoom_.y;
+
+    sf::FloatRect target(0,0,
+        viewwidth, viewheight);
+
+    sf::View new_view(target);
+
+    sf::Vector2f new_pos = vector_LERP(camera_position_, camera_target_, panlerpratio);
+
+    camera_position_ = new_pos;
+    new_view.SetCenter(new_pos);
     set_view(new_view);
+}
+
+void GameScene::move_camera_to(const sf::Vector2f& p)
+{
+    camera_target_ = p;
 }
 
 void GameScene::update_player(sf::Uint32 dt)
@@ -403,91 +418,97 @@ void GameScene::update_player(sf::Uint32 dt)
 
     if (curr_state == PlayerState::Winning)
     {
-        return;
     }
-
-    if (prev_state == PlayerState::Landing &&
-        curr_state != prev_state)
+    else
     {
-        if (player_keys_.left.held || player_keys_.right.held)
+        if (prev_state == PlayerState::Landing &&
+            curr_state != prev_state)
         {
-            player_.switch_to_state(PlayerState::Moving);
-        }
-    }
-
-    sf::Vector2f newfeet(player_.feet_relative());
-
-    sf::FloatRect playerbounds(player_.feet_rect());
-
-    sf::Vector2f feetdelta = newfeet - oldfeet;
-
-    for (Entity* g : goalflags_)
-    {
-        sf::FloatRect goalcoll = g->collision_area();
-        if (segment_intersects_rectangle(goalcoll,
-            oldfeet, newfeet))
-        {
-            player_.switch_to_state(PlayerState::Winning);
-            return;
-        }
-    }
-
-    bool standing_on_platform = false;
-
-    for (Entity* p : platforms_)
-    {
-        sf::FloatRect platcoll = p->collision_area();
-        sf::Vector2f plattopleft(platcoll.Left,platcoll.Top);
-        sf::Vector2f plattopright(platcoll.Right,platcoll.Top);
-
-        float dist = plattopleft.y - newfeet.y;
-
-        float height_ratio;
-        if (std::fabs(feetdelta.y) < 0.001f)
-        {
-            height_ratio = 0;
-        }
-        else
-        {
-            height_ratio = (plattopleft.y - oldfeet.y) / feetdelta.y;
-        }
-
-        float interpolated_feet = oldfeet.x + feetdelta.x * height_ratio;
-
-        float feetmin = interpolated_feet - playerbounds.GetWidth()/2.0f;
-        float feetmax = interpolated_feet + playerbounds.GetWidth()/2.0f;
-
-        float platmin = plattopleft.x;
-        float platmax = plattopright.x;
-
-        if ((player_.falling() && newfeet.y >= plattopleft.y &&
-            oldfeet.y <= plattopleft.y)) 
-        {
-            if (intersecting_range(feetmin,feetmax,platmin,platmax))
+            if (player_keys_.left.held || player_keys_.right.held)
             {
-                player_.land_at_y(plattopleft.y);
-                standing_on_platform = true;
-                break;
+                player_.switch_to_state(PlayerState::Moving);
             }
         }
-        else if (!standing_on_platform && !player_.in_air())
-        {
-            if (std::fabs(dist) < 0.01f)
-            {
 
+        sf::Vector2f newfeet(player_.feet_relative());
+
+        sf::FloatRect playerbounds(player_.feet_rect());
+
+        sf::Vector2f feetdelta = newfeet - oldfeet;
+
+        for (Entity* g : goalflags_)
+        {
+            sf::FloatRect goalcoll = g->collision_area();
+            if (segment_intersects_rectangle(goalcoll,
+                oldfeet, newfeet))
+            {
+                player_.switch_to_state(PlayerState::Winning);
+                camera_zoom_target_ = sf::Vector2f(5.0f,5.0f);
+                camera_pan_lerp_ratio_ = 2.0f;
+                return;
+            }
+        }
+
+        bool standing_on_platform = false;
+
+        for (Entity* p : platforms_)
+        {
+            sf::FloatRect platcoll = p->collision_area();
+            sf::Vector2f plattopleft(platcoll.Left,platcoll.Top);
+            sf::Vector2f plattopright(platcoll.Right,platcoll.Top);
+
+            float dist = plattopleft.y - newfeet.y;
+
+            float height_ratio;
+            if (std::fabs(feetdelta.y) < 0.001f)
+            {
+                height_ratio = 0;
+            }
+            else
+            {
+                height_ratio = (plattopleft.y - oldfeet.y) / feetdelta.y;
+            }
+
+            float interpolated_feet = oldfeet.x + feetdelta.x * height_ratio;
+
+            float feetmin = interpolated_feet - playerbounds.GetWidth()/2.0f;
+            float feetmax = interpolated_feet + playerbounds.GetWidth()/2.0f;
+
+            float platmin = plattopleft.x;
+            float platmax = plattopright.x;
+
+            if ((player_.falling() && newfeet.y >= plattopleft.y &&
+                oldfeet.y <= plattopleft.y)) 
+            {
                 if (intersecting_range(feetmin,feetmax,platmin,platmax))
                 {
+                    player_.land_at_y(plattopleft.y);
                     standing_on_platform = true;
                     break;
                 }
             }
+            else if (!standing_on_platform && !player_.in_air())
+            {
+                if (std::fabs(dist) < 0.01f)
+                {
+
+                    if (intersecting_range(feetmin,feetmax,platmin,platmax))
+                    {
+                        standing_on_platform = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!standing_on_platform && !player_.in_air())
+        {
+            player_.switch_to_state(PlayerState::Falling);
         }
     }
 
-    if (!standing_on_platform && !player_.in_air())
-    {
-        player_.switch_to_state(PlayerState::Falling);
-    }
+    sf::FloatRect bbox = player_.bounding_box();
+    camera_target_ = rect_center(bbox);
 }
 
 void GameScene::draw(sf::RenderTarget& target)

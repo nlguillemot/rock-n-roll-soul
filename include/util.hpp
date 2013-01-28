@@ -55,6 +55,12 @@ float vector_magnitude(const sf::Vector2<T>& v)
 }
 
 template<class T>
+T LERP(T a, T b, float c)
+{
+    return a + (c * (b - a));
+}
+
+template<class T>
 sf::Vector2<T> vector_LERP(const sf::Vector2<T>& a, const sf::Vector2<T>& b, float c)
 {
     return a + (c * (b - a));

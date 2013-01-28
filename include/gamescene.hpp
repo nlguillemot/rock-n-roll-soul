@@ -56,7 +56,10 @@ private:
     void player_handle_keyup(sf::Key::Code code);
 
     void update_player(sf::Uint32 dt);
-    void update_camera();
+
+    void update_camera(sf::Uint32 dt);
+    void move_camera_to(const sf::Vector2f& p);
+
     void update_explosions(sf::Uint32 dt);
 
     void explode(Entity* e);
@@ -82,6 +85,13 @@ private:
 
     sf::SoundBuffer collectsndbuf_;
     sf::Sound collectsnd_;
+
+    sf::Vector2f camera_zoom_;
+    sf::Vector2f camera_zoom_target_;
+    float camera_zoom_lerp_ratio_;
+    sf::Vector2f camera_position_;
+    sf::Vector2f camera_target_;
+    float camera_pan_lerp_ratio_;
 };
 
 }

@@ -89,9 +89,14 @@ private:
     sf::Vector2f camera_zoom_;
     sf::Vector2f camera_zoom_target_;
     float camera_zoom_lerp_ratio_;
+
     sf::Vector2f camera_position_;
     sf::Vector2f camera_target_;
     float camera_pan_lerp_ratio_;
+
+    float music_note_timer_;
+
+    Entity* tuplet_note_;
 };
 
 }

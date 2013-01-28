@@ -53,6 +53,12 @@ const std::vector<PlayerState> states_without_looping_animations =
     PlayerState::Landing
 };
 
+const std::vector<PlayerState> states_with_music_notes =
+{
+    PlayerState::Flying,
+    PlayerState::Falling
+};
+
 std::string to_string(PlayerState state)
 {
     switch (state)

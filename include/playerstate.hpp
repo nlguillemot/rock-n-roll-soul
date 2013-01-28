@@ -24,6 +24,7 @@ extern const std::vector<PlayerState> states_with_movement;
 extern const std::vector<PlayerState> states_with_direction_switching;
 extern const std::vector<PlayerState> states_in_the_air;
 extern const std::vector<PlayerState> states_without_looping_animations;
+extern const std::vector<PlayerState> states_with_music_notes;
 
 std::string to_string(PlayerState state);
 std::string animation_from_state(PlayerState state);

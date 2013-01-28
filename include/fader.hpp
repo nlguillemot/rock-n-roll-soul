@@ -6,17 +6,16 @@
 namespace heart
 {
 
-class Explosion : public Effect
+class Fader : public Effect
 {
 public:
-    Explosion(const Animation& anim, const sf::Vector2f& center, float speed, float range, TweenFunction tween);
-
+    Fader(const Animation& anim, bool fadeout, const sf::Vector2f& position, float time, TweenFunction tween);
+    
     void update(sf::Uint32 dt);
     void draw(sf::RenderTarget& target);
     bool done() const;
 private:
-    sf::Vector2f center_;
-    float range_;
+    bool fadeout_;
     Tweener tweener_;
 };
 

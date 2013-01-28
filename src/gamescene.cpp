@@ -1,6 +1,8 @@
 #include "gamescene.hpp"
 #include "util.hpp"
 #include "menuscene.hpp"
+#include "tween.hpp"
+#include "fader.hpp"
 
 #include <iostream>
 
@@ -11,6 +13,8 @@ GameScene::GameScene(const std::string& level)
 {
     background_data_ = new AnimData("assets/background");
     background_ = new Animation(*background_data_);
+
+    tuplet_note_ = new Entity("tuplet");
 
     player_keys_.left = KeyState(sf::Key::Left);
     player_keys_.right = KeyState(sf::Key::Right);
@@ -24,6 +28,8 @@ GameScene::GameScene(const std::string& level)
 GameScene::~GameScene()
 {
     cleanup_world();
+
+    delete tuplet_note_;
 
     delete background_;
     delete background_data_;
@@ -72,7 +78,7 @@ void GameScene::update_effects(sf::Uint32 dt)
 
 void GameScene::explode(Entity* e, bool and_disappear)
 {
-    effects_.push_back(new Explosion(e->animation(), e->position(), 100.0f, 200.0f));
+    effects_.push_back(new Explosion(e->animation(), e->position(), 100.0f, 200.0f,tween_sqrt));
     e->animation().set_hidden(and_disappear);
 }
 
@@ -80,6 +86,8 @@ void GameScene::init_world()
 {
     cleanup_world();
     player_.reset_state();
+
+    music_note_timer_ = 0.0f;
 
     if (!map_.load_from_file("level/" + level_name_))
     {
@@ -421,10 +429,22 @@ void GameScene::update_player(sf::Uint32 dt)
 
     PlayerState curr_state = player_.state();
 
-    if (curr_state == PlayerState::Winning)
+    if (element_of(player_.state(),states_with_music_notes))
     {
+        music_note_timer_ += dt/1000.0f;
+        float time_per_note = 0.2f;
+        while (music_note_timer_ >= time_per_note)
+        {
+            music_note_timer_ -= time_per_note;
+            effects_.push_back(new Fader(tuplet_note_->animation(),true,rect_center(player_.bounding_box()),0.5f,tween_linear));
+        }
     }
     else
+    {
+        music_note_timer_ = 0.0f;
+    }
+
+    if (curr_state != PlayerState::Winning)
     {
         if (prev_state == PlayerState::Landing &&
             curr_state != prev_state)

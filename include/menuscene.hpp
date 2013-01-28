@@ -6,27 +6,33 @@
 namespace heart
 {
 
-class MenuButton
+class MenuDecoration
+{
+public:
+    MenuDecoration(const std::string& style);
+    virtual ~MenuDecoration();
+
+    virtual sf::Vector2f position() const;
+    virtual void set_position(const sf::Vector2f& pos);
+
+    virtual sf::FloatRect bounds() const;
+    virtual sf::FloatRect transformed_bounds() const;
+
+    virtual void update(sf::Uint32 dt);
+    virtual void draw(sf::RenderTarget& target);
+protected:
+    Animation* anim_;
+    AnimData* anim_data_;
+};
+
+class MenuButton : public MenuDecoration
 {
 public:
     MenuButton(const std::string& style);
-    ~MenuButton();
-
-    sf::Vector2f position() const;
-    void set_position(const sf::Vector2f& pos);
-
-    sf::FloatRect bounds() const;
-    sf::FloatRect transformed_bounds() const;
-
-    void update(sf::Uint32 dt);
-    void draw(sf::RenderTarget& target);
 
     void set_action(const std::function<void()>& action);
     const std::function<void()>& action() const;
 private:
-    Animation* anim_;
-    AnimData* anim_data_;
-
     std::function<void()> action_;
 };
 
@@ -35,18 +41,23 @@ class MenuScene : public Scene
 public:
     MenuScene(const std::string& menu_name);
     ~MenuScene();
+
     void handle_event(const sf::Event& e);
 
     void init();
     void update(sf::Uint32 dt);
     void draw(sf::RenderTarget& target);
 private:
-    void cleanup_buttons();
+    void init_menu();
+    void cleanup_menu();
 
     Animation* background_;
     AnimData* background_data_;
 
+    std::string menu_name_;
+
     std::vector<MenuButton*> buttons_;
+    std::vector<MenuDecoration*> decorations_;
 };
 
 }

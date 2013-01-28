@@ -1,11 +1,12 @@
 #include "menuscene.hpp"
 #include "gamescene.hpp"
+#include "menulayout.hpp"
 #include "util.hpp"
 
 namespace heart
 {
 
-MenuButton::MenuButton(const std::string& style)
+MenuDecoration::MenuDecoration(const std::string& style)
 {
     anim_data_ = new AnimData("assets/" + style);
     anim_ = new Animation(*anim_data_);
@@ -23,40 +24,45 @@ MenuButton::MenuButton(const std::string& style)
     }
 }
 
-MenuButton::~MenuButton()
+MenuDecoration::~MenuDecoration()
 {
     delete anim_;
     delete anim_data_;
 }
 
-sf::Vector2f MenuButton::position() const
+sf::Vector2f MenuDecoration::position() const
 {
     return anim_->position();
 }
 
-void MenuButton::set_position(const sf::Vector2f& pos)
+void MenuDecoration::set_position(const sf::Vector2f& pos)
 {
     anim_->set_position(pos);
 }
 
-sf::FloatRect MenuButton::bounds() const
+sf::FloatRect MenuDecoration::bounds() const
 {
     return anim_->anim_rect();
 }
 
-sf::FloatRect MenuButton::transformed_bounds() const
+sf::FloatRect MenuDecoration::transformed_bounds() const
 {
     return anim_->anim_rect_relative();
 }
 
-void MenuButton::update(sf::Uint32 dt)
+void MenuDecoration::update(sf::Uint32 dt)
 {
     anim_->update(dt);
 }
 
-void MenuButton::draw(sf::RenderTarget& target)
+void MenuDecoration::draw(sf::RenderTarget& target)
 {
     anim_->draw(target);
+}
+
+MenuButton::MenuButton(const std::string& style):
+MenuDecoration(style)
+{
 }
 
 void MenuButton::set_action(const std::function<void()>& action)
@@ -73,6 +79,8 @@ MenuScene::MenuScene(const std::string& menu_name)
 {
     background_data_ = new AnimData("assets/" + menu_name);
     background_ = new Animation(*background_data_);
+
+    menu_name_ = menu_name;
 }
 
 MenuScene::~MenuScene()
@@ -97,60 +105,65 @@ void MenuScene::handle_event(const sf::Event& e)
     }
 }
 
-void MenuScene::cleanup_buttons()
+void MenuScene::init_menu()
+{
+    cleanup_menu();
+
+    MenuLayout layout;
+    if (!layout.load_from_file("menu/" + menu_name_))
+    {
+        std::cout << "Failed to load menu: " << menu_name_ << std::endl;
+        return;
+    }
+
+    for (std::vector<MenuLayout::LevelButton>::const_iterator it = layout.levelbuttons().cbegin(); it != layout.levelbuttons().cend(); ++it)
+    {
+        std::cout << "icon: " << it->level_icon << std::endl;
+        MenuButton* b = new MenuButton(it->level_icon);
+        std::string levelname = it->level_name;
+        b->set_action(
+            [this,levelname]()
+            {
+                switch_to_next_scene(new GameScene(levelname));
+            });
+        b->set_position(it->position);
+        buttons_.push_back(b);
+    }
+
+    for (std::vector<MenuLayout::Decoration>::const_iterator it = layout.decorations().cbegin(); it != layout.decorations().cend(); ++it)
+    {
+        MenuDecoration* d = new MenuDecoration(it->asset_name);
+        d->set_position(it->position);
+        decorations_.push_back(d);
+    }
+}
+
+void MenuScene::cleanup_menu()
 {
     for (MenuButton * b : buttons_)
     {
         delete b;
     }
-    buttons_.clear();
+    for (MenuDecoration * d : decorations_)
+    {
+        delete d;
+    }
+    decorations_.clear();
 }
 
 void MenuScene::init()
 {
-    cleanup_buttons();
-
-    sf::Vector2f border(30.0f,30.0f);
-
-    sf::Vector2f b_pos = border;
-    float furthest_down = 0;
-
-    const std::string* levelname;
-    for (size_t i = 0; ; i++)
-    {
-        std::string lev = "level" + std::to_string(i);
-        if (levelname = background_->maybe_string(lev))
-        {
-            MenuButton* lev_btn = new MenuButton(*levelname + "icon");
-            lev_btn->set_action(
-                [this,levelname]()
-                {
-                    switch_to_next_scene(new GameScene(*levelname));
-                });
-
-            sf::FloatRect bds = lev_btn->transformed_bounds();
-            if (b_pos.x + bds.GetWidth() > view().GetRect().GetWidth() - border.x)
-            {
-                b_pos.x = border.x;
-                b_pos.y = furthest_down + border.y;
-            }
-
-            lev_btn->set_position(b_pos);
-            b_pos.x += border.x + bds.GetWidth();
-
-            furthest_down = b_pos.y + bds.GetHeight();
-            buttons_.push_back(lev_btn);
-        }
-        else
-        {
-            break;
-        }
-    }
+    init_menu();
 }
 
 void MenuScene::update(sf::Uint32 dt)
 {
     background_->update(dt);
+
+    for (MenuDecoration* d : decorations_)
+    {
+        d->update(dt);
+    }
 
     for (MenuButton* b : buttons_)
     {
@@ -185,6 +198,11 @@ void MenuScene::draw(sf::RenderTarget& target)
             background_->set_position(tilepos);
             background_->draw(target);
         }
+    }
+
+    for (MenuDecoration* d : decorations_)
+    {
+        d->draw(target);
     }
 
     for (MenuButton* b : buttons_)

@@ -12,8 +12,6 @@ env.Append(LIBS = ['sfml-graphics', 'sfml-system', 'sfml-window', 'sfml-audio'])
 env.Append(CCFLAGS = ['-std=c++11','-g'])
 env.Append(CPPPATH='include')
 
-Clean('.', build_dir)
-
 sources = glob('src/*.cpp')
 
 objects = []

@@ -154,7 +154,7 @@ void MenuScene::init()
 {
     init_menu();
 
-    bgm_.OpenFromFile("sound/menu.wav");
+    bgm_.OpenFromFile("sound/gamebgm.wav");
     bgm_.Play();
 }
 

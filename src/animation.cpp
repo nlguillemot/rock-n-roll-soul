@@ -5,7 +5,7 @@
 namespace heart
 {
 
-Animation::Animation(AnimData& anim_data)
+Animation::Animation(const AnimData& anim_data)
     : anim_data_(anim_data),
     timeline_(0),
     fps_(anim_data.fps()),
@@ -413,6 +413,11 @@ void Animation::update_sprite_to_frame()
     sprite_.SetSubRect(clip);
 
     update_origin();
+}
+
+const AnimData& Animation::animdata() const
+{
+    return anim_data_;
 }
 
 }

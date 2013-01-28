@@ -27,6 +27,7 @@ class AnimData
 public:
     AnimData(const std::string& file_name);
     sf::Image& texture();
+    const sf::Image& texture() const;
     int fps() const;
     int total_frames() const;
 

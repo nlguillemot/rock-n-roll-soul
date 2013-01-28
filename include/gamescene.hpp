@@ -60,9 +60,9 @@ private:
     void update_camera(sf::Uint32 dt);
     void move_camera_to(const sf::Vector2f& p);
 
-    void update_explosions(sf::Uint32 dt);
+    void update_effects(sf::Uint32 dt);
 
-    void explode(Entity* e);
+    void explode(Entity* e, bool and_disappear);
 
     GameMap map_;
 
@@ -77,7 +77,7 @@ private:
     std::vector<Entity*> collectibles_;
     std::vector<Entity*> decorations_;
 
-    std::list<Explosion> explosions_;
+    std::list<Effect*> effects_;
 
     std::string level_name_;
 

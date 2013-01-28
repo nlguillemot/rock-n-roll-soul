@@ -4,9 +4,9 @@
 namespace heart
 {
 
-Explosion::Explosion(Animation* anim, const sf::Vector2f& center, float speed, float range)
+Explosion::Explosion(const Animation& anim, const sf::Vector2f& center, float speed, float range):
+Effect(anim)
 {
-    anim_ = anim;
     dist_ = 0;
     center_ = center;
     speed_ = speed;
@@ -32,18 +32,9 @@ void Explosion::draw(sf::RenderTarget& target)
         ratio = clamp(ratio, 0.0f, 1.0f);
         float alpha = 255 * (1.0f - ratio);
 
-        sf::Vector2f oldpos = anim_->position();
-        float oldalpha = anim_->alpha();
-        bool oldhidden = anim_->hidden();
-
-        anim_->set_position(center_ + v);
-        anim_->set_alpha(alpha);
-        anim_->set_hidden(false);
-        anim_->draw(target);
-
-        anim_->set_position(oldpos);
-        anim_->set_alpha(oldalpha);
-        anim_->set_hidden(oldhidden);
+        animation().set_position(center_ + v);
+        animation().set_alpha(alpha);
+        animation().draw(target);
     }
 }
 

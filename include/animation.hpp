@@ -1,4 +1,5 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
 #include "animdata.hpp"
 
@@ -8,7 +9,7 @@ namespace heart
 class Animation
 {
 public:
-    Animation(AnimData& anim_data);
+    Animation(const AnimData& anim_data);
     
     bool playing() const;
 
@@ -96,10 +97,12 @@ public:
 
     void update(sf::Uint32 dt);
     void draw(sf::RenderTarget& target);
+
+    const AnimData& animdata() const;
 private:
     sf::Uint32 frame_to_time(int frame) const;
     void update_sprite_to_frame();
-    AnimData& anim_data_;
+    const AnimData& anim_data_;
     sf::Sprite sprite_;
     sf::Uint32 timeline_;
     sf::Uint32 fps_;

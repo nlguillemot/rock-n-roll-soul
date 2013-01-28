@@ -33,6 +33,12 @@ void GameScene::init()
 {
     init_world();
 
+    bgm_.OpenFromFile("sound/gamebgm.wav");
+    collectsndbuf_.LoadFromFile("sound/collect.wav");
+    collectsnd_.SetBuffer(collectsndbuf_);
+
+    bgm_.Play();
+
     camera_position_ = rect_center(player_.bounding_box());
     camera_target_ = camera_position_;
     camera_zoom_ = sf::Vector2f(0.5f,0.5f);
@@ -40,40 +46,34 @@ void GameScene::init()
     camera_zoom_lerp_ratio_ = 0.7;
     camera_pan_lerp_ratio_ = 0.9f;
     update_camera(1);
-
-    bgm_.OpenFromFile("sound/gamebgm.wav");
-    collectsndbuf_.LoadFromFile("sound/collect.wav");
-    collectsnd_.SetBuffer(collectsndbuf_);
-
-    bgm_.Play();
 }
 
-void GameScene::update_explosions(sf::Uint32 dt)
+void GameScene::update_effects(sf::Uint32 dt)
 {
-    for (std::list<Explosion>::iterator it = explosions_.begin();
-        it != explosions_.end(); )
+    for (std::list<Effect*>::iterator it = effects_.begin();
+        it != effects_.end(); )
 
     {
-        if (it->done())
+        if ((*it)->done())
         {
             auto next = it;
             ++next;
-            explosions_.erase(it);
+            delete *it;
+            effects_.erase(it);
             it = next;
         }
         else
         {
-            it->update(dt);
+            (*it)->update(dt);
             ++it;
         }
     }
 }
 
-void GameScene::explode(Entity* e)
+void GameScene::explode(Entity* e, bool and_disappear)
 {
-    explosions_.push_back(Explosion(e->animation(), e->position(), 100.0f, 200.0f));
-    e->animation()->set_hidden(true);
-    collectsnd_.Play();
+    effects_.push_back(new Explosion(e->animation(), e->position(), 100.0f, 200.0f));
+    e->animation().set_hidden(and_disappear);
 }
 
 void GameScene::init_world()
@@ -151,7 +151,11 @@ void GameScene::cleanup_world()
     }
     decorations_.clear();
 
-    explosions_.clear();
+    for (Effect* e : effects_)
+    {
+        delete e;
+    }
+    effects_.clear();
 }
 
 void GameScene::handle_event(const sf::Event& e)
@@ -338,17 +342,18 @@ void GameScene::update(sf::Uint32 dt)
         g->update(dt);
     }
 
-    update_explosions(dt);
+    update_effects(dt);
 
     for (Entity* c : collectibles_)
     {
         c->update(dt);
 
         sf::FloatRect bbox(c->collision_area());
-        if (!c->animation()->hidden() &&
+        if (!c->animation().hidden() &&
             bbox.Intersects(player_.collision_area()))
         {
-            explode(c);
+            explode(c,true);
+            collectsnd_.Play();
         }
     }
 
@@ -544,9 +549,9 @@ void GameScene::draw(sf::RenderTarget& target)
         d->draw(target);
     }
 
-    for (Explosion& e : explosions_)
+    for (Effect* e : effects_)
     {
-        e.draw(target);
+        e->draw(target);
     }
 
     for (Entity* p : platforms_)

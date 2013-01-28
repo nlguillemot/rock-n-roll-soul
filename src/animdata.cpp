@@ -137,6 +137,11 @@ sf::Image& AnimData::texture()
     return texture_;
 }
 
+const sf::Image& AnimData::texture() const
+{
+    return texture_;
+}
+
 int AnimData::fps() const
 {
     return fps_;

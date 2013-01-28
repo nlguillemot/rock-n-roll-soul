@@ -67,7 +67,6 @@ Animation* Entity::animation() const
 void Entity::update(sf::Uint32 dt)
 {
     animation_->update(dt);
-    sequencer_.update(dt);
 }
 
 void Entity::draw(sf::RenderTarget& target)

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "sequencer.hpp"
 #include <functional>
 #include <queue>
 #include <ctime>

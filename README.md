@@ -1,6 +1,16 @@
-globalgamejam2012
+Rock N' Roll Soul
 =================
 
-theme: Heartbeat
+A mix of platforming and physics based puzzle themed about love and rock and roll.
 
-Developed with Brandon Duncan (https://github.com/moltanem2000) for Global Game Jam 2013
+Controls:
+
+* Mouse: Selection in menu
+* Left/Right: Walk
+* Up/Down: Move aim
+* Spacebar (Hold): Charge jump
+* Spacebar (Release): Release charge and jump
+* R: Restart level
+* M/Esc: Quit to main menu
+
+Developed from scratch in 48 hours for Global Game Jam 2013 with Brandon Duncan. (https://github.com/moltanem2000)

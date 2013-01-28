@@ -228,7 +228,7 @@ void Player::land_at_y(float y)
 
 void Player::switch_to_state(PlayerState next_state)
 {
-    log_message("Player switching to state: " + to_string(next_state));
+    // log_message("Player switching to state: " + to_string(next_state));
 
     animation_->play(animation_from_state(next_state));
 

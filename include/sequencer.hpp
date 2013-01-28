@@ -14,8 +14,6 @@ namespace heart
     class SequencerItem
     {
     public:
-        typedef std::shared_ptr<SequencerItem> pointer;
-
         SequencerItem();
         virtual ~SequencerItem(){}
 
@@ -36,13 +34,13 @@ namespace heart
     {
     public:
         Sequencer();
-        void append(const SequencerItem::pointer& item);
-        void append(const std::vector<SequencerItem::pointer>& items);
+        void append(const std::shared_ptr<SequencerItem>& item);
+        void append(const std::vector<std::shared_ptr<SequencerItem>>& items);
         void update(sf::Uint32 dt);
         bool empty() const;
     private:
         void update_front(sf::Uint32 dt);
-        std::queue<SequencerItem::pointer> item_queue_;
+        std::queue<std::shared_ptr<SequencerItem>> item_queue_;
         bool active_;
     };
 }

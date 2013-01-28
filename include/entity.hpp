@@ -1,6 +1,7 @@
 #pragma once
 
 #include "animation.hpp"
+#include "sequencer.hpp"
 
 namespace heart
 {
@@ -21,11 +22,15 @@ public:
 
     virtual void update(sf::Uint32 dt);
     virtual void draw(sf::RenderTarget& target);
+
+    Sequencer& sequencer();
 protected:
     Animation* animation_;
     AnimData* anim_data_;
 
     sf::Vector2f position_;
+
+    Sequencer sequencer_;
 };
 
 }

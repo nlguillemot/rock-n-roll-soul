@@ -18,11 +18,11 @@ namespace heart
         : active_(false)
     {
     }
-    void Sequencer::append(const SequencerItem::pointer& item)
+    void Sequencer::append(const std::shared_ptr<SequencerItem>& item)
     {
         item_queue_.push(item);
     }
-    void Sequencer::append(const std::vector<SequencerItem::pointer>& items)
+    void Sequencer::append(const std::vector<std::shared_ptr<SequencerItem>>& items)
     {
         for(unsigned i = 0; i < items.size(); ++i)
         {

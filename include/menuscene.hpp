@@ -1,6 +1,7 @@
 #pragma once
 
 #include "scene.hpp"
+#include <SFML/Audio.hpp>
 #include "animation.hpp"
 
 namespace heart
@@ -47,6 +48,7 @@ public:
     void init();
     void update(sf::Uint32 dt);
     void draw(sf::RenderTarget& target);
+    void exit();
 private:
     void init_menu();
     void cleanup_menu();
@@ -58,6 +60,8 @@ private:
 
     std::vector<MenuButton*> buttons_;
     std::vector<MenuDecoration*> decorations_;
+
+    sf::Music bgm_;
 };
 
 }

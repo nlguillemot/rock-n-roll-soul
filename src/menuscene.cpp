@@ -153,6 +153,9 @@ void MenuScene::cleanup_menu()
 void MenuScene::init()
 {
     init_menu();
+
+    bgm_.OpenFromFile("sound/menu.wav");
+    bgm_.Play();
 }
 
 void MenuScene::update(sf::Uint32 dt)
@@ -208,6 +211,11 @@ void MenuScene::draw(sf::RenderTarget& target)
     {
         b->draw(target);
     }
+}
+
+void MenuScene::exit()
+{
+    bgm_.Stop();
 }
 
 }

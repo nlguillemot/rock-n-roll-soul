@@ -33,6 +33,12 @@ void GameScene::init()
 {
     init_world();
     update_camera();
+
+    bgm_.OpenFromFile("sound/gamebgm.wav");
+    collectsndbuf_.LoadFromFile("sound/collect.wav");
+    collectsnd_.SetBuffer(collectsndbuf_);
+
+    bgm_.Play();
 }
 
 void GameScene::update_explosions(sf::Uint32 dt)
@@ -60,6 +66,7 @@ void GameScene::explode(Entity* e)
 {
     explosions_.push_back(Explosion(e->animation(), e->position(), 100.0f, 200.0f));
     e->animation()->set_hidden(true);
+    collectsnd_.Play();
 }
 
 void GameScene::init_world()
@@ -537,6 +544,11 @@ void GameScene::draw(sf::RenderTarget& target)
     }
 
     player_.draw(target);
+}
+
+void GameScene::exit()
+{
+    bgm_.Stop();
 }
 
 }

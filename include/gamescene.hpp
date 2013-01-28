@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "explosion.hpp"
 #include "scene.hpp"
 #include "player.hpp"
@@ -47,6 +48,7 @@ public:
     void init();
     void update(sf::Uint32 dt);
     void draw(sf::RenderTarget& target);
+    void exit();
 private:
     void init_world();
     void cleanup_world();
@@ -75,6 +77,11 @@ private:
     std::list<Explosion> explosions_;
 
     std::string level_name_;
+
+    sf::Music bgm_;
+
+    sf::SoundBuffer collectsndbuf_;
+    sf::Sound collectsnd_;
 };
 
 }

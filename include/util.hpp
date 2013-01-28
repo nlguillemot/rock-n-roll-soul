@@ -88,52 +88,6 @@ inline std::function<bool ()> not_function(const std::function<bool ()>& f)
     return [f]{ return !f(); };
 }
 
-class FunctionSeqItem : public SequencerItem
-{
-public:
-    FunctionSeqItem(const std::function<void ()>& f);
-    void init();
-private:
-    const std::function<void ()> f_;
-};
-
-class ColorTweenSeqItem : public SequencerItem
-{
-public:
-    ColorTweenSeqItem(const sf::Color& start, const sf::Color& end, sf::Color& current, sf::Uint32 duration);
-    void init();
-    void update(sf::Uint32 dt);
-    void exit();
-private:
-    sf::Color start_;
-    sf::Color end_;
-    sf::Color& current_;
-    sf::Uint32 duration_;
-    sf::Uint32 time_accumulator_;
-};
-
-class DrawableColorTweenSeqItem : public SequencerItem
-{
-public:
-    DrawableColorTweenSeqItem(const sf::Color& start, const sf::Color& end, sf::Uint32 duration, sf::Drawable& tweened);
-    void update(sf::Uint32 dt);
-private:
-    sf::Color color_;
-    Sequencer fade_seq_;
-    sf::Drawable& tweened_;
-};
-
-class WaitUntilSeqItem : public SequencerItem
-{
-public:
-    WaitUntilSeqItem(const std::function<bool ()>& cond);
-    void init();
-    void update(sf::Uint32 dt);
-private:
-    const std::function<bool ()> cond_;
-};
-
-
 template<class T>
 std::ostream& operator<<(std::ostream& os, const sf::Rect<T>& r)
 {

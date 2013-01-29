@@ -54,7 +54,7 @@ void GameScene::init()
     update_camera(1);
 }
 
-void GameScene::update_effects(sf::Uint32 dt)
+void GameScene::update_effects(float dt)
 {
     for (std::list<Effect*>::iterator it = effects_.begin();
         it != effects_.end(); )
@@ -334,7 +334,7 @@ void GameScene::player_handle_keyup(sf::Key::Code code)
     }
 }
 
-void GameScene::update(sf::Uint32 dt)
+void GameScene::update(float dt)
 {
     for (Entity* d : decorations_)
     {
@@ -387,15 +387,15 @@ void GameScene::update(sf::Uint32 dt)
     update_camera(dt);
 }
 
-void GameScene::update_camera(sf::Uint32 dt)
+void GameScene::update_camera(float dt)
 {
     if (dt == 0)
     {
         return;
     }
 
-    float panlerpratio = camera_pan_lerp_ratio_ * (dt/1000.0f);
-    float zoomlerpratio = camera_zoom_lerp_ratio_ * (dt/1000.0f);
+    float panlerpratio = camera_pan_lerp_ratio_ * dt;
+    float zoomlerpratio = camera_zoom_lerp_ratio_ * dt;
 
     camera_zoom_ = vector_LERP(camera_zoom_, camera_zoom_target_, zoomlerpratio);
 
@@ -420,7 +420,7 @@ void GameScene::move_camera_to(const sf::Vector2f& p)
     camera_target_ = p;
 }
 
-void GameScene::update_player(sf::Uint32 dt)
+void GameScene::update_player(float dt)
 {
     sf::Vector2f oldfeet(player_.feet_relative());
 
@@ -432,7 +432,7 @@ void GameScene::update_player(sf::Uint32 dt)
 
     if (player_.state_machine().state_with_music_notes(player_.state()))
     {
-        music_note_timer_ += dt/1000.0f;
+        music_note_timer_ += dt;
         float time_per_note = 0.3f;
         while (music_note_timer_ >= time_per_note)
         {

@@ -11,7 +11,7 @@ class Explosion : public Effect
 public:
     Explosion(const Animation& anim, const sf::Vector2f& center, float speed, float range, TweenFunction tween);
 
-    void update(sf::Uint32 dt);
+    void update(float dt);
     void draw(sf::RenderTarget& target);
     bool done() const;
 private:

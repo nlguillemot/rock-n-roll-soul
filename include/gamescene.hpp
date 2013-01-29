@@ -46,7 +46,7 @@ public:
 
     void handle_event(const sf::Event& e);
     void init();
-    void update(sf::Uint32 dt);
+    void update(float dt);
     void draw(sf::RenderTarget& target);
     void exit();
 private:
@@ -55,12 +55,12 @@ private:
     void player_handle_keydown(sf::Key::Code code);
     void player_handle_keyup(sf::Key::Code code);
 
-    void update_player(sf::Uint32 dt);
+    void update_player(float dt);
 
-    void update_camera(sf::Uint32 dt);
+    void update_camera(float dt);
     void move_camera_to(const sf::Vector2f& p);
 
-    void update_effects(sf::Uint32 dt);
+    void update_effects(float dt);
 
     void explode(Entity* e, bool and_disappear);
 

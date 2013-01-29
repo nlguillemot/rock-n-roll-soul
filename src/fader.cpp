@@ -12,7 +12,7 @@ tweener_(tween,time)
     animation().set_position(position);
 }
 
-void Fader::update(sf::Uint32 dt)
+void Fader::update(float dt)
 {
     tweener_.update(dt);
 }

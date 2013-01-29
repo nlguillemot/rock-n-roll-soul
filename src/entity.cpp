@@ -69,7 +69,7 @@ Animation& Entity::animation()
     return *animation_;
 }
 
-void Entity::update(sf::Uint32 dt)
+void Entity::update(float dt)
 {
     animation_->update(dt);
 }

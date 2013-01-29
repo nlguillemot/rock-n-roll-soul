@@ -51,7 +51,7 @@ public:
     void switch_to_state(PlayerState next_state);
     void switch_direction(Direction next_direction);
 
-    void update(sf::Uint32 dt);
+    void update(float dt);
 
     void draw(sf::RenderTarget& target);
 

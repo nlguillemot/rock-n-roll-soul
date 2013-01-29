@@ -95,16 +95,16 @@ public:
     void set_looping(bool looping);
     bool looping() const;
 
-    void update(sf::Uint32 dt);
+    void update(float dt);
     void draw(sf::RenderTarget& target);
 
     const AnimData& animdata() const;
 private:
-    sf::Uint32 frame_to_time(int frame) const;
+    float frame_to_time(int frame) const;
     void update_sprite_to_frame();
     const AnimData& anim_data_;
     sf::Sprite sprite_;
-    sf::Uint32 timeline_;
+    float timeline_;
     sf::Uint32 fps_;
     int total_frames_;
     

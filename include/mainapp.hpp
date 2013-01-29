@@ -15,7 +15,7 @@ namespace heart
     private:
         void poll_events();
         void handle_event(const sf::Event& e);
-        void update(sf::Uint32 dt);
+        void update(float dt);
         void draw();
 
         Scene* current_scene_;

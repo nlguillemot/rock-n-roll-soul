@@ -306,13 +306,11 @@ void Player::switch_direction(Direction next_direction)
     }
 }
 
-void Player::update(sf::Uint32 dt)
+void Player::update(float dt)
 {
-    float dtf = dt/1000.0f;
-
     if (state_ == PlayerState::Launching)
     {
-        launch_charge_ += launch_charge_speed_ * dtf;
+        launch_charge_ += launch_charge_speed_ * dt;
         launch_charge_ = clamp(launch_charge_,0.0f,1.0f);
     }
 
@@ -337,12 +335,12 @@ void Player::update(sf::Uint32 dt)
     sf::Vector2f gravity_effect = current_gravity_;
     if (state_ == PlayerState::Winning)
     {
-        current_gravity_ = sf::Vector2f(0.0f,0.0f);
+        gravity_effect = sf::Vector2f(0.0f,0.0f);
     }
 
-    velocity_ += dtf * (acceleration_ + current_gravity_);
+    velocity_ += dt * (acceleration_ + gravity_effect);
     
-    float velocity_after_friction = velocity_.x + dtf * friction.x;
+    float velocity_after_friction = velocity_.x + dt * friction.x;
     // apply friction
     if (signum(velocity_.x) !=
         signum(velocity_after_friction))
@@ -350,7 +348,7 @@ void Player::update(sf::Uint32 dt)
         float dv = velocity_after_friction - velocity_.x;
         float ratio = (0 - velocity_.x) / dv;
 
-        position_.x += dtf * (velocity_.x + ratio * dv);
+        position_.x += dt * (velocity_.x + ratio * dv);
         velocity_.x = 0.0f;
     }
     else
@@ -360,15 +358,15 @@ void Player::update(sf::Uint32 dt)
 
     if (state_ == PlayerState::Winning)
     {
-        if (dt != 0)
+        if (dt > 0.0f)
         {
-            sf::Vector2f dampening = (0.001f * velocity_) * float(dt);
+            sf::Vector2f dampening =  velocity_ * dt;
             velocity_ -= dampening;
         }
     }
 
-    position_ += dtf * (velocity_ + movement_velocity_);
-    rotate_aim(dtf * current_aim_speed_);
+    position_ += dt * (velocity_ + movement_velocity_);
+    rotate_aim(dt * current_aim_speed_);
 
     if (state_ == PlayerState::Flying)
     {

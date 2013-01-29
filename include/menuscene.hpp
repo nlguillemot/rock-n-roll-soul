@@ -20,7 +20,7 @@ public:
     virtual sf::FloatRect bounds() const;
     virtual sf::FloatRect transformed_bounds() const;
 
-    virtual void update(sf::Uint32 dt);
+    virtual void update(float dt);
     virtual void draw(sf::RenderTarget& target);
 protected:
     Animation* anim_;
@@ -47,7 +47,7 @@ public:
     void handle_event(const sf::Event& e);
 
     void init();
-    void update(sf::Uint32 dt);
+    void update(float dt);
     void draw(sf::RenderTarget& target);
     void exit();
 private:

@@ -11,9 +11,9 @@ fn_(fn)
     current_time_ = 0.0f;
 }
 
-void Tweener::update(sf::Uint32 dt)
+void Tweener::update(float dt)
 {
-    current_time_ += dt / 1000.0f;
+    current_time_ += dt;
 }
 
 float Tweener::in_value() const

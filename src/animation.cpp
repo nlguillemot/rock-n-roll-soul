@@ -9,8 +9,8 @@ Animation::Animation(const AnimData& anim_data)
     : anim_data_(anim_data),
     timeline_(0),
     fps_(anim_data.fps()),
-    current_frame_(0),
     total_frames_(anim_data_.total_frames()),
+    current_frame_(0),
     playing_(false),
     hidden_(false),
     looping_(true)
@@ -363,7 +363,7 @@ bool Animation::looping() const
     return looping_;
 }
 
-void Animation::update(sf::Uint32 dt)
+void Animation::update(float dt)
 {
     if (playing_)
     {
@@ -398,11 +398,11 @@ void Animation::draw(sf::RenderTarget& target)
     }
 }
 
-sf::Uint32 Animation::frame_to_time(int frame) const
+float Animation::frame_to_time(int frame) const
 {
-    if (fps() == 0) return 0;
+    if (fps() == 0) return 0.0f;
 
-    return static_cast<sf::Uint32>((1000*(static_cast<float>(frame)/fps())));
+    return static_cast<float>(frame)/fps();
 }
 
 void Animation::update_sprite_to_frame()

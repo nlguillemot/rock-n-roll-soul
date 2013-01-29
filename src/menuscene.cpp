@@ -50,7 +50,7 @@ sf::FloatRect MenuDecoration::transformed_bounds() const
     return anim_->anim_rect_relative();
 }
 
-void MenuDecoration::update(sf::Uint32 dt)
+void MenuDecoration::update(float dt)
 {
     anim_->update(dt);
 }
@@ -85,6 +85,7 @@ MenuScene::MenuScene(const std::string& menu_name)
 
 MenuScene::~MenuScene()
 {
+    cleanup_menu();
     delete background_;
     delete background_data_;
 }
@@ -143,6 +144,8 @@ void MenuScene::cleanup_menu()
     {
         delete b;
     }
+    buttons_.clear();
+
     for (MenuDecoration * d : decorations_)
     {
         delete d;
@@ -158,7 +161,7 @@ void MenuScene::init()
     bgm_.Play();
 }
 
-void MenuScene::update(sf::Uint32 dt)
+void MenuScene::update(float dt)
 {
     background_->update(dt);
 

@@ -7,8 +7,8 @@ namespace heart
 {
 
 MainApp::MainApp(const sf::VideoMode& mode, const std::string& gametitle, Scene* firstscene):
-window_(mode,gametitle),
-current_scene_(nullptr)
+current_scene_(nullptr),
+window_(mode,gametitle)
 {
     switch_to_scene(firstscene);
 }
@@ -24,7 +24,7 @@ void MainApp::exec()
     while(window_.IsOpened())
     {
         poll_events();
-        update(1000 * window_.GetFrameTime());
+        update(window_.GetFrameTime());
         draw();
     }
 }
@@ -70,7 +70,7 @@ void MainApp::handle_event(const sf::Event& e)
     }
 }
 
-void MainApp::update(sf::Uint32 dt)
+void MainApp::update(float dt)
 {
     current_scene_->update(dt);
     if (Scene* next = current_scene_->next_scene())

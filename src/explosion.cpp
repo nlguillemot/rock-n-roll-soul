@@ -12,7 +12,7 @@ tweener_(tween,range/speed)
     range_ = range;
 }
 
-void Explosion::update(sf::Uint32 dt)
+void Explosion::update(float dt)
 {
     tweener_.update(dt);
 }

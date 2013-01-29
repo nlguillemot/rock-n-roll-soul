@@ -13,7 +13,7 @@ class Tweener
 public:
     Tweener(TweenFunction fn, float time_to_completion);
 
-    void update(sf::Uint32 dt);
+    void update(float dt);
 
     float in_value() const;
     float out_value() const;

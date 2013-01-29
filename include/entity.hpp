@@ -22,7 +22,7 @@ public:
     const Animation& animation() const;
     Animation& animation();
 
-    virtual void update(sf::Uint32 dt);
+    virtual void update(float dt);
     virtual void draw(sf::RenderTarget& target);
 protected:
     Animation* animation_;

@@ -9,7 +9,7 @@ project_name = 'rocknroll'
 target = project_name
 
 env.Append(LIBS = ['sfml-graphics', 'sfml-system', 'sfml-window', 'sfml-audio'])
-env.Append(CCFLAGS = ['-std=c++11','-g'])
+env.Append(CCFLAGS = ['-std=c++11','-g','-Wall'])
 env.Append(CPPPATH='include')
 
 sources = glob('src/*.cpp')

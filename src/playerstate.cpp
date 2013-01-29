@@ -3,61 +3,69 @@
 namespace heart
 {
 
-const std::vector<PlayerState> states_with_aimer_visible =
+bool PlayerStateMachine::state_with_aimer_visible(PlayerState state) const
 {
-    PlayerState::Idle,
-    PlayerState::Moving,
-    PlayerState::Launching,
-    PlayerState::Landing,
-};
+    return
+    state == PlayerState::Idle ||
+    state == PlayerState::Moving ||
+    state == PlayerState::Launching ||
+    state == PlayerState::Landing;
+}
 
-const std::vector<PlayerState> states_allowing_launching =
+bool PlayerStateMachine::state_allowing_aiming(PlayerState state) const
 {
-    PlayerState::Idle,
-    PlayerState::Moving,
-    PlayerState::Landing
-};
+    return
+    state == PlayerState::Idle ||
+    state == PlayerState::Moving ||
+    state == PlayerState::Launching ||
+    state == PlayerState::Landing;
+}
 
-const std::vector<PlayerState> states_allowing_aiming =
+bool PlayerStateMachine::state_allowing_launching(PlayerState state) const
 {
-    PlayerState::Idle,
-    PlayerState::Moving,
-    PlayerState::Launching,
-    PlayerState::Landing
-};
+    return
+    state == PlayerState::Idle ||
+    state == PlayerState::Moving ||
+    state == PlayerState::Landing;
+}
 
-const std::vector<PlayerState> states_with_movement =
+bool PlayerStateMachine::state_with_movement(PlayerState state) const
 {
-    PlayerState::Moving,
-};
+    return
+    state == PlayerState::Moving;
+}
 
-const std::vector<PlayerState> states_with_direction_switching =
+bool PlayerStateMachine::state_with_direction_switching(PlayerState state) const
 {
-    PlayerState::Idle,
-    PlayerState::Moving,
-    PlayerState::Launching,
-    PlayerState::Flying,
-    PlayerState::Falling,
-    PlayerState::Landing
-};
+    return
+    state == PlayerState::Idle ||
+    state == PlayerState::Moving ||
+    state == PlayerState::Launching ||
+    state == PlayerState::Flying ||
+    state == PlayerState::Falling ||
+    state == PlayerState::Landing;
+}
 
-const std::vector<PlayerState> states_in_the_air =
+bool PlayerStateMachine::state_in_the_air(PlayerState state) const
 {
-    PlayerState::Flying,
-    PlayerState::Falling,
-    PlayerState::Winning
-};
+    return
+    state == PlayerState::Flying ||
+    state == PlayerState::Falling ||
+    state == PlayerState::Winning;
+}
 
-const std::vector<PlayerState> states_without_looping_animations =
+bool PlayerStateMachine::state_without_looping_animations(PlayerState state) const
 {
-    PlayerState::Landing
-};
+    return
+    state == PlayerState::Landing;
+}
 
-const std::vector<PlayerState> states_with_music_notes =
+bool PlayerStateMachine::state_with_music_notes(PlayerState state) const
 {
-    PlayerState::Flying,
-    PlayerState::Falling
-};
+    return
+    state == PlayerState::Flying ||
+    state == PlayerState::Falling;
+}
 
 std::string to_string(PlayerState state)
 {

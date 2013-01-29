@@ -193,7 +193,7 @@ void GameScene::player_handle_keydown(sf::Key::Code code)
         return;
     }
 
-    if (element_of(player_.state(), states_with_direction_switching))
+    if (player_.state_machine().state_with_direction_switching(player_.state()))
     {
         if (code == player_keys_.left.key)
         {
@@ -214,7 +214,7 @@ void GameScene::player_handle_keydown(sf::Key::Code code)
         }
     }
 
-    if (element_of(player_.state(), states_allowing_aiming))
+    if (player_.state_machine().state_allowing_aiming(player_.state()))
     {
         if (code == player_keys_.up.key)
         {
@@ -227,7 +227,7 @@ void GameScene::player_handle_keydown(sf::Key::Code code)
             player_.begin_aim_movement();
         }
     }
-    if (element_of(player_.state(), states_allowing_launching))
+    if (player_.state_machine().state_allowing_launching(player_.state()))
     {
         if (code == player_keys_.action.key)
         {
@@ -259,7 +259,7 @@ void GameScene::player_handle_keydown(sf::Key::Code code)
 
 void GameScene::player_handle_keyup(sf::Key::Code code)
 {
-    if (element_of(player_.state(), states_with_direction_switching))
+    if (player_.state_machine().state_with_direction_switching(player_.state()))
     {
         if (code == player_keys_.left.key &&
             player_.direction() == Player::Left)
@@ -287,7 +287,7 @@ void GameScene::player_handle_keyup(sf::Key::Code code)
         }
     }
 
-    if (element_of(player_.state(), states_allowing_aiming))
+    if (player_.state_machine().state_allowing_aiming(player_.state()))
     {
         if (code == player_keys_.up.key)
         {
@@ -429,7 +429,7 @@ void GameScene::update_player(sf::Uint32 dt)
 
     PlayerState curr_state = player_.state();
 
-    if (element_of(player_.state(),states_with_music_notes))
+    if (player_.state_machine().state_with_music_notes(player_.state()))
     {
         music_note_timer_ += dt/1000.0f;
         float time_per_note = 0.3f;
@@ -538,7 +538,7 @@ void GameScene::update_player(sf::Uint32 dt)
 
 void GameScene::draw(sf::RenderTarget& target)
 {
-    target.Clear(sf::Color::White);
+    target.Clear(sf::Color(255,255,255));
 
     sf::Vector2f cam_topleft = view().GetCenter() - view().GetHalfSize();
     sf::Vector2f cam_bounds = view().GetHalfSize() * 2.0f;

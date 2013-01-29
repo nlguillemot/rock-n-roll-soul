@@ -54,6 +54,9 @@ public:
     void update(sf::Uint32 dt);
 
     void draw(sf::RenderTarget& target);
+
+    const PlayerStateMachine& state_machine() const;
+
 private:
     void init();
     void cleanup();
@@ -102,6 +105,8 @@ private:
 
     sf::SoundBuffer jumpsndbuf_;
     sf::Sound jumpsnd_;
+
+    PlayerStateMachine state_machine_;
 };
 
 }

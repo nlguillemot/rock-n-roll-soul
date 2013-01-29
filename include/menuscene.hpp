@@ -2,6 +2,7 @@
 
 #include "scene.hpp"
 #include <SFML/Audio.hpp>
+#include <functional>
 #include "animation.hpp"
 
 namespace heart

@@ -195,7 +195,7 @@ bool Player::falling() const
 
 bool Player::in_air() const
 {
-    return element_of(state_,states_in_the_air);
+    return state_machine_.state_in_the_air(state_);
 }
 
 void Player::launch()
@@ -237,7 +237,7 @@ void Player::switch_to_state(PlayerState next_state)
     
     animation_->play(animation_from_state(next_state));
 
-    if (element_of(next_state,states_without_looping_animations))
+    if (state_machine_.state_without_looping_animations(next_state))
     {
         animation_->set_looping(false);
     }
@@ -246,7 +246,7 @@ void Player::switch_to_state(PlayerState next_state)
         animation_->set_looping(true);
     }
 
-    if (element_of(next_state, states_with_aimer_visible))
+    if (state_machine_.state_with_aimer_visible(next_state))
     {
         aimer_->set_hidden(false);
     }
@@ -265,9 +265,9 @@ void Player::switch_to_state(PlayerState next_state)
         launch_charge_ = 0.0f;
     }
 
-    if (element_of(state_,states_in_the_air))
+    if (state_machine_.state_in_the_air(state_))
     {
-        if (!element_of(next_state,states_in_the_air))
+        if (!state_machine_.state_in_the_air(next_state))
         {
             current_gravity_ = sf::Vector2f(0.0f,0.0f);
             velocity_.y = 0.0f;
@@ -275,14 +275,14 @@ void Player::switch_to_state(PlayerState next_state)
     }
     else
     {
-        if (element_of(next_state,states_in_the_air))
+        if (state_machine_.state_in_the_air(next_state))
         {
             current_gravity_ = gravity_;
             velocity_ += movement_velocity_;
         }
     }
 
-    if (element_of(next_state, states_with_movement))
+    if (state_machine_.state_with_movement(next_state))
     {
         update_movement_velocity(movement_speed_);
     }
@@ -300,7 +300,7 @@ void Player::switch_direction(Direction next_direction)
 
     direction_ = next_direction;
 
-    if (switched_direction && element_of(state_, states_with_direction_switching))
+    if (switched_direction && state_machine_.state_with_direction_switching(state_))
     {
         update_movement_velocity(std::fabs(movement_velocity_.x));
     }
@@ -322,7 +322,7 @@ void Player::update(sf::Uint32 dt)
          0, aimer_->sequence_duration("charge") - 1));
 
     sf::Vector2f friction(0.0f,0.0f);
-    if (!element_of(state_,states_in_the_air))
+    if (!state_machine_.state_in_the_air(state_))
     {
         friction.x = -signum(velocity_.x);
         friction *= friction_constant_;
@@ -418,6 +418,11 @@ void Player::draw(sf::RenderTarget& target)
 
     animation_->draw(target);
     aimer_->draw(target);
+}
+
+const PlayerStateMachine& Player::state_machine() const
+{
+    return state_machine_;
 }
 
 }

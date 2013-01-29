@@ -177,7 +177,7 @@ void MenuScene::update(sf::Uint32 dt)
 
 void MenuScene::draw(sf::RenderTarget& target)
 {
-    target.Clear(sf::Color::Black);
+    target.Clear(sf::Color(0,0,0));
 
     sf::Vector2f cam_topleft = view().GetCenter() - view().GetHalfSize();
     sf::Vector2f cam_bounds = view().GetHalfSize() * 2.0f;

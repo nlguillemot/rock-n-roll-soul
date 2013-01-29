@@ -8,8 +8,15 @@ platform grass_step 525 525
 platform grass_step 800 300
 platform grass_step 1125 300
 
+decoration bushbig 100 450
+decoration bushbig 1050 275
+
 decoration instructions1 225 150
 decoration instructions2 725 600
+decoration bush 250 452
+decoration bush 230 460
+decoration bush -70 422
+decoration bush 1145 302
 
 goal goal 1125 300
 

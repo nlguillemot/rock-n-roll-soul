@@ -1,9 +1,17 @@
 spawnpoint start 0 0
 platform grass_step 0 0
 platform grass_step 300 -250
+platform grass_step 375 -225
 platform grass_step -100 -450
 platform grass_step 0 -750
 platform grass_step 700 -700
+
+decoration bushbig 75 -150
+decoration bushbig 580 -600
+
+decoration bush 400 -223
+decoration bush -25 -730
+
 
 goal goal 700 -700
 

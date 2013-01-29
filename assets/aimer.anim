@@ -1,5 +1,4 @@
 frames 16
 point origin 0.5 0.5
-fps 0
 point scale 4 4
 sequence charge 0 16

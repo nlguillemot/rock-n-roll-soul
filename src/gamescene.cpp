@@ -87,6 +87,7 @@ void GameScene::init_world()
     cleanup_world();
     player_.reset_state();
 
+    camera_zoom_target_ = sf::Vector2f(0.5f,0.5f);
     music_note_timer_ = 0.0f;
 
     if (!map_.load_from_file("level/" + level_name_))

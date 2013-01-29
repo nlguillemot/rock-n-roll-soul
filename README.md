@@ -114,22 +114,22 @@ All characters in a line after a # symbol are ignored.
 
 ##Credits
 
-Art by Moltanem2000 (Aka Brandon Duncan): [https://github.com/moltanem2000)](https://github.com/moltanem2000)
+Art by Moltanem2000 (Aka Brandon Duncan): [https://github.com/moltanem2000](https://github.com/moltanem2000)
 
 ![Moltanem2000](http://i.imgur.com/fqO73pm.png)
 
-Background music by Gnar Sound. (Aka Lee Gauthier)
+Background music by Gnar Sound. (Aka Lee Gauthier): [https://github.com/lgauthie](https://github.com/lgauthie)
 
 ![Gnar Sound](http://i.imgur.com/GB9wJUR.jpg)
 
-Programming by Nicolas Guillemot.
+Programming by Nicolas Guillemot: [https://github.com/nguillemot](https://github.com/nguillemot)
 
 ![Nicolas Guillemot](http://i.imgur.com/4zTIG44.png)
  
-SFML used a cross-platform back-end.
+SFML used a cross-platform back-end: [http://www.sfml-dev.org/](http://www.sfml-dev.org/)
 
 ![SFML](http://i.imgur.com/wxjLGs4.png)
 
-Animated sprites made using Aseprite.
+Animated sprites made using Aseprite: [http://aseprite.org/](http://aseprite.org/)
 
 ![Aseprite](http://i.imgur.com/dmJxYF6.png)

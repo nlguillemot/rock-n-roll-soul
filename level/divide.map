@@ -8,6 +8,12 @@ platform grass_step 1375 270
 platform grass_step 1250 525
 platform grass_step 1600 550
 
+decoration bushbig 550 275
+decoration bushbig 1150 575
+
+decoration bush -25 252
+decoration bush 1150 277
+
 goal goal 1600 550
 collectible heart 550 275
 collectible heart 975 25

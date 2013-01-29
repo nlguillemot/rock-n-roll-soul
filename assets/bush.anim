@@ -1,0 +1,5 @@
+frames 1
+point origin 0.5 1
+point scale 4 4
+
+sequence idle 0 1

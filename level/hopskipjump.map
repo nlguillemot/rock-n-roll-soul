@@ -1,11 +1,19 @@
 spawnpoint start 0 450
 platform grass_step 0 450
 platform grass_step 400 425
+platform grass_step 375 450
 platform grass_step 625 700
 platform grass_step 1000 700
 platform grass_step 1325 525
 platform grass_step 1325 250
 
+decoration bushbig 500 425
+
+decoration bush -25 452
+decoration bush 575 712
+decoration bush 625 702
+decoration bush 675 722
+decoration bush 1350 527
 
 goal goal 1325 250
 collectible heart 400 400

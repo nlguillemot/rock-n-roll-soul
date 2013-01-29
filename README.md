@@ -28,7 +28,7 @@ A mix of platforming and physics based puzzle themed about love and rock and rol
 * R: Restart level
 * M/Esc: Quit to main menu
 
-Developed from scratch in 48 hours for Global Game Jam 2013 with Brandon Duncan. (https://github.com/moltanem2000)
+Developed from scratch in 48 hours for Global Game Jam 2013.
 
 ##Animation Editing
 
@@ -110,3 +110,26 @@ Here's a list of commands you can put in the .menu files:
 	* x and y define the position of the decoration in world space.
 
 All characters in a line after a # symbol are ignored.
+
+
+##Credits
+
+Art by Moltanem2000 (Aka Brandon Duncan): [https://github.com/moltanem2000)](https://github.com/moltanem2000)
+
+![Moltanem2000](http://i.imgur.com/fqO73pm.png)
+
+Background music by Gnar Sound. (Aka Lee Gauthier)
+
+![Gnar Sound](http://i.imgur.com/GB9wJUR.jpg)
+
+Programming by Nicolas Guillemot.
+
+![Nicolas Guillemot](http://i.imgur.com/4zTIG44.png)
+ 
+SFML used a cross-platform back-end.
+
+![SFML](http://i.imgur.com/wxjLGs4.png)
+
+Animated sprites made using Aseprite.
+
+![Aseprite](http://i.imgur.com/dmJxYF6.png)

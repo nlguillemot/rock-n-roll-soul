@@ -32,7 +32,7 @@ Developed from scratch in 48 hours for Global Game Jam 2013 with Brandon Duncan.
 
 ##Animation Editing
 
-This game supports simple tiled animations. Animations are defined in two pieces: A sprite sheet (.png) and a file describing it (.anim).
+This game supports simple tiled animations. Animations are defined in two pieces: A sprite sheet (.png) and a file describing it (.anim). Both of these files should reside in the "assets" folder. .anim files are plain text. Open them in a program like notepad or gedit.
 
 The recommended program to create sprite sheets is aseprite: http://www.aseprite.org/
 
@@ -62,8 +62,7 @@ I'm not gonna document those just yet because they are subject to change!
 
 ##Level Editing
 
-You can add your own levels to the game by putting them in the "level" folder.
-The .map files are plain text. Open them in a program like notepad or gedit.
+You can add your own levels to the game by putting them in the "level" folder. The .map files are plain text. Open them in a program like notepad or gedit.
 
 Here's a list of commands you can put in the .map files:
 
@@ -96,8 +95,7 @@ All characters in a line after a # symbol are ignored.
 ##Menu Editing
 
 You need to put levels in the level selection menu before being able to access them.
-Menus are stored in the "menu" folder.
-The .menu files are plain text. Open them in a program like notepad or gedit.
+Menus are stored in the "menu" folder. The .menu files are plain text. Open them in a program like notepad or gedit.
 
 Here's a list of commands you can put in the .menu files:
 

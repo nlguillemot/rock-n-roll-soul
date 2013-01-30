@@ -40,13 +40,12 @@ void Entity::reload_entity_data()
 
 sf::Vector2f Entity::position() const
 {
-    return position_;
+    return animation_->position();
 }
 
 void Entity::snap_to_position(const sf::Vector2f& position)
 {
-    position_ = position;
-    animation_->set_position(position_);
+    animation_->set_position(position);
 }
 
 void Entity::move(const sf::Vector2f& v)
@@ -81,7 +80,6 @@ void Entity::update(float dt)
 
 void Entity::draw(sf::RenderTarget& target)
 {
-    animation_->set_position(position_);
     animation_->draw(target);
 }
 

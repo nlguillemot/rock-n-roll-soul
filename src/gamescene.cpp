@@ -442,16 +442,25 @@ void GameScene::update_player(float dt)
     {
         music_note_timer_ += dt;
         float time_per_note = 0.3f;
-        while (music_note_timer_ >= time_per_note)
+        if (music_note_timer_ >= time_per_note)
         {
-            music_note_timer_ -= time_per_note;
-            sf::Uint32 music_note = random_music_note_() % 3;
+            music_note_timer_ = 0.0f;
+            sf::Uint32 music_note = random_music_note_() % music_notes_.size();
             effects_.push_back(new Fader(music_notes_[music_note]->animation(),true,rect_center(player_.bounding_box()),1.5f,tween_squared));
         }
     }
-    else
+    else if (player_.state() == PlayerState::Winning &&
+        !music_notes_.empty())
     {
-        music_note_timer_ = 0.0f;
+        music_note_timer_ += dt;
+        float time_per_explosion = 0.5f;
+        float explosion_range = 50.0f;
+        if (music_note_timer_ >= time_per_explosion)
+        {
+            music_note_timer_ = 0.0f;
+            sf::Uint32 music_note = random_music_note_() % music_notes_.size();
+            effects_.push_back(new Explosion(music_notes_[music_note]->animation(), rect_center(player_.bounding_box()), explosion_range/time_per_explosion, explosion_range, tween_linear));
+        }
     }
 
     if (curr_state != PlayerState::Winning)

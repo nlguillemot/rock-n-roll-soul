@@ -388,7 +388,6 @@ void Player::update_movement_velocity(float speed)
 
 void Player::draw(sf::RenderTarget& target)
 {
-    animation().set_position(position());
     aimer_->set_position(animation().center_relative());
 
     bool facing_left = direction_ == Left;

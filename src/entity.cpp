@@ -49,6 +49,11 @@ void Entity::snap_to_position(const sf::Vector2f& position)
     animation_->set_position(position_);
 }
 
+void Entity::move(const sf::Vector2f& v)
+{
+    snap_to_position(position() + v);
+}
+
 sf::FloatRect Entity::bounding_box() const
 {
     return animation_->anim_rect_relative();

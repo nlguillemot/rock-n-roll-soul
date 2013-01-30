@@ -24,7 +24,7 @@ void Player::init()
 
     reload_entity_data();
 
-    const float* launch_speed = animation_->maybe_constant("launch_speed");
+    const float* launch_speed = animation().maybe_constant("launch_speed");
     if (launch_speed)
     {
         launch_impulse_speed_ = *launch_speed;
@@ -62,7 +62,7 @@ void Player::init()
     aim_rotation_speed_ = 90.0f;
     current_aim_speed_ = 0.0f;
 
-    const float* charge_time = animation_->maybe_constant("charge_time");
+    const float* charge_time = animation().maybe_constant("charge_time");
     if (charge_time)
     {
         if (std::fabs(*charge_time) < 0.001)
@@ -86,7 +86,7 @@ void Player::init()
     friction_constant_ = 200.0f;
     air_friction_constant_ = 30.0f;
 
-    position_ = sf::Vector2f(0.0f,0.0f);
+    snap_to_position(sf::Vector2f(0.0f,0.0f));
     velocity_ = sf::Vector2f(0.0f,0.0f);
     acceleration_ = sf::Vector2f(0.0f,0.0f);
 
@@ -117,31 +117,20 @@ Player::Direction Player::direction() const
     return direction_;
 }
 
-sf::Vector2f Player::position() const
-{
-    return position_;
-}
-
-void Player::snap_to_position(const sf::Vector2f& pos)
-{
-    position_ = pos;
-    animation_->set_position(position_);
-}
-
 sf::Vector2f Player::feet_relative() const
 {
-    return position_;
+    return position();
 }
 
 sf::FloatRect Player::feet_rect() const
 {
-    float animwidth = animation_->anim_rect().GetWidth();
-    float animheight = animation_->anim_rect().GetHeight();
+    float animwidth = animation().anim_rect().GetWidth();
+    float animheight = animation().anim_rect().GetHeight();
     return sf::FloatRect(
-        position_.x - animwidth*0.15,
-        position_.y - animheight*0.25,
-        position_.x + animwidth*0.15,
-        position_.y);
+        position().x - animwidth*0.15,
+        position().y - animheight*0.25,
+        position().x + animwidth*0.15,
+        position().y);
 }
 
 const sf::Vector2f& Player::gravity_effect() const
@@ -227,7 +216,7 @@ void Player::land_at_y(float y)
         return;
     }
 
-    position_.y = y;
+    snap_to_position(sf::Vector2f(position().x,y));
     switch_to_state(PlayerState::Landing);
 }
 
@@ -235,15 +224,15 @@ void Player::switch_to_state(PlayerState next_state)
 {
     // log_message("Player switching to state: " + to_string(next_state));
     
-    animation_->play(animation_from_state(next_state));
+    animation().play(animation_from_state(next_state));
 
     if (state_machine_.state_without_looping_animations(next_state))
     {
-        animation_->set_looping(false);
+        animation().set_looping(false);
     }
     else
     {
-        animation_->set_looping(true);
+        animation().set_looping(true);
     }
 
     if (state_machine_.state_with_aimer_visible(next_state))
@@ -348,7 +337,7 @@ void Player::update(float dt)
         float dv = velocity_after_friction - velocity_.x;
         float ratio = (0 - velocity_.x) / dv;
 
-        position_.x += dt * (velocity_.x + ratio * dv);
+        move(sf::Vector2f(dt * (velocity_.x + ratio * dv),0.0f));
         velocity_.x = 0.0f;
     }
     else
@@ -365,7 +354,7 @@ void Player::update(float dt)
         }
     }
 
-    position_ += dt * (velocity_ + movement_velocity_);
+    move(dt * (velocity_ + movement_velocity_));
     rotate_aim(dt * current_aim_speed_);
 
     if (state_ == PlayerState::Flying)
@@ -378,13 +367,13 @@ void Player::update(float dt)
 
     if (state_ == PlayerState::Landing)
     {
-        if (!animation_->playing())
+        if (!animation().playing())
         {
             switch_to_state(PlayerState::Idle);
         }
     }
 
-    animation_->update(dt);
+    animation().update(dt);
     aimer_->update(dt);
 }
 
@@ -399,11 +388,11 @@ void Player::update_movement_velocity(float speed)
 
 void Player::draw(sf::RenderTarget& target)
 {
-    animation_->set_position(position_);
-    aimer_->set_position(animation_->center_relative());
+    animation().set_position(position());
+    aimer_->set_position(animation().center_relative());
 
     bool facing_left = direction_ == Left;
-    animation_->fliph(facing_left);
+    animation().fliph(facing_left);
 
     float actual_rotation = aim_angle_;
     if (facing_left)
@@ -414,7 +403,7 @@ void Player::draw(sf::RenderTarget& target)
     aimer_->fliph(facing_left);
     aimer_->set_rotation(actual_rotation);
 
-    animation_->draw(target);
+    animation().draw(target);
     aimer_->draw(target);
 }
 

@@ -15,6 +15,7 @@ public:
 
     virtual sf::Vector2f position() const;
     virtual void snap_to_position(const sf::Vector2f& position);
+    void move(const sf::Vector2f& v);
 
     virtual sf::FloatRect bounding_box() const;
     virtual sf::FloatRect collision_area() const;
@@ -24,10 +25,10 @@ public:
 
     virtual void update(float dt);
     virtual void draw(sf::RenderTarget& target);
-protected:
+
+private:
     Animation* animation_;
     AnimData* anim_data_;
-
     sf::Vector2f position_;
 };
 

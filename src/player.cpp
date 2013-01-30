@@ -198,8 +198,10 @@ void Player::launch()
         direction_ == Left ?
         180 - aim_angle_ : aim_angle_;
 
+    float launch_charge_modified = std::sqrt(launch_charge_);
+
     sf::Vector2f launch_vector = unit_vector_from_angle(angle_with_direction);
-    launch_vector *= launch_charge_ * launch_impulse_speed_;
+    launch_vector *= launch_charge_modified * launch_impulse_speed_;
     launch_vector.y *= -1;
 
     velocity_ += launch_vector;

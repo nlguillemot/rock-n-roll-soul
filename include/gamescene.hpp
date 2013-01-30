@@ -9,6 +9,7 @@
 #include "entity.hpp"
 
 #include <list>
+#include <random>
 
 namespace heart
 {
@@ -94,9 +95,9 @@ private:
     sf::Vector2f camera_target_;
     float camera_pan_lerp_ratio_;
 
+    std::mt19937 random_music_note_;
     float music_note_timer_;
-
-    Entity* tuplet_note_;
+    std::vector<Entity*> music_notes_;
 };
 
 }

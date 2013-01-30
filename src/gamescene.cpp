@@ -14,7 +14,9 @@ GameScene::GameScene(const std::string& level)
     background_data_ = new AnimData("assets/background");
     background_ = new Animation(*background_data_);
 
-    tuplet_note_ = new Entity("tuplet");
+    music_notes_.push_back(new Entity("musicnote0"));
+    music_notes_.push_back(new Entity("musicnote1"));
+    music_notes_.push_back(new Entity("musicnote2"));
 
     player_keys_.left = KeyState(sf::Key::Left);
     player_keys_.right = KeyState(sf::Key::Right);
@@ -23,13 +25,18 @@ GameScene::GameScene(const std::string& level)
     player_keys_.action = KeyState(sf::Key::Space);
 
     level_name_ = level;
+
+    music_note_timer_ = 0.0f;
 }
 
 GameScene::~GameScene()
 {
     cleanup_world();
 
-    delete tuplet_note_;
+    for (Entity* e : music_notes_)
+    {
+        delete e;
+    }
 
     delete background_;
     delete background_data_;
@@ -430,14 +437,16 @@ void GameScene::update_player(float dt)
 
     PlayerState curr_state = player_.state();
 
-    if (player_.state_machine().state_with_music_notes(player_.state()))
+    if (player_.state_machine().state_with_music_notes(player_.state()) &&
+        !music_notes_.empty())
     {
         music_note_timer_ += dt;
         float time_per_note = 0.3f;
         while (music_note_timer_ >= time_per_note)
         {
             music_note_timer_ -= time_per_note;
-            effects_.push_back(new Fader(tuplet_note_->animation(),true,rect_center(player_.bounding_box()),1.5f,tween_squared));
+            sf::Uint32 music_note = random_music_note_() % 3;
+            effects_.push_back(new Fader(music_notes_[music_note]->animation(),true,rect_center(player_.bounding_box()),1.5f,tween_squared));
         }
     }
     else

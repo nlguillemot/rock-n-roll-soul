@@ -7,9 +7,9 @@ namespace heart
 {
 
 MainApp::MainApp(const sf::VideoMode& mode, const std::string& gametitle, Scene* firstscene):
-current_scene_(nullptr),
-window_(mode,gametitle)
+current_scene_(nullptr)
 {
+    window_.Create(mode,gametitle,sf::Style::Resize|sf::Style::Close,sf::WindowSettings(24,8,0));
     switch_to_scene(firstscene);
 }
 
@@ -21,6 +21,7 @@ MainApp::~MainApp()
 void MainApp::exec()
 {
     window_.SetFramerateLimit(60);
+    // window_.UseVerticalSync(true);
     while(window_.IsOpened())
     {
         poll_events();
